@@ -1,0 +1,12 @@
+This repo contains the open-source remote API project for LAIRD WB remote setup.
+
+To create, run MAKE.  This will create the library librmt_api.so.1.0.  A symlink names lib_rm_api.so will also be created.
+
+The files lrd_remote_API.h and lib_rmt_api.so can then be used to create localized software that can access the WB remotely.
+
+To make the debug version, issue the command:
+make clean && make DEBUG=1
+This will create a debug version of the library and output information from your app to stdout.  NOTE: may not compile/run correctly on your system depending on your compiler and libraries installed.
+
+To make the test apps, issue:
+make test_apps
