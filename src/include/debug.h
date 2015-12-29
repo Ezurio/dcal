@@ -1,3 +1,6 @@
+#ifndef __debug_h__
+#define __debug_h__
+
 #include "lrd_remote_api.h"
 
 typedef enum _WF_LOGLEVEL {
@@ -9,7 +12,6 @@ typedef enum _WF_LOGLEVEL {
 	WF_DBG_MSGDUMP,
 	WF_DBG_EXCESSIVE
 } WF_LOGLEVEL;
-
 
 #ifdef DEBUG
 void DbgPrintfLvl(int level, char *format, ...);
@@ -81,5 +83,4 @@ do { \
 
 #endif //DEBUG
 
-
-
+#endif //  __debug_h__
