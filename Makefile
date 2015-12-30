@@ -14,8 +14,8 @@ LIBS   +=
 CFLAGS += -Wall -Werror -fPIC -I$(SRCDIR)/include -I$(SRCDIR) -I$(APIDIR)
 COMPILEONLY = -c
 
-SOURCES = $(SRCDIR)/placeholder.c
-SOURCES += $(SRCDIR)/debug.c
+SOURCES = $(SRCDIR)/debug.c
+SOURCES += $(SRCDIR)/session.c
 
 # could use this to add all .c files if not wanting to list them above,
 # but will include debug.c by default

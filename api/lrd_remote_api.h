@@ -29,8 +29,10 @@ extern "C" {
 
 typedef enum _LRD_API_ERR{
 	LRD_API_SUCCESS = 0,
+	LRD_API_INVALID_PARAMETER,
 	LRD_API_INVALID_HANDLE,
-	LRD_API_NO_NETWORK_ACCESS
+	LRD_API_NO_NETWORK_ACCESS,
+	LRD_API_NOT_IMPLEMENTED,
 } LRD_API_ERR;
 
 #define TBD 20*4 // arbitrary size.  Will be specific once the internal structure elements are fully defined.
@@ -53,10 +55,10 @@ typedef struct _laird_status_struct {
 // API session management
 
 LRD_API_ERR LRD_API_create_session( laird_session_handle * session);
-LRD_API_ERR LRD_API_setip( laird_session_handle session, FQDN address );
-LRD_API_ERR LRD_API_setkey( laird_session_handle session, char * keydata, char size);
-LRD_API_ERR LRD_API_session_open ( laird_session_handle session );
-LRD_API_ERR LRD_API_session_close( laird_session_handle session);
+LRD_API_ERR LRD_API_setip( laird_session_handle * session, FQDN address );
+LRD_API_ERR LRD_API_setkey( laird_session_handle * session, char * keydata, int size);
+LRD_API_ERR LRD_API_session_open ( laird_session_handle * session );
+LRD_API_ERR LRD_API_session_close( laird_session_handle * session);
 
 // Device Status
 
@@ -96,6 +98,8 @@ LRD_API_ERR LRD_API_PROFILE_Set_PSK(laird_profile_handle profile, char * userpwd
 LRD_API_ERR LRD_API_PROFILE_Get_PSK(laird_profile_handle profile, char * userpwd, char * len);
 
 // interesting stuff
+
+const char *LRD_API_ERR_to_string( LRD_API_ERR code);
 
 #ifdef __cplusplus
 }

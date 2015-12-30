@@ -21,8 +21,20 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define _LRD_INTERNAL_REMOTE_API_
 
 #include "lrd_remote_api.h"
+#include "debug.h"
 
-extern int debug_to_stdout;
+//extern int debug_to_stdout;
+
+typedef struct _internal_session_handle {
+	uint32_t version;
+	uint8_t data[TBD];
+} internal_session_handle;
+
+typedef struct _internal_profile_handle {
+	uint32_t version;
+	uint8_t data[TBD];
+} internal_profile_handle;
+
 // interesting stuff
 
 

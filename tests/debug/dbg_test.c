@@ -7,7 +7,6 @@ extern int debug_to_stdout;
 extern int debug_level;
 const char *LRD_API_ERR_to_string( LRD_API_ERR code);
 
-
 int main ()
 {
 	REPORT_ENTRY_DEBUG;

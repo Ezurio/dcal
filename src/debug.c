@@ -95,15 +95,17 @@ void DbgPrintfLvl(int dbglvl, char *format, ...)
 	va_end( args );
 }
 
+#endif //DEBUG
 const char *LRD_API_ERR_to_string( LRD_API_ERR code)
 {
 	switch(code)
 	{
 		case LRD_API_SUCCESS:           return "LRD_API_SUCCESS";
+		case LRD_API_INVALID_PARAMETER: return "LRD_API_INVALID_PARAMETER";
 		case LRD_API_INVALID_HANDLE:    return "LRD_API_INVALID_HANDLE";
 		case LRD_API_NO_NETWORK_ACCESS: return "LRD_API_NO_NETWORK_ACCESS";
+		case LRD_API_NOT_IMPLEMENTED:   return "LRD_API_NOT_IMPLEMENTED";
 		default:                        return "unknown LRD_API_ERR";
 	}
 }
 
-#endif //DEBUG
