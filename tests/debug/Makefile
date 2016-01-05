@@ -1,20 +1,39 @@
+TARGET = dbg_test
+CC := $(CROSS_COMPILE)gcc
+LD := $(CROSS_COMPILE)ld
+IDIR=../../api
+APPDIR=../../apps
+LIBDIR=../../api
+OBJDIR=obj
+
 LIBS = -lrmt_api
+LFLAGS = -L$(LIBDIR) $(LIBS)
+CFLAGS = -g -Wall -I$(IDIR)
 
-SOURCES=dbg_test.c
+.PHONY: default all clean
 
-OBJS=$(SOURCES:.c=.o)
+default: $(APPDIR)/$(TARGET)
+all: default
+test_apps: default
+test_clean: clean
 
-CFLAGS=-I../../api/
+OBJECTS = $(patsubst %.c, $(OBJDIR)/%.o, $(wildcard *.c))
+HEADERS = $(wildcard $(IDIR)/*.h)
 
-_EXE=dbg_test
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
 
-all: $(_EXE)
+$(APPDIR):
+	mkdir -p $(APPDIR)
 
-$(_EXE): $(OBJS)
-	$(CC) -o $@ $(OBJS) -L../../api $(LIBS)
+$(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o:%.c %.h
-	$(CC) $(CFLAGS) -g -c -o $@ $<
+.PRECIOUS: $(APPDIR)/$(TARGET) $(OBJECTS)
+
+$(APPDIR)/$(TARGET): $(OBJECTS) | $(APPDIR)
+	$(CC) $(OBJECTS) -Wall $(LFLAGS) -o $@
 
 clean:
-	rm -f $(_EXE) *.o
+	-rm -rf $(OBJDIR)
+	-rm -f $(APPDIR)/$(TARGET)

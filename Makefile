@@ -14,23 +14,18 @@ LIBS   +=
 CFLAGS += -Wall -Werror -fPIC -I$(SRCDIR)/include -I$(SRCDIR) -I$(APIDIR)
 COMPILEONLY = -c
 
-SOURCES = $(SRCDIR)/debug.c
-SOURCES += $(SRCDIR)/session.c
-
-# could use this to add all .c files if not wanting to list them above,
-# but will include debug.c by default
-# SOURCES := $(shell find $(SRCDIR) -type f -name *.c)
+OBJECTS = $(patsubst src/%.c, $(OBJDIR)/%.o, $(wildcard src/*.c))
 
 ifdef DEBUG
 	CFLAGS += -ggdb -DDEBUG
 endif
 
-LIB = librmt_api
+APILIB = librmt_api
+
+LIB= $(APIDIR)/$(APILIB).so.1.0
 
 .PHONY: all clean
 .DEFAULT: all
-
-OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(SOURCES:.c=.o))
 
 all: $(LIB)
 
@@ -42,22 +37,37 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 
 $(LIB): $(OBJECTS)
 	$(CC) -shared -Wl,-soname,$(LIB).so.1 \
-	-o $(APIDIR)/$(LIB).so.1.0 $(OBJECTS) -lc $(LIBS)
-	ln -fs $(LIB).so.1.0 $(LIB).so
-	mv $(LIB).so $(APIDIR)
+	-o $(LIB) $(OBJECTS) -lc $(LIBS)
+	ln -fs $(APILIB).so.1.0 $(APILIB).so
+	mv $(APILIB).so $(APIDIR)
 
 $(LIB).a:$(_OBJS)
 	$(AR) rcs $(LIB).a $(_OBJS)
 
-clean: clean_test
+clean: 
 	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(LIB).*
 	rm -r $(OBJDIR)
 
-test_apps:
-	mkdir -p $(APIDIR)/test
-	@echo build the test apps which will be under src/test.  Should put \
-	objects under api/test
+####
+#### test apps creation/clean
+####
+TESTSUBDIRS := $(wildcard tests/*/.)  # e.g. "foo/. bar/."
+TESTTARGETS := test_apps test_clean  # whatever else, but must not contain '/'
 
-clean_test:
-	rm -rf $(APIDIR)/test
+# foo/.all bar/.all foo/.clean bar/.clean
+SUBDIRS_TARGETS := \
+	$(foreach t,$(TESTTARGETS),$(addsuffix $t,$(TESTSUBDIRS)))
 
+.PHONY : $(TESTTARGETS) $(SUBDIRS_TARGETS)
+
+# static pattern rule, expands into:
+# all clean : % : foo/.% bar/.%
+$(TESTTARGETS) : % : $(addsuffix %,$(TESTSUBDIRS))
+	@echo 'Done with "$*" make target'
+
+# here, for foo/.all:
+#   $(@D) is foo
+#   $(@F) is .all, with leading period
+#   $(@F:.%=%) is just all
+$(SUBDIRS_TARGETS) :
+	$(MAKE) -C $(@D) $(@F:.%=%)

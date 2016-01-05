@@ -50,7 +50,7 @@ int main ()
 //		goto cleanup;
 	}
 
-cleanup:
+//cleanup:
 	free(session);
 
 	return (ret!=LRD_API_SUCCESS);
