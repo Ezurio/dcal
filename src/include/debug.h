@@ -50,19 +50,19 @@ do { \
 
 #define REPORT_ENTRY_DEBUG \
 	DBGDEBUG("%s: entry\n", __func__);\
-	LRD_API_ERR macro_var
+	LRD_ERR macro_var
 
 #define REPORT_RETURN_DBG(ret) \
-	(((macro_var = (ret))==LRD_API_SUCCESS) ? \
-		({DBGDEBUG("%s() returned LRD_API_SUCCESS\n", __func__);}) : \
-		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, LRD_API_ERR_to_string(macro_var));}), macro_var)
+	(((macro_var = (ret))==LRD_SUCCESS) ? \
+		({DBGDEBUG("%s() returned LRD_SUCCESS\n", __func__);}) : \
+		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, LRD_ERR_to_string(macro_var));}), macro_var)
 
 // acceptable should be a bitmask of acceptable errorcodes
-// ie BIT(LRD_API_INVALID_HANDLE) | BIT(LRD_API_NO_NETWORK_ACCESS)
+// ie BIT(LRD_INVALID_HANDLE) | BIT(LRD_NO_NETWORK_ACCESS)
 #define REPORT_RETURN_DBG_ACCEPT_ERR_CODES(ret, acceptable)\
-	((BIT(macro_var=(ret)) & acceptable) || (macro_var==LRD_API_SUCCESS)? \
-		({DBGDEBUG("%s() returned %s\n", __func__, LRD_API_ERR_to_string(macro_var));}) : \
-		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, LRD_API_ERR_to_string(macro_var));}), macro_var)
+	((BIT(macro_var=(ret)) & acceptable) || (macro_var==LRD_SUCCESS)? \
+		({DBGDEBUG("%s() returned %s\n", __func__, LRD_ERR_to_string(macro_var));}) : \
+		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, LRD_ERR_to_string(macro_var));}), macro_var)
 
 #define DUMPLOCATION printf("%s : line %d\n", __FUNCTION__, __LINE__)
 

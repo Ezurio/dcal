@@ -36,16 +36,16 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) $(COMPILEONLY) $^ -o $@
 
 $(LIB): $(OBJECTS)
-	$(CC) -shared -Wl,-soname,$(LIB).so.1 \
-	-o $(LIB) $(OBJECTS) -lc $(LIBS)
+	$(CC) -shared -Wl,-soname,$(APILIB).so.1 \
+	-o $(APILIB).so.1.0 $(OBJECTS) -lc $(LIBS)
 	ln -fs $(APILIB).so.1.0 $(APILIB).so
-	mv $(APILIB).so $(APIDIR)
+	mv $(APILIB).so* $(APIDIR)
 
 $(LIB).a:$(_OBJS)
 	$(AR) rcs $(LIB).a $(_OBJS)
 
-clean: 
-	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(LIB).*
+clean:
+	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(APILIB).*
 	rm -r $(OBJDIR)
 
 ####

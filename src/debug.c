@@ -16,8 +16,8 @@ int debug_level=0;
 // enabled and will be output to stdout.  If the value it is set is 'time'
 // time stamps will be included
 
-#define LAIRD_ENV "LRD_API_DEBUG"
-#define LAIRD_ENV_LVL "LRD_API_DEBUG_LEVEL"
+#define LAIRD_ENV "LRD_DEBUG"
+#define LAIRD_ENV_LVL "LRD_DEBUG_LEVEL"
 
 static struct timeval basetime = {0,0};
 
@@ -96,16 +96,16 @@ void DbgPrintfLvl(int dbglvl, char *format, ...)
 }
 
 #endif //DEBUG
-const char *LRD_API_ERR_to_string( LRD_API_ERR code)
+const char *LRD_ERR_to_string( LRD_ERR code)
 {
 	switch(code)
 	{
-		case LRD_API_SUCCESS:           return "LRD_API_SUCCESS";
-		case LRD_API_INVALID_PARAMETER: return "LRD_API_INVALID_PARAMETER";
-		case LRD_API_INVALID_HANDLE:    return "LRD_API_INVALID_HANDLE";
-		case LRD_API_NO_NETWORK_ACCESS: return "LRD_API_NO_NETWORK_ACCESS";
-		case LRD_API_NOT_IMPLEMENTED:   return "LRD_API_NOT_IMPLEMENTED";
-		default:                        return "unknown LRD_API_ERR";
+		case LRD_SUCCESS:           return "LRD_SUCCESS";
+		case LRD_INVALID_PARAMETER: return "LRD_INVALID_PARAMETER";
+		case LRD_INVALID_HANDLE:    return "LRD_INVALID_HANDLE";
+		case LRD_NO_NETWORK_ACCESS: return "LRD_NO_NETWORK_ACCESS";
+		case LRD_NOT_IMPLEMENTED:   return "LRD_NOT_IMPLEMENTED";
+		default:                        return "unknown LRD_ERR";
 	}
 }
 
