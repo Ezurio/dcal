@@ -21,13 +21,16 @@ ifdef DEBUG
 endif
 
 APILIB = librmt_api
-
 LIB= $(APIDIR)/$(APILIB).so.1.0
-
-.PHONY: all clean
-.DEFAULT: all
-
 all: $(LIB)
+
+static: CFLAGS += -DSTATIC_MEM
+static: remake
+
+remake: clean all
+
+.PHONY: all clean static
+.DEFAULT: all
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
@@ -46,23 +49,25 @@ $(LIB).a:$(_OBJS)
 
 clean:
 	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(APILIB).*
-	rm -r $(OBJDIR)
+	rm -rf $(OBJDIR)
 
 ####
 #### test apps creation/clean
 ####
-TESTSUBDIRS := $(wildcard tests/*/.)  # e.g. "foo/. bar/."
+SUBDIRS := $(wildcard unit-tests/*/.)  # e.g. "foo/. bar/."
+SUBDIRS += $(wildcard examples/*/.)  # e.g. "foo/. bar/."
 TESTTARGETS := test_apps test_clean  # whatever else, but must not contain '/'
 
 # foo/.all bar/.all foo/.clean bar/.clean
 SUBDIRS_TARGETS := \
-	$(foreach t,$(TESTTARGETS),$(addsuffix $t,$(TESTSUBDIRS)))
+	$(foreach t,$(TESTTARGETS),$(addsuffix $t,$(SUBDIRS)))
 
 .PHONY : $(TESTTARGETS) $(SUBDIRS_TARGETS)
 
 # static pattern rule, expands into:
 # all clean : % : foo/.% bar/.%
-$(TESTTARGETS) : % : $(addsuffix %,$(TESTSUBDIRS))
+$(TESTTARGETS) : % : $(addsuffix %,$(SUBDIRS))
+	@echo
 	@echo 'Done with "$*" make target'
 
 # here, for foo/.all:
@@ -71,3 +76,4 @@ $(TESTTARGETS) : % : $(addsuffix %,$(TESTSUBDIRS))
 #   $(@F:.%=%) is just all
 $(SUBDIRS_TARGETS) :
 	$(MAKE) -C $(@D) $(@F:.%=%)
+	@echo

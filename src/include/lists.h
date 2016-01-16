@@ -13,25 +13,21 @@ OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
-//  This header file is for use of the API code only.  This should not be
-//  used for coding applications which use the remote API.  Use
-//  lrd_remote_api.h instead.
+#ifndef __lists_h__
+#define __lists_h__
 
-#ifndef _LRD_INTERNAL_REMOTE_API_
-#define _LRD_INTERNAL_REMOTE_API_
+#ifndef STATIC_MEM
 
-#include "lrd_remote_api.h"
-#include "debug.h"
+typedef struct _pointer_list{
+	struct _pointer_list *next;
+	pvoid handle;
+} pointer_list;
 
-//extern int debug_to_stdout;
+LRD_ERR add_to_list( pointer_list **list, pvoid handle);
+LRD_ERR remove_from_list( pointer_list **list, pvoid handle);
+LRD_ERR validate_handle( pointer_list *list, pvoid handle, uint8_t session_profile); //session_profile -> 0==session; 1==profile
+#define SESSION 0
+#define PROFILE 1
 
-typedef struct _internal_profile_handle {
-	uint32_t version;
-	uint8_t valid;
-	uint8_t data[TBD];
-} internal_profile_struct;
-typedef internal_profile_struct * internal_profile_handle;
-
-typedef void * pvoid;
-
-#endif //_LRD_INTERNAL_REMOTE_API
+#endif // STATIC_MEM
+#endif // _lists_h_
