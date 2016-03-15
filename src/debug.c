@@ -16,8 +16,8 @@ int debug_level=0;
 // enabled and will be output to stdout.  If the value it is set is 'time'
 // time stamps will be included
 
-#define LAIRD_ENV "LRD_DEBUG"
-#define LAIRD_ENV_LVL "LRD_DEBUG_LEVEL"
+#define LAIRD_ENV "DCAL_DEBUG"
+#define LAIRD_ENV_LVL "DCAL_DEBUG_LEVEL"
 
 static struct timeval basetime = {0,0};
 
@@ -67,10 +67,10 @@ void __attribute__ ((constructor)) debuginit(void)
 	if (strstr(env, "time"))
 		debug_to_stdout=2;
 
-	debug_level = WF_DBG_ERROR; // default to minimum
+	debug_level = DCAL_DBG_ERROR; // default to minimum
 	if (envl) {
 		lvl=(int)strtol(envl, NULL, 10);
-		if ((lvl >= WF_DBG_NONE) && (lvl <= WF_DBG_EXCESSIVE))
+		if ((lvl >= DCAL_DBG_NONE) && (lvl <= DCAL_DBG_EXCESSIVE))
 			debug_level = lvl;
 	}
 }
@@ -96,16 +96,22 @@ void DbgPrintfLvl(int dbglvl, char *format, ...)
 }
 
 #endif //DEBUG
-const char *LRD_ERR_to_string( LRD_ERR code)
+#define BUFSIZE 1024
+char debugbuf[BUFSIZE] = {0};
+const char *dcal_err_to_string( DCAL_ERR code)
 {
 	switch(code)
 	{
-		case LRD_SUCCESS:           return "LRD_SUCCESS";
-		case LRD_INVALID_PARAMETER: return "LRD_INVALID_PARAMETER";
-		case LRD_INVALID_HANDLE:    return "LRD_INVALID_HANDLE";
-		case LRD_NO_NETWORK_ACCESS: return "LRD_NO_NETWORK_ACCESS";
-		case LRD_NOT_IMPLEMENTED:   return "LRD_NOT_IMPLEMENTED";
-		default:                        return "unknown LRD_ERR";
+		case DCAL_SUCCESS:           return "DCAL_SUCCESS";
+		case DCAL_INVALID_PARAMETER: return "DCAL_INVALID_PARAMETER";
+		case DCAL_INVALID_HANDLE:    return "DCAL_INVALID_HANDLE";
+		case DCAL_HANDLE_IN_USE:     return "DCAL_HANDLE_IN_USE";
+		case DCAL_HANDLE_NOT_ACTIVE: return "DCAL_HANDLE_NOT_ACTIVE";
+		case DCAL_NO_NETWORK_ACCESS: return "DCAL_NO_NETWORK_ACCESS";
+		case DCAL_NO_MEMORY:         return "DCAL_NO_MEMORY";
+		case DCAL_NOT_IMPLEMENTED:   return "DCAL_NOT_IMPLEMENTED";
+		default:                     snprintf(debugbuf, BUFSIZE, "unknown DCAL_ERR:%d",code);
+		return debugbuf;
 	}
 }
 

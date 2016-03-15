@@ -38,7 +38,7 @@ $(OBJDIR):
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) $(COMPILEONLY) $^ -o $@
 
-$(LIB): $(OBJECTS)
+$(LIB): $(OBJECTS) api/dcal_api.h
 	$(CC) -shared -Wl,-soname,$(APILIB).so.1 \
 	-o $(APILIB).so.1.0 $(OBJECTS) -lc $(LIBS)
 	ln -fs $(APILIB).so.1.0 $(APILIB).so.1

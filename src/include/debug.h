@@ -5,13 +5,13 @@
 #include <stdio.h>
 
 typedef enum _WF_LOGLEVEL {
-	WF_DBG_NONE = 0,
-	WF_DBG_ERROR,
-	WF_DBG_WARNING,
-	WF_DBG_INFO,
-	WF_DBG_DEBUG,
-	WF_DBG_MSGDUMP,
-	WF_DBG_EXCESSIVE
+	DCAL_DBG_NONE = 0,
+	DCAL_DBG_ERROR,
+	DCAL_DBG_WARNING,
+	DCAL_DBG_INFO,
+	DCAL_DBG_DEBUG,
+	DCAL_DBG_MSGDUMP,
+	DCAL_DBG_EXCESSIVE
 } WF_LOGLEVEL;
 
 #ifdef DEBUG
@@ -20,27 +20,27 @@ void DbgPrintfLvl(int level, char *format, ...);
 //helpers
 #define DBGERROR( format, ...)\
 do { \
-	DbgPrintfLvl(WF_DBG_ERROR, format, ##__VA_ARGS__); \
+	DbgPrintfLvl(DCAL_DBG_ERROR, format, ##__VA_ARGS__); \
 	} while (0)
 
 #define DBGWARN( format, ...)\
 do { \
-	DbgPrintfLvl(WF_DBG_WARNING, format, ##__VA_ARGS__); \
+	DbgPrintfLvl(DCAL_DBG_WARNING, format, ##__VA_ARGS__); \
 	} while (0)
 
 #define DBGINFO( format, ...)\
 do { \
-	DbgPrintfLvl(WF_DBG_INFO, format, ##__VA_ARGS__); \
+	DbgPrintfLvl(DCAL_DBG_INFO, format, ##__VA_ARGS__); \
 	} while (0)
 
 #define DBGDEBUG( format, ...)\
 do { \
-	DbgPrintfLvl(WF_DBG_DEBUG, format, ##__VA_ARGS__); \
+	DbgPrintfLvl(DCAL_DBG_DEBUG, format, ##__VA_ARGS__); \
 	} while (0)
 
 #define DBGALL( format, ...)\
 do { \
-	DbgPrintfLvl(WF_DBG_EXCESSIVE, format, ##__VA_ARGS__); \
+	DbgPrintfLvl(DCAL_DBG_EXCESSIVE, format, ##__VA_ARGS__); \
 	} while (0)
 
 #define DbgPrintfLvl_line(lvl, fmt,...) \
@@ -51,19 +51,19 @@ do { \
 
 #define REPORT_ENTRY_DEBUG \
 	DBGDEBUG("%s: entry\n", __func__);\
-	LRD_ERR macro_var
+	DCAL_ERR macro_var
 
 #define REPORT_RETURN_DBG(ret) \
-	(((macro_var = (ret))==LRD_SUCCESS) ? \
-		({DBGDEBUG("%s() returned LRD_SUCCESS\n", __func__);}) : \
-		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, LRD_ERR_to_string(macro_var));}), macro_var)
+	(((macro_var = (ret))==DCAL_SUCCESS) ? \
+		({DBGDEBUG("%s() returned DCAL_SUCCESS\n", __func__);}) : \
+		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, dcal_err_to_string(macro_var));}), macro_var)
 
 // acceptable should be a bitmask of acceptable errorcodes
-// ie BIT(LRD_INVALID_HANDLE) | BIT(LRD_NO_NETWORK_ACCESS)
+// ie BIT(DCAL_INVALID_HANDLE) | BIT(DCAL_NO_NETWORK_ACCESS)
 #define REPORT_RETURN_DBG_ACCEPT_ERR_CODES(ret, acceptable)\
-	((BIT(macro_var=(ret)) & acceptable) || (macro_var==LRD_SUCCESS)? \
-		({DBGDEBUG("%s() returned %s\n", __func__, LRD_ERR_to_string(macro_var));}) : \
-		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, LRD_ERR_to_string(macro_var));}), macro_var)
+	((BIT(macro_var=(ret)) & acceptable) || (macro_var==DCAL_SUCCESS)? \
+		({DBGDEBUG("%s() returned %s\n", __func__, dcal_err_to_string(macro_var));}) : \
+		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, dcal_err_to_string(macro_var));}), macro_var)
 
 #define DUMPLOCATION {printf("%s : line %d\n", __FUNCTION__, __LINE__);}
 

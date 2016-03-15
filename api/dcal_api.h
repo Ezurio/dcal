@@ -29,75 +29,48 @@ extern "C" {
 
 #define DCAL_VERSION 0x01010101
 
-typedef enum _LRD_ERR{
-	LRD_SUCCESS = 0,
-	LRD_INVALID_PARAMETER,
-	LRD_INVALID_HANDLE,
-	LRD_HANDLE_IN_USE,
-	LRD_HANDLE_NOT_ACTIVE,
-	LRD_NO_NETWORK_ACCESS,
-	LRD_NO_MEMORY,
-	LRD_NOT_IMPLEMENTED,
-} LRD_ERR;
+typedef enum _DCAL_ERR{
+	DCAL_SUCCESS = 0,
+	DCAL_INVALID_PARAMETER,
+	DCAL_INVALID_HANDLE,
+	DCAL_HANDLE_IN_USE,
+	DCAL_HANDLE_NOT_ACTIVE,
+	DCAL_NO_NETWORK_ACCESS,
+	DCAL_NO_MEMORY,
+	DCAL_NOT_IMPLEMENTED,
+} DCAL_ERR;
 
-#define TBD 20*4 // arbitrary size.  Will be specific once the internal structure elements are fully defined.
+#define TBD 80*4 // arbitrary size.  Will be specific once the internal structure elements are fully defined.
 typedef char * FQDN;
 
 typedef void * laird_session_handle;
-typedef void * laird_profile_handle;
 
 typedef struct _laird_status_struct {
 	uint32_t interesting_items[TBD];
-} LRD_STATUS_STRUCT;
+} DCAL_STATUS_STRUCT;
 
 // API session management
 
-LRD_ERR LRD_session_create( laird_session_handle * session);
-LRD_ERR LRD_setip( laird_session_handle session, FQDN address );
-LRD_ERR LRD_setkey( laird_session_handle session, char * keydata, int size);
-LRD_ERR LRD_session_open ( laird_session_handle session );
-LRD_ERR LRD_session_close( laird_session_handle session);
+DCAL_ERR dcal_session_create( laird_session_handle * session);
+DCAL_ERR dcal_set_ip( laird_session_handle session, FQDN address );
+DCAL_ERR dcal_set_port( laird_session_handle session, FQDN address );
+DCAL_ERR dcal_set_key( laird_session_handle session, char * keydata, int size);
+DCAL_ERR dcal_session_open ( laird_session_handle session );
+DCAL_ERR dcal_session_close( laird_session_handle session);
 
 // Device Status
 
-LRD_ERR LRD_DeviceStatus( laird_session_handle session, LRD_STATUS_STRUCT * status_struct);
+DCAL_ERR dcal_device_status( laird_session_handle session, DCAL_STATUS_STRUCT * status_struct);
 
 // WiFi Management
+//TODO
 
 // WiFi Profile Management
-LRD_ERR LRD_PROFILE_Create(laird_profile_handle * handle);
-LRD_ERR LRD_PROFILE_Pull(laird_session_handle session, laird_profile_handle handle, char *profileName);
-LRD_ERR LRD_PROFILE_Push(laird_session_handle session, laird_profile_handle handle);
-LRD_ERR LRD_PROFILE_Set_profileName(laird_profile_handle profile, char * name);
-LRD_ERR LRD_PROFILE_Get_profileName(laird_profile_handle profile, char * name);
-LRD_ERR LRD_PROFILE_Set_SSID(laird_profile_handle profile, LRD_WF_SSID *ssid);
-LRD_ERR LRD_PROFILE_Get_SSID(laird_profile_handle profile, LRD_WF_SSID *ssid);
-LRD_ERR LRD_PROFILE_Set_txPower(laird_profile_handle profile, int txPower);
-LRD_ERR LRD_PROFILE_Get_txPower(laird_profile_handle profile, int txPower);
-LRD_ERR LRD_PROFILE_Set_authType(laird_profile_handle profile, AUTH auth);
-LRD_ERR LRD_PROFILE_Get_authType(laird_profile_handle profile, AUTH auth);
-LRD_ERR LRD_PROFILE_Set_eapType(laird_profile_handle profile, EAPTYPE eap);
-LRD_ERR LRD_PROFILE_Get_eapType(laird_profile_handle profile, EAPTYPE eap);
-LRD_ERR LRD_PROFILE_Set_powerSave(laird_profile_handle profile, POWERSAVE powersave);
-LRD_ERR LRD_PROFILE_Get_powerSave(laird_profile_handle profile, POWERSAVE powersave);
-LRD_ERR LRD_PROFILE_Set_pspDelay(laird_profile_handle profile, int pspdelay);
-LRD_ERR LRD_PROFILE_Get_pspDelay(laird_profile_handle profile, int pspdelay);
-LRD_ERR LRD_PROFILE_Set_wepType(laird_profile_handle profile, WEPTYPE wepType);
-LRD_ERR LRD_PROFILE_Get_wepType(laird_profile_handle profile, WEPTYPE wepType);
-LRD_ERR LRD_PROFILE_Set_bitRate(laird_profile_handle profile, BITRATE bitrate);
-LRD_ERR LRD_PROFILE_Get_bitRate(laird_profile_handle profile, BITRATE bitrate);
-LRD_ERR LRD_PROFILE_Set_radioMode(laird_profile_handle profile, RADIOMODE radiomode);
-LRD_ERR LRD_PROFILE_Get_radioMode(laird_profile_handle profile, RADIOMODE radiomode);
-LRD_ERR LRD_PROFILE_Set_username(laird_profile_handle profile, char * username, char * len);
-LRD_ERR LRD_PROFILE_Get_username(laird_profile_handle profile, char * username, char * len);
-LRD_ERR LRD_PROFILE_Set_userPwd(laird_profile_handle profile, char * userpwd, char * len);
-LRD_ERR LRD_PROFILE_Get_userPwd(laird_profile_handle profile, char * userpwd, char * len);
-LRD_ERR LRD_PROFILE_Set_PSK(laird_profile_handle profile, char * userpwd, char * len);
-LRD_ERR LRD_PROFILE_Get_PSK(laird_profile_handle profile, char * userpwd, char * len);
+//TODO
 
 // interesting stuff
 
-const char *LRD_ERR_to_string( LRD_ERR code);
+const char *dcal_err_to_string( DCAL_ERR code);
 
 #ifdef __cplusplus
 }

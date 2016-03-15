@@ -23,9 +23,9 @@ typedef struct _pointer_list{
 	pvoid handle;
 } pointer_list;
 
-LRD_ERR add_to_list( pointer_list **list, pvoid handle);
-LRD_ERR remove_from_list( pointer_list **list, pvoid handle);
-LRD_ERR validate_handle( pointer_list *list, pvoid handle, uint8_t session_profile); //session_profile -> 0==session; 1==profile
+DCAL_ERR add_to_list( pointer_list **list, pvoid handle);
+DCAL_ERR remove_from_list( pointer_list **list, pvoid handle);
+DCAL_ERR validate_handle( pointer_list *list, pvoid handle, uint8_t session_profile); //session_profile -> 0==session; 1==profile
 #define SESSION 0
 #define PROFILE 1
 

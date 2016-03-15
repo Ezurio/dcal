@@ -11,18 +11,18 @@ int dynamic_mem=0;
 
 int dynamic_mem=1;
 
-LRD_ERR add_to_list( pointer_list **list, pvoid handle)
+DCAL_ERR add_to_list( pointer_list **list, pvoid handle)
 {
-	LRD_ERR ret= LRD_SUCCESS;
+	DCAL_ERR ret= DCAL_SUCCESS;
 	pointer_list *item = NULL;
 	pointer_list *curr = *list;
 
 	if ((list==NULL) || (handle==NULL))
-		ret = LRD_INVALID_PARAMETER;
+		ret = DCAL_INVALID_PARAMETER;
 	else {
 		item = (pointer_list *)malloc(sizeof(pointer_list));
 		if (item==NULL)
-			ret = LRD_NO_MEMORY;
+			ret = DCAL_NO_MEMORY;
 
 		else {
 
@@ -42,15 +42,15 @@ LRD_ERR add_to_list( pointer_list **list, pvoid handle)
 	return ret;
 }
 
-LRD_ERR remove_from_list( pointer_list **list, pvoid handle)
+DCAL_ERR remove_from_list( pointer_list **list, pvoid handle)
 {
-	LRD_ERR ret= LRD_SUCCESS;
+	DCAL_ERR ret= DCAL_SUCCESS;
 	pointer_list *prev = NULL;
 	pointer_list *curr = *list;
 	pointer_list *item = NULL;
 
 	if ((list==NULL) || (handle==NULL))
-		ret = LRD_INVALID_PARAMETER;
+		ret = DCAL_INVALID_PARAMETER;
 	else {
 		if(curr->handle == handle) {
 			item=curr;
@@ -72,8 +72,8 @@ LRD_ERR remove_from_list( pointer_list **list, pvoid handle)
 	if(item)
 		free(item);
 	else
-		if (ret==LRD_SUCCESS)
-			ret = LRD_INVALID_HANDLE;
+		if (ret==DCAL_SUCCESS)
+			ret = DCAL_INVALID_HANDLE;
 
 	return ret;
 }
@@ -86,18 +86,18 @@ static uint8_t valid_session_profile(pvoid handle, uint8_t session_profile)
 	return ((internal_profile_struct *)handle)->valid;
 }
 
-LRD_ERR validate_handle( pointer_list *list, pvoid handle, uint8_t session_profile)
+DCAL_ERR validate_handle( pointer_list *list, pvoid handle, uint8_t session_profile)
 {
-	LRD_ERR ret= LRD_INVALID_HANDLE;
+	DCAL_ERR ret= DCAL_INVALID_HANDLE;
 	pointer_list *curr = list;
 
 	if ((list==NULL) || (handle==NULL))
-		ret = LRD_INVALID_PARAMETER;
+		ret = DCAL_INVALID_PARAMETER;
 	else {
 		while(curr!=NULL){
 			if (curr->handle==handle) {
 				if (valid_session_profile(handle, session_profile)==SESSION_ACTIVE)
-					ret = LRD_SUCCESS;
+					ret = DCAL_SUCCESS;
 				break;
 			}
 			curr=curr->next;
