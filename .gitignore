@@ -5,3 +5,7 @@ obj/
 apps/
 cscope.out
 tags
+lib/
+api/include/libssh
+api/lib
+*.a
