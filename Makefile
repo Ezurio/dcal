@@ -20,7 +20,7 @@ ifdef DEBUG
 	CFLAGS += -ggdb -DDEBUG
 endif
 
-APILIB = librmt_api
+APILIB = libdcal
 LIB= $(APIDIR)/$(APILIB).so.1.0
 all: $(LIB)
 

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <dlfcn.h>
-#include "lrd_remote_api.h"
+#include "dcal_api.h"
 #define DEBUG 1
 #include "debug.h"
 

@@ -13,14 +13,14 @@ OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
-//  This header file is for use of the API code only.  This should not be
-//  used for coding applications which use the remote API.  Use
-//  lrd_remote_api.h instead.
+//  This header file is for use of the API code only.  
+//  This should not be used for coding applications which use the DCAL API.
+//  Use dcal_api.h instead.
 
-#ifndef _LRD_INTERNAL_REMOTE_API_
-#define _LRD_INTERNAL_REMOTE_API_
+#ifndef _DCAL_INTERNAL_API_
+#define _DCAL_INTERNAL_API_
 
-#include "lrd_remote_api.h"
+#include "dcal_api.h"
 #include "debug.h"
 
 //extern int debug_to_stdout;
@@ -34,4 +34,4 @@ typedef internal_profile_struct * internal_profile_handle;
 
 typedef void * pvoid;
 
-#endif //_LRD_INTERNAL_REMOTE_API
+#endif //_DCAL_INTERNAL_API

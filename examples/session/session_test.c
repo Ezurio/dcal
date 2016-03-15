@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lrd_remote_api.h"
+#include "dcal_api.h"
 
 #define cert_size 1024
 
+#define DUMPLOCATION {printf("%s: %d\n", __func__, __LINE__);}
 int main ()
 {
 	LRD_ERR ret;

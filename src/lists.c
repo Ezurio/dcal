@@ -4,9 +4,10 @@ int dynamic_mem=0;
 #else
 
 #include <stdlib.h>
-#include "lrd_internal_api.h"
+#include "dcal_internal_api.h"
 #include "session.h"
 #include "lists.h"
+#include "debug.h"
 
 int dynamic_mem=1;
 
@@ -28,7 +29,7 @@ LRD_ERR add_to_list( pointer_list **list, pvoid handle)
 			item->next = NULL;
 			item->handle = handle;
 
-			if (list==NULL) // empty list;
+			if (*list==NULL) // empty list;
 				*list = item;
 			else {
 				while (curr->next!=NULL) //find end

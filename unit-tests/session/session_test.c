@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "lrd_remote_api.h"
+#include "dcal_api.h"
 #define DEBUG 1
 #include "debug.h"
 #include "session.h"
-#include "lrd_internal_api.h"
+#include "dcal_internal_api.h"
 
 extern int debug_to_stdout;
 extern int debug_level;

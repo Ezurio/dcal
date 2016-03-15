@@ -14,10 +14,10 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
 // This header file is for use in end users applications which utilize
-// the Laird remote API to setup and get status from Laird workplace bridges
+// the Laird DCAL API to setup and get status from Laird workplace bridges
 
-#ifndef _LRD_REMOTE_API_
-#define _LRD_REMOTE_API_
+#ifndef _DCAL_API_
+#define _DCAL_API_
 
 #include <stdint.h>
 
@@ -27,7 +27,7 @@ extern "C" {
 
 #include "sdc_sdk_legacy.h"
 
-#define LRD_REMOTE_VERSION 0x01010101
+#define DCAL_VERSION 0x01010101
 
 typedef enum _LRD_ERR{
 	LRD_SUCCESS = 0,
@@ -102,4 +102,4 @@ const char *LRD_ERR_to_string( LRD_ERR code);
 #ifdef __cplusplus
 }
 #endif
-#endif //_LRD_REMOTE_API
+#endif //_DCAL_API_

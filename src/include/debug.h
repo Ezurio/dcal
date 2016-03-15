@@ -1,7 +1,8 @@
 #ifndef __debug_h__
 #define __debug_h__
 
-#include "lrd_remote_api.h"
+#include "dcal_api.h"
+#include <stdio.h>
 
 typedef enum _WF_LOGLEVEL {
 	WF_DBG_NONE = 0,
@@ -64,7 +65,7 @@ do { \
 		({DBGDEBUG("%s() returned %s\n", __func__, LRD_ERR_to_string(macro_var));}) : \
 		({DBGERROR("%s():%d returned %s\n", __func__, __LINE__, LRD_ERR_to_string(macro_var));}), macro_var)
 
-#define DUMPLOCATION printf("%s : line %d\n", __FUNCTION__, __LINE__)
+#define DUMPLOCATION {printf("%s : line %d\n", __FUNCTION__, __LINE__);}
 
 #else //DEBUG
 

@@ -1,6 +1,7 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "lrd_internal_api.h"
+#include "dcal_internal_api.h"
 #include "session.h"
 
 #ifdef STATIC_MEM

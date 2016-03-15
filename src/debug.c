@@ -6,7 +6,7 @@
 #include <sys/time.h>
 #include "debug.h"
 
-#include "lrd_internal_api.h"
+#include "dcal_internal_api.h"
 
 int debug_to_stdout=0;
 int debug_level=0;
