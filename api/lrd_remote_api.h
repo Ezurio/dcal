@@ -19,11 +19,13 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifndef _LRD_REMOTE_API_
 #define _LRD_REMOTE_API_
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "sdc_sdk.h"
+#include "sdc_sdk_legacy.h"
 
 #define LRD_REMOTE_VERSION 0x01010101
 
