@@ -122,6 +122,10 @@ LRD_ERR LRD_session_close( laird_session_handle session)
 #else
 
 		ret = remove_from_list(&sessions, session);
+		if (ret==LRD_SUCCESS){
+			free(session);
+			session = NULL;
+		}
 
 #endif
 	}
