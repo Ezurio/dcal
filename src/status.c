@@ -29,13 +29,14 @@ DCAL_ERR dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_stru
 	if(handshake_buffer==NULL)
 		return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
 
-// send request
+// send reques
 	ret = dcal_send_buffer( s, handshake_buffer, size);
 
 	if(ret!=DCAL_SUCCESS)
 		return REPORT_RETURN_DBG(ret);
 
 // get response
+	size = BUF_SZ;
 	ret = dcal_read_buffer( s, buffer, &size);
 
 	if (ret != DCAL_SUCCESS)
@@ -61,7 +62,7 @@ DCAL_ERR dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_stru
 	memcpy(s_struct->ipv4, ns(Status_ip(status)), IP4_SZ);
 	memcpy(s_struct->ap_mac, ns(Status_AP_mac(status)), MAC_SZ);
 	memcpy(s_struct->ap_ip, ns(Status_AP_ip(status)), IP4_SZ);
-	s_struct->bitRate = ns(Status_bitRate(status));
+	s_struct->bitRate = ns(Status_bitRate(status))/2;
 	s_struct->txPower = ns(Status_txPower(status));
 	s_struct->beaconPeriod = ns(Status_beaconPeriod(status));
 	s_struct->dtim = ns(Status_dtim(status));

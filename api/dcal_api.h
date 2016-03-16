@@ -60,11 +60,11 @@ typedef struct _laird_status_struct {
 	unsigned int channel;
 	int rssi;
 	char clientName[NAME_SZ];
-	char mac[MAC_SZ];
-	char ipv4[IP4_SZ];
-	char ipv6[IP6_SZ];
-	char ap_mac[MAC_SZ];
-	char ap_ip[MAC_SZ];
+	unsigned char mac[MAC_SZ];
+	unsigned char ipv4[IP4_SZ];
+	unsigned char ipv6[IP6_SZ];
+	unsigned char ap_mac[MAC_SZ];
+	unsigned char ap_ip[MAC_SZ];
 	char ap_name[NAME_SZ];
 	unsigned int bitRate;
 	unsigned int txPower;

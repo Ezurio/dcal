@@ -9,17 +9,13 @@ int main ()
 {
 	DCAL_ERR ret;
 
-	laird_session_handle session=NULL;
-
-	printf("Address of session is: %p\n", &session);
+	laird_session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
 		goto cleanup;
 	}
-
-	printf("value of session is: %p\n", session);
 
 	ret = dcal_set_host( session, "192.168.2.115" );
 	if (ret!= DCAL_SUCCESS) {
