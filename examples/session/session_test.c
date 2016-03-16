@@ -9,32 +9,42 @@ int main ()
 {
 	DCAL_ERR ret;
 
-	char cert[cert_size];
-
 	laird_session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-//		goto cleanup;
+		goto cleanup;
 	}
 
-	ret = dcal_set_ip( session, "192.168.2.131" );
+	ret = dcal_set_host( session, "192.168.2.115" );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-//		goto cleanup;
+		goto cleanup;
 	}
 
-	ret = dcal_set_key( session, cert, cert_size);
+	ret = dcal_set_port( session, 2222 );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-//		goto cleanup;
+		goto cleanup;
+	}
+	
+	ret = dcal_set_user( session, "libssh" );
+	if (ret!= DCAL_SUCCESS) {
+		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
+		goto cleanup;
+	}
+
+	ret = dcal_set_pw( session, "libssh" );
+	if (ret!= DCAL_SUCCESS) {
+		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
+		goto cleanup;
 	}
 
 	ret =  dcal_session_open (  session );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-//		goto cleanup;
+		goto cleanup;
 	}
 
 // device interaction
@@ -42,10 +52,10 @@ int main ()
 	ret = dcal_session_close( session );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-//		goto cleanup;
+		goto cleanup;
 	}
 
-//cleanup:
+cleanup:
 
 	return (ret!=DCAL_SUCCESS);
 

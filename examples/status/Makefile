@@ -1,4 +1,4 @@
-TARGET = session_test
+TARGET = status_test
 CC := $(CROSS_COMPILE)gcc
 LD := $(CROSS_COMPILE)ld
 IDIR=../../api
