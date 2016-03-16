@@ -38,10 +38,12 @@ static DCAL_ERR get_session_handle( laird_session_handle * session )
 		}
 	#else
 		handle = (internal_session_handle) malloc(sizeof(internal_session_struct));
+		printf("session handle malloc'd: %p\n", handle);
 		if (handle==NULL)
 			ret = DCAL_NO_MEMORY;
 		else {
 			memset(handle, 0, sizeof(internal_session_struct));
+			strncpy(handle->host, "192.168.2.115", HOST_SZ);
 			ret = add_to_list(&sessions, handle);
 		}
 	#endif
@@ -49,6 +51,8 @@ static DCAL_ERR get_session_handle( laird_session_handle * session )
 	if (ret==DCAL_SUCCESS)
 		*session = handle;
 
+	printf("session handle assigned: %p\n", *session);
+	printf("address is %s\n", ((internal_session_handle)*session)->host);
 	return REPORT_RETURN_DBG(ret);
 }
 
@@ -137,10 +141,13 @@ static int verify_knownhost(ssh_session session)
 
 DCAL_ERR dcal_session_create( laird_session_handle * s)
 {
-	internal_session_handle session = (internal_session_handle)s;
+	internal_session_handle *session = (internal_session_handle*)s;
 	DCAL_ERR ret = DCAL_NOT_IMPLEMENTED;
 
 	REPORT_ENTRY_DEBUG;
+
+	printf("sizeof(laird_session_handle):%zu\n",sizeof(laird_session_handle));
+	printf("sizeof(internal_session_handle):%zu\n",sizeof(internal_session_handle));
 
 	if (session==NULL)
 		ret = DCAL_INVALID_PARAMETER;
@@ -149,8 +156,8 @@ DCAL_ERR dcal_session_create( laird_session_handle * s)
 		ret = get_session_handle( s );
 
 	if (ret==DCAL_SUCCESS){
-		session->state = SESSION_ALLOCATED;
-		session->port = DEF_PORT;
+		(*session)->state = SESSION_ALLOCATED;
+		(*session)->port = DEF_PORT;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -164,8 +171,14 @@ DCAL_ERR dcal_set_host( laird_session_handle s, FQDN address )
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (address==NULL) || !strlen(address))
 		ret = DCAL_INVALID_PARAMETER;
-	else
+	else{
+		DUMPLOCATION;
+		printf("address is %s\n", address);
+		printf("session is %p\n", s);
+		printf("session is %p\n", session);
 		strncpy(session->host, address, HOST_SZ);
+		DUMPLOCATION;
+	}
 
 	return REPORT_RETURN_DBG(ret);
 }

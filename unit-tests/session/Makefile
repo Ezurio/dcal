@@ -7,7 +7,7 @@ APPDIR=../../apps/unit-tests
 LIBDIR=../../api
 OBJDIR=obj
 
-LIBS = -ldcal
+LIBS = -ldcal -lssh -lflatccrt
 LFLAGS = -L$(LIBDIR) $(LIBS)
 CFLAGS = -g -Wall -I$(APIDIR) -I$(INCDIR)
 
