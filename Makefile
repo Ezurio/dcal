@@ -17,9 +17,7 @@ COMPILEONLY = -c
 
 OBJECTS = $(patsubst src/%.c, $(OBJDIR)/%.o, $(wildcard src/*.c))
 
-ifdef DEBUG
 	CFLAGS += -ggdb -DDEBUG
-endif
 
 APILIB = libdcal
 LIB= $(APIDIR)/$(APILIB).so.1.0
