@@ -110,6 +110,7 @@ const char *dcal_err_to_string( DCAL_ERR code)
 		case DCAL_NO_NETWORK_ACCESS: return "DCAL_NO_NETWORK_ACCESS";
 		case DCAL_NO_MEMORY:         return "DCAL_NO_MEMORY";
 		case DCAL_NOT_IMPLEMENTED:   return "DCAL_NOT_IMPLEMENTED";
+		case DCAL_SSH_ERROR:         return "DCAL_SSH_ERROR";
 		default:                     snprintf(debugbuf, BUFSIZE, "unknown DCAL_ERR:%d",code);
 		return debugbuf;
 	}

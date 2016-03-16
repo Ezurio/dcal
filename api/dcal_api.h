@@ -38,6 +38,7 @@ typedef enum _DCAL_ERR{
 	DCAL_NO_NETWORK_ACCESS,
 	DCAL_NO_MEMORY,
 	DCAL_NOT_IMPLEMENTED,
+	DCAL_SSH_ERROR,
 } DCAL_ERR;
 
 #define TBD 80*4 // arbitrary size.  Will be specific once the internal structure elements are fully defined.
@@ -52,9 +53,11 @@ typedef struct _laird_status_struct {
 // API session management
 
 DCAL_ERR dcal_session_create( laird_session_handle * session);
-DCAL_ERR dcal_set_ip( laird_session_handle session, FQDN address );
-DCAL_ERR dcal_set_port( laird_session_handle session, FQDN address );
-DCAL_ERR dcal_set_key( laird_session_handle session, char * keydata, int size);
+DCAL_ERR dcal_set_host( laird_session_handle session, FQDN address );
+DCAL_ERR dcal_set_port( laird_session_handle session, unsigned int port );
+DCAL_ERR dcal_set_user( laird_session_handle session, char * user );
+DCAL_ERR dcal_set_pw( laird_session_handle session, char * pw );
+//TODO DCAL_ERR dcal_set_key( laird_session_handle session, char * keydata, int size);
 DCAL_ERR dcal_session_open ( laird_session_handle session );
 DCAL_ERR dcal_session_close( laird_session_handle session);
 
