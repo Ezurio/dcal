@@ -3,6 +3,7 @@
 
 #include <libssh/libssh.h>
 #include <libssh/server.h>
+#include "dcal_api.h"
 
 #define HOST_SZ 256
 #define USER_SZ 64
@@ -31,5 +32,10 @@ typedef internal_session_struct * internal_session_handle;
 #define SSHD_USER "libssh"
 #define SSHD_PASSWORD "libssh"
 #define LAIRD_HELLO "HELLO DCAS"
+
+// internal use only
+DCAL_ERR dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes);
+// internal use only
+DCAL_ERR dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes);
 
 #endif //__session_h__

@@ -12,6 +12,7 @@ APIDIR := api
 LIBS   +=
 
 CFLAGS += -Wall -Werror -fPIC -I$(SRCDIR)/include -I$(SRCDIR) -I$(APIDIR)
+CFLAGS += -Ilib/flatcc/include/
 COMPILEONLY = -c
 
 OBJECTS = $(patsubst src/%.c, $(OBJDIR)/%.o, $(wildcard src/*.c))

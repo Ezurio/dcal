@@ -39,6 +39,7 @@ typedef enum _DCAL_ERR{
 	DCAL_NO_MEMORY,
 	DCAL_NOT_IMPLEMENTED,
 	DCAL_SSH_ERROR,
+	DCAL_FLATBUFF_ERROR,
 } DCAL_ERR;
 
 #define TBD 80*4 // arbitrary size.  Will be specific once the internal structure elements are fully defined.
@@ -46,8 +47,29 @@ typedef char * FQDN;
 
 typedef void * laird_session_handle;
 
+#define MAC_SZ 6
+#define IP4_SZ 4
+#define IP6_SZ 8
+#define NAME_SZ 48
+#define SSID_SZ 32
+
 typedef struct _laird_status_struct {
-	uint32_t interesting_items[TBD];
+	unsigned int cardState;
+	char ProfileName[NAME_SZ];
+	char ssid[SSID_SZ+1];
+	unsigned int channel;
+	int rssi;
+	char clientName[NAME_SZ];
+	char mac[MAC_SZ];
+	char ipv4[IP4_SZ];
+	char ipv6[IP6_SZ];
+	char ap_mac[MAC_SZ];
+	char ap_ip[MAC_SZ];
+	char ap_name[NAME_SZ];
+	unsigned int bitRate;
+	unsigned int txPower;
+	unsigned int dtim;
+	unsigned int beaconPeriod;
 } DCAL_STATUS_STRUCT;
 
 // API session management
