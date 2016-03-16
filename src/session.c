@@ -247,7 +247,7 @@ DCAL_ERR dcal_session_open ( laird_session_handle s )
 	if (session==NULL)
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		session->verbosity = SSH_LOG_PROTOCOL;
+		session->verbosity = SSH_LOG_NOLOG;
 		session->ssh=ssh_new();
 		if (session->ssh==NULL){
 			DBGERROR("ssh_new() failed\n");
