@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "dcal_api.h"
 
 #define cert_size 1024
@@ -68,7 +69,8 @@ int main ()
 // device interaction
 
 	DCAL_STATUS_STRUCT status;
-
+int i=2;
+do {
 	ret = dcal_device_status( session, &status );
 	if (ret != DCAL_SUCCESS)
 		printf("unable to read status\n");
@@ -98,6 +100,8 @@ int main ()
 		printf("\tDTIM: %d\n", status.dtim);
 
 	}
+	sleep(1);
+	} while (i--);
 
 	ret = dcal_session_close( session );
 	if (ret!= DCAL_SUCCESS) {
