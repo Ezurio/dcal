@@ -29,7 +29,9 @@ DCAL_ERR dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_stru
 	if(handshake_buffer==NULL)
 		return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
 
-// send reques
+	flstcc_builder_clear(&builder);
+
+// send request
 	ret = dcal_send_buffer( s, handshake_buffer, size);
 
 	if(ret!=DCAL_SUCCESS)
