@@ -101,7 +101,7 @@ static int verify_knownhost(ssh_session session)
 		/* fallback to SSH_SERVER_NOT_KNOWN behavior */
 	case SSH_SERVER_NOT_KNOWN:
 		hexa = ssh_get_hexa(hash, hlen);
-		DBGERROR("The server is unknown. Do you trust the host key ?\n"
+		printf("The server is unknown. Do you trust the host key ?\n"
 			"Public key hash: %s\n", hexa);
 		ssh_string_free_char(hexa);
 		if (fgets(buf, sizeof(buf), stdin) == NULL) {
@@ -112,7 +112,7 @@ static int verify_knownhost(ssh_session session)
 			ssh_clean_pubkey_hash(&hash);
 			return REPORT_RETURN_DBG(-1);
 		}
-		DBGERROR("This new key will be written on disk for further usage. do you agree ?\n");
+		printf("This new key will be written on disk for further usage. do you agree ?\n");
 		if (fgets(buf, sizeof(buf), stdin) == NULL) {
 			ssh_clean_pubkey_hash(&hash);
 			return REPORT_RETURN_DBG(-1);

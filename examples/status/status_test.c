@@ -35,7 +35,7 @@ int main ()
 		goto cleanup;
 	}
 
-	ret = dcal_set_host( session, "192.168.2.115" );
+	ret = dcal_set_host( session, "127.0.0.1" );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
 		goto cleanup;
