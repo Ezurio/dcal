@@ -3,6 +3,8 @@
 
 #include <libssh/libssh.h>
 #include <libssh/server.h>
+#include <stdbool.h>
+#include "flatcc/dcal_builder.h"
 #include "dcal_api.h"
 
 #define HOST_SZ 256
@@ -18,6 +20,8 @@ typedef struct _internal_session_handle {
 	unsigned int port;
 	ssh_channel channel;
 	int verbosity;
+	flatcc_builder_t builder;
+	bool builder_init;
 } internal_session_struct;
 typedef internal_session_struct * internal_session_handle;
 
