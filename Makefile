@@ -12,7 +12,7 @@ APIDIR := api
 LIBS   +=
 
 CFLAGS += -Wall -Werror -fPIC -I$(SRCDIR)/include -I$(SRCDIR) -I$(APIDIR)
-CFLAGS += -Ilib/flatcc/include/
+CFLAGS += -Ilib.local/flatcc/include/
 COMPILEONLY = -c
 
 OBJECTS = $(patsubst src/%.c, $(OBJDIR)/%.o, $(wildcard src/*.c))
@@ -50,6 +50,22 @@ $(LIB).a:$(_OBJS)
 clean:
 	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(APILIB).*
 	rm -rf $(OBJDIR)
+
+#
+# Library builds
+#
+lib:
+	mkdir -p lib.local
+
+lib.local/flatcc/lib/libflatcc.a : lib.local/flatcc
+	cd lib.local/flatcc && git checkout v0.3.3
+	cd lib.local/flatcc && ./scripts/build.sh
+
+lib.local/flatcc : lib
+	cd lib.local && git clone git@github.com:dvidelabs/flatcc.git
+
+.PHONY: flatcc
+flatcc: lib.local/flatcc/lib/libflatcc.a
 
 ####
 #### test apps creation/clean

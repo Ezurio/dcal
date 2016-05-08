@@ -37,6 +37,7 @@ int main ()
 	}
 
 	ret = dcal_set_host( session, "127.0.0.1" );
+	ret = dcal_set_host( session, "192.168.2.114" );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
 		goto cleanup;
@@ -88,7 +89,7 @@ do {
 
 		printf("\tIP: %d.%d.%d.%d\n",status.ipv4[0],status.ipv4[1],
 		                           status.ipv4[2],status.ipv4[3]);
-		printf("\tIPv6: (not yet)\n");
+		printf("\tIPv6: %s\n", status.ipv6);
 		printf("\tAP MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
 		              status.ap_mac[0],status.ap_mac[1],status.ap_mac[2],
 		              status.ap_mac[3],status.ap_mac[4],status.ap_mac[5]);

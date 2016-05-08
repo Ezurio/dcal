@@ -13,7 +13,7 @@ OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
 CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
-//  This header file is for use of the API code only.  
+//  This header file is for use of the API code only.
 //  This should not be used for coding applications which use the DCAL API.
 //  Use dcal_api.h instead.
 
@@ -23,7 +23,8 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "dcal_api.h"
 #include "debug.h"
 
-//extern int debug_to_stdout;
+#define BUF_SZ 2048
+#define TBD 1024  //size to be determined
 
 typedef struct _internal_profile_handle {
 	uint32_t version;

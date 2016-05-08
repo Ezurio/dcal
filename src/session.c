@@ -3,6 +3,7 @@
 #include <string.h>
 #include "dcal_internal_api.h"
 #include "session.h"
+#include "handshake.h"
 #include <errno.h>
 
 #include <libssh/libssh.h>
@@ -311,7 +312,19 @@ DCAL_ERR dcal_session_open ( laird_session_handle s )
 			goto bad_exit;
 		}
 
-		DBGINFO("connection established to host: %s\n", session->host);
+		DBGINFO("ssh connection established to host: %s\n", session->host);
+
+		//this will initialize the builder element of the session struct
+		rc = handshake_init( session );
+
+		if (rc) {
+			flatcc_builder_clear(&session->builder);
+			DBGERROR("Error in handshake_init\n");
+			goto bad_exit;
+		}
+
+		//indicate our builder is init so we can clean up later
+		session->builder_init = true;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -333,6 +346,12 @@ DCAL_ERR dcal_session_close( laird_session_handle s)
 	if (session==NULL)
 		ret = DCAL_INVALID_PARAMETER;
 	else {
+
+		if (session->builder_init){
+			flatcc_builder_clear(&session->builder);
+			session->builder_init = false;
+		}
+
 #ifdef STATIC_MEM
 
 		((internal_session_handle)session)->valid = 0;
