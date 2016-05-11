@@ -23,6 +23,8 @@ APILIB = libdcal
 LIB= $(APIDIR)/$(APILIB).so.1.0
 all: $(LIB)
 
+OPT_LIB = libsessopt.a
+
 static: CFLAGS += -DSTATIC_MEM
 static: remake
 
@@ -50,6 +52,9 @@ $(LIB).a:$(_OBJS)
 clean:
 	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(APILIB).*
 	rm -rf $(OBJDIR)
+
+$(APIDIR)/$(OPT_LIB): examples/common.c
+	echo "build session option library"
 
 #
 # Library builds
