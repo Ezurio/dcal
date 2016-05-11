@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "dcal_api.h"
+#include "sess_opts.h"
 
 #define cert_size 1024
 
@@ -24,7 +25,7 @@ const char * cardState_to_string(unsigned int cs)
 	}
 }
 
-int main ()
+int main (int argc, char *argv[])
 {
 	DCAL_ERR ret;
 
@@ -36,42 +37,18 @@ int main ()
 		goto cleanup;
 	}
 
-	ret = dcal_set_host( session, "127.0.0.1" );
-	ret = dcal_set_host( session, "192.168.2.114" );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-		goto cleanup;
-	}
+	application_name = "status_test";
 
-	ret = dcal_set_port( session, 2222 );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-		goto cleanup;
-	}
-	
-	ret = dcal_set_user( session, "libssh" );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-		goto cleanup;
-	}
-
-	ret = dcal_set_pw( session, "libssh" );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-		goto cleanup;
-	}
-
-	ret =  dcal_session_open ( session );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
+	if((ret = session_connect_with_opts(session, argc, argv))){
+		printf("unable to make connection\n");
+		dcal_session_close(session);
+		session = NULL;
 		goto cleanup;
 	}
 
 // device interaction
 
 	DCAL_STATUS_STRUCT status;
-int i=2;
-do {
 	ret = dcal_device_status( session, &status );
 	if (ret != DCAL_SUCCESS)
 		printf("unable to read status\n");
@@ -99,10 +76,7 @@ do {
 		printf("\tTx Power: %d\n", status.txPower);
 		printf("\tBeacon Period: %d\n", status.beaconPeriod);
 		printf("\tDTIM: %d\n", status.dtim);
-
 	}
-	sleep(1);
-	} while (i--);
 
 	ret = dcal_session_close( session );
 	if (ret!= DCAL_SUCCESS) {

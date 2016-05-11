@@ -6,7 +6,7 @@ APPDIR=../../apps/examples
 LIBDIR=../../api
 OBJDIR=obj
 
-LIBS = -ldcal -lssh -lflatccrt
+LIBS = -ldcal -lssh -lflatccrt -lsessopt
 LFLAGS = -L$(LIBDIR) $(LIBS)
 CFLAGS = -g -Wall -I$(IDIR)
 
