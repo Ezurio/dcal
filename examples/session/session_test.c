@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "dcal_api.h"
+#include "sess_opts.h"
 
 #define cert_size 1024
 
 #define DUMPLOCATION {printf("%s: %d\n", __func__, __LINE__);}
-int main ()
+int main (int argc, char * argv[])
 {
 	DCAL_ERR ret;
 
@@ -17,37 +18,17 @@ int main ()
 		goto cleanup;
 	}
 
-	ret = dcal_set_host( session, "192.168.2.115" );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-		goto cleanup;
-	}
+	application_name = "session_test";
 
-	ret = dcal_set_port( session, 2222 );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-		goto cleanup;
-	}
-	
-	ret = dcal_set_user( session, "libssh" );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-		goto cleanup;
-	}
-
-	ret = dcal_set_pw( session, "libssh" );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
-		goto cleanup;
-	}
-
-	ret =  dcal_session_open (  session );
-	if (ret!= DCAL_SUCCESS) {
-		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
+	if((ret = session_connect_with_opts(session, argc, argv))){
+		printf("unable to make connection\n");
+		dcal_session_close(session);
+		session = NULL;
 		goto cleanup;
 	}
 
 // device interaction
+	printf("session established\n");
 
 	ret = dcal_session_close( session );
 	if (ret!= DCAL_SUCCESS) {
