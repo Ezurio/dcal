@@ -303,15 +303,6 @@ DCAL_ERR dcal_session_open ( laird_session_handle s )
 			goto bad_exit;
 		}
 
-		rc = ssh_channel_request_shell(session->channel);
-		if (rc!=SSH_OK) {
-			ssh_channel_close(session->channel);
-			ssh_channel_free(session->channel);
-			session->channel=NULL;
-			DBGERROR("Error acquiring shell\n");
-			goto bad_exit;
-		}
-
 		DBGINFO("ssh connection established to host: %s\n", session->host);
 
 		//this will initialize the builder element of the session struct
