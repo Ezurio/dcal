@@ -7,4 +7,7 @@
 #define ns(x) FLATBUFFERS_WRAP_NAMESPACE(DCAL_session, x)
 #include "session.h"
 
+flatbuffers_thash_t verify_buffer(const void * buf, const size_t size);
+char * buftype_to_string(flatbuffers_thash_t buftype);
+
 #endif // __buffer_h__
