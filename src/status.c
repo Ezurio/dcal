@@ -1,28 +1,19 @@
 #include "buffer.h"
 #include "debug.h"
+#include "buffer.h"
 #include "dcal_api.h"
 
 #define BUF_SZ 2048
 
-int build_query_status( flatcc_builder_t *B, char *buf, size_t *size)
+int build_query_status( flatcc_builder_t *B)
 {
 
 	flatcc_builder_reset(B);
+	flatbuffers_buffer_start(B, ns(Command_type_identifier));
 
 	ns(Command_start(B));
 	ns(Command_command_add(B, ns(Commands_GETSTATUS)));
-	ns(Command_ref_t) command = ns(Command_end(B));
-
-	ns(Any_union_ref_t) any;
-	any.Command = command;
-	any.type = ns(Any_Command);
-
-	ns(Payload_start_as_root(B));
-	ns(Payload_message_add(B, any));
-	ns(Payload_end_as_root(B));
-
-	flatcc_builder_copy_buffer(B, buf, *size);
-	*size =flatcc_builder_get_buffer_size(B);
+	ns(Command_end_as_root(B));
 
 	return 0;
 }
@@ -33,10 +24,9 @@ DCAL_ERR dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_stru
 	char buffer[BUF_SZ];
 	size_t i, size = 0;
 	flatcc_builder_t *B;
-	ns(Payload_table_t) payload;
-	ns(Any_union_type_t) any;
 	ns(Status_table_t) status = NULL;
 	internal_session_handle session=NULL;
+	flatbuffers_thash_t buftype;
 
 	REPORT_ENTRY_DEBUG;
 
@@ -52,7 +42,11 @@ DCAL_ERR dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_stru
 
 	size = BUF_SZ;
 	memset(buffer, 0, BUF_SZ);
-	build_query_status(B, buffer, &size);
+	build_query_status(B);
+
+	size = flatcc_builder_get_buffer_size(B);
+	assert(size <= BUF_SZ);
+	flatcc_builder_copy_buffer(B, buffer, size);
 
 	ret = dcal_send_buffer( session, buffer, size);
 
@@ -64,31 +58,19 @@ DCAL_ERR dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_stru
 		return REPORT_RETURN_DBG(ret);
 
 //is return buffer a status buffer?
+	buftype = verify_buffer(buffer, size);
 
-// verify is status buffer
-	if((ret=ns(Payload_verify_as_root(buffer, size)))){
-		DBGERROR("could not verify status buffer.  Size is %zu. Got %s\n", size, flatcc_verify_error_string(ret));
+	if(buftype != ns(Status_type_hash)){
+		DBGERROR("could not verify status buffer.  Validated as: %s\n", buftype_to_string(buftype));
 		return (DCAL_FLATBUFF_ERROR);
 	}
 
-	if (!(payload = ns(Payload_as_root(buffer)))) {
-		DBGERROR("Not a Payload\n");
-		return DCAL_FLATBUFF_ERROR;
-	}
-
-	any = ns(Payload_message_type(payload));
-
-	if (any == ns(Any_Status))
-		status = ns(Payload_message(payload));
-	else{
-		DBGERROR("Payload message was not a status\n");
-		return DCAL_FLATBUFF_ERROR;
-	}
+	status = ns(Status_as_root(buffer));
 
 	memset(s_struct, 0, sizeof(DCAL_STATUS_STRUCT));
 	s_struct->cardState = ns(Status_cardState(status));
 	strncpy(s_struct->ProfileName, ns(Status_ProfileName(status)),NAME_SZ);
-	s_struct->ssid_len = ns(Status_ssid_len(status));
+	s_struct->ssid_len =flatbuffers_uint8_vec_len(ns(Status_ssid(status)));
 	if (s_struct->ssid_len > SSID_SZ)
 		return DCAL_FLATBUFF_ERROR;
 	memcpy(s_struct->ssid, ns(Status_ssid(status)), s_struct->ssid_len);
