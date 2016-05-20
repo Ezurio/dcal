@@ -8,5 +8,6 @@
 #include "session.h"
 
 int handshake_init(internal_session_handle s);
+int is_handshake_ack_valid( ns(Handshake_table_t) handshake);
 
 #endif // __handshake_h__

@@ -68,7 +68,7 @@ int session_connect_with_opts( laird_session_handle session, int argc, char *arg
 		{"port", required_argument, NULL, 'p'},
 		{"user", required_argument, NULL, 'u'},
 		{"verbose", no_argument, NULL, 'v'},
-		{"password", no_argument, NULL, 'P'},
+		{"password", required_argument, NULL, 'P'},
 		{"debug", no_argument, NULL, 'd'},
 		{NULL, 0, NULL, 0}
 	};

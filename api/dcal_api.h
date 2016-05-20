@@ -107,6 +107,8 @@ DCAL_ERR dcal_device_status( laird_session_handle session, DCAL_STATUS_STRUCT * 
 
 // WiFi Management
 //TODO
+DCAL_ERR dcal_wifi_enable( laird_session_handle session);
+DCAL_ERR dcal_wifi_disable( laird_session_handle session);
 
 // WiFi Profile Management
 //TODO

@@ -78,8 +78,8 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_DELPROFILE ((DCAL_session_Commands_enum_t)5UL)
 #define DCAL_session_Commands_GETPROFILES ((DCAL_session_Commands_enum_t)6UL)
 #define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)7UL)
-#define DCAL_session_Commands_ENABLERADIO ((DCAL_session_Commands_enum_t)8UL)
-#define DCAL_session_Commands_DISABLERADIO ((DCAL_session_Commands_enum_t)9UL)
+#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)8UL)
+#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)9UL)
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -92,8 +92,8 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_DELPROFILE: return "DELPROFILE";
     case DCAL_session_Commands_GETPROFILES: return "GETPROFILES";
     case DCAL_session_Commands_ACTIVATEPROFILE: return "ACTIVATEPROFILE";
-    case DCAL_session_Commands_ENABLERADIO: return "ENABLERADIO";
-    case DCAL_session_Commands_DISABLERADIO: return "DISABLERADIO";
+    case DCAL_session_Commands_WIFIENABLE: return "WIFIENABLE";
+    case DCAL_session_Commands_WIFIDISABLE: return "WIFIDISABLE";
     default: return "";
     }
 }
