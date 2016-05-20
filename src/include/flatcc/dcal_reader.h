@@ -22,9 +22,15 @@
 typedef const struct DCAL_session_Handshake_table *DCAL_session_Handshake_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Handshake_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Handshake_mutable_vec_t;
+typedef const struct DCAL_session_Event_table *DCAL_session_Event_table_t;
+typedef const flatbuffers_uoffset_t *DCAL_session_Event_vec_t;
+typedef flatbuffers_uoffset_t *DCAL_session_Event_mutable_vec_t;
 typedef const struct DCAL_session_U32_table *DCAL_session_U32_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_U32_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_U32_mutable_vec_t;
+typedef const struct DCAL_session_String_table *DCAL_session_String_table_t;
+typedef const flatbuffers_uoffset_t *DCAL_session_String_vec_t;
+typedef flatbuffers_uoffset_t *DCAL_session_String_mutable_vec_t;
 typedef const struct DCAL_session_Status_table *DCAL_session_Status_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Status_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Status_mutable_vec_t;
@@ -69,10 +75,11 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_GETSTATUS ((DCAL_session_Commands_enum_t)2UL)
 #define DCAL_session_Commands_GETPROFILE ((DCAL_session_Commands_enum_t)3UL)
 #define DCAL_session_Commands_SETPROFILE ((DCAL_session_Commands_enum_t)4UL)
-#define DCAL_session_Commands_GETPROFILES ((DCAL_session_Commands_enum_t)5UL)
-#define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)6UL)
-#define DCAL_session_Commands_ENABLERADIO ((DCAL_session_Commands_enum_t)7UL)
-#define DCAL_session_Commands_DISABLERADIO ((DCAL_session_Commands_enum_t)8UL)
+#define DCAL_session_Commands_DELPROFILE ((DCAL_session_Commands_enum_t)5UL)
+#define DCAL_session_Commands_GETPROFILES ((DCAL_session_Commands_enum_t)6UL)
+#define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)7UL)
+#define DCAL_session_Commands_ENABLERADIO ((DCAL_session_Commands_enum_t)8UL)
+#define DCAL_session_Commands_DISABLERADIO ((DCAL_session_Commands_enum_t)9UL)
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -82,6 +89,7 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_GETSTATUS: return "GETSTATUS";
     case DCAL_session_Commands_GETPROFILE: return "GETPROFILE";
     case DCAL_session_Commands_SETPROFILE: return "SETPROFILE";
+    case DCAL_session_Commands_DELPROFILE: return "DELPROFILE";
     case DCAL_session_Commands_GETPROFILES: return "GETPROFILES";
     case DCAL_session_Commands_ACTIVATEPROFILE: return "ACTIVATEPROFILE";
     case DCAL_session_Commands_ENABLERADIO: return "ENABLERADIO";
@@ -125,6 +133,55 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 3, 0, t)
 static inline int DCAL_session_Handshake_api_level_is_present(DCAL_session_Handshake_table_t t)
 __flatbuffers_field_present(3, t)
 
+static inline uint32_t DCAL_session_Handshake_sdk_error(DCAL_session_Handshake_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 4, 0, t)
+static inline int DCAL_session_Handshake_sdk_error_is_present(DCAL_session_Handshake_table_t t)
+__flatbuffers_field_present(4, t)
+
+static inline uint32_t DCAL_session_Handshake_dcal_error(DCAL_session_Handshake_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 5, 0, t)
+static inline int DCAL_session_Handshake_dcal_error_is_present(DCAL_session_Handshake_table_t t)
+__flatbuffers_field_present(5, t)
+
+
+struct DCAL_session_Event_table { uint8_t unused__; };
+
+#ifndef DCAL_session_Event_identifier
+#define DCAL_session_Event_identifier flatbuffers_identifier
+#endif
+#define DCAL_session_Event_type_hash ((flatbuffers_thash_t)0x5b8cb5d)
+#define DCAL_session_Event_type_identifier "\x5d\xcb\xb8\x05"
+static inline size_t DCAL_session_Event_vec_len(DCAL_session_Event_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline DCAL_session_Event_table_t DCAL_session_Event_vec_at(DCAL_session_Event_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(DCAL_session_Event_table_t, vec, i, 0)
+__flatbuffers_table_as_root(DCAL_session_Event)
+
+static inline uint32_t DCAL_session_Event_e_type(DCAL_session_Event_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 0, 0, t)
+static inline int DCAL_session_Event_e_type_is_present(DCAL_session_Event_table_t t)
+__flatbuffers_field_present(0, t)
+
+static inline uint32_t DCAL_session_Event_status(DCAL_session_Event_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 1, 0, t)
+static inline int DCAL_session_Event_status_is_present(DCAL_session_Event_table_t t)
+__flatbuffers_field_present(1, t)
+
+static inline uint32_t DCAL_session_Event_reason(DCAL_session_Event_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 2, 0, t)
+static inline int DCAL_session_Event_reason_is_present(DCAL_session_Event_table_t t)
+__flatbuffers_field_present(2, t)
+
+static inline flatbuffers_string_t DCAL_session_Event_eth_addr(DCAL_session_Event_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 3, t, 0)
+static inline int DCAL_session_Event_eth_addr_is_present(DCAL_session_Event_table_t t)
+__flatbuffers_field_present(3, t)
+
+static inline uint16_t DCAL_session_Event_flags(DCAL_session_Event_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint16, 4, 0, t)
+static inline int DCAL_session_Event_flags_is_present(DCAL_session_Event_table_t t)
+__flatbuffers_field_present(4, t)
+
 
 struct DCAL_session_U32_table { uint8_t unused__; };
 
@@ -142,6 +199,25 @@ __flatbuffers_table_as_root(DCAL_session_U32)
 static inline uint32_t DCAL_session_U32_value(DCAL_session_U32_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 0, 0, t)
 static inline int DCAL_session_U32_value_is_present(DCAL_session_U32_table_t t)
+__flatbuffers_field_present(0, t)
+
+
+struct DCAL_session_String_table { uint8_t unused__; };
+
+#ifndef DCAL_session_String_identifier
+#define DCAL_session_String_identifier flatbuffers_identifier
+#endif
+#define DCAL_session_String_type_hash ((flatbuffers_thash_t)0x67907baa)
+#define DCAL_session_String_type_identifier "\xaa\x7b\x90\x67"
+static inline size_t DCAL_session_String_vec_len(DCAL_session_String_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline DCAL_session_String_table_t DCAL_session_String_vec_at(DCAL_session_String_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(DCAL_session_String_table_t, vec, i, 0)
+__flatbuffers_table_as_root(DCAL_session_String)
+
+static inline flatbuffers_string_t DCAL_session_String_value(DCAL_session_String_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 0, t, 0)
+static inline int DCAL_session_String_value_is_present(DCAL_session_String_table_t t)
 __flatbuffers_field_present(0, t)
 
 
@@ -238,6 +314,11 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 15, 0, t)
 static inline int DCAL_session_Status_beaconPeriod_is_present(DCAL_session_Status_table_t t)
 __flatbuffers_field_present(15, t)
 
+static inline uint32_t DCAL_session_Status_numipv6addrs(DCAL_session_Status_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 16, 0, t)
+static inline int DCAL_session_Status_numipv6addrs_is_present(DCAL_session_Status_table_t t)
+__flatbuffers_field_present(16, t)
+
 
 struct DCAL_session_Version_table { uint8_t unused__; };
 
@@ -252,19 +333,19 @@ static inline DCAL_session_Version_table_t DCAL_session_Version_vec_at(DCAL_sess
 __flatbuffers_offset_vec_at(DCAL_session_Version_table_t, vec, i, 0)
 __flatbuffers_table_as_root(DCAL_session_Version)
 
-static inline uint32_t DCAL_session_Version_cli(DCAL_session_Version_table_t t)
+static inline uint32_t DCAL_session_Version_sdk(DCAL_session_Version_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 0, 0, t)
-static inline int DCAL_session_Version_cli_is_present(DCAL_session_Version_table_t t)
+static inline int DCAL_session_Version_sdk_is_present(DCAL_session_Version_table_t t)
 __flatbuffers_field_present(0, t)
 
-static inline uint32_t DCAL_session_Version_sdk(DCAL_session_Version_table_t t)
+static inline uint32_t DCAL_session_Version_chipset(DCAL_session_Version_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 1, 0, t)
-static inline int DCAL_session_Version_sdk_is_present(DCAL_session_Version_table_t t)
+static inline int DCAL_session_Version_chipset_is_present(DCAL_session_Version_table_t t)
 __flatbuffers_field_present(1, t)
 
-static inline uint32_t DCAL_session_Version_chipset(DCAL_session_Version_table_t t)
+static inline uint32_t DCAL_session_Version_sys(DCAL_session_Version_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 2, 0, t)
-static inline int DCAL_session_Version_chipset_is_present(DCAL_session_Version_table_t t)
+static inline int DCAL_session_Version_sys_is_present(DCAL_session_Version_table_t t)
 __flatbuffers_field_present(2, t)
 
 static inline uint32_t DCAL_session_Version_driver(DCAL_session_Version_table_t t)
@@ -281,6 +362,16 @@ static inline flatbuffers_string_t DCAL_session_Version_supplicant(DCAL_session_
 __flatbuffers_vector_field(flatbuffers_string_t, 5, t, 0)
 static inline int DCAL_session_Version_supplicant_is_present(DCAL_session_Version_table_t t)
 __flatbuffers_field_present(5, t)
+
+static inline flatbuffers_string_t DCAL_session_Version_release(DCAL_session_Version_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 6, t, 0)
+static inline int DCAL_session_Version_release_is_present(DCAL_session_Version_table_t t)
+__flatbuffers_field_present(6, t)
+
+static inline uint32_t DCAL_session_Version_dcas(DCAL_session_Version_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 7, 0, t)
+static inline int DCAL_session_Version_dcas_is_present(DCAL_session_Version_table_t t)
+__flatbuffers_field_present(7, t)
 
 
 struct DCAL_session_Globals_table { uint8_t unused__; };
@@ -401,6 +492,11 @@ __flatbuffers_scalar_field(flatbuffers_bool, 20, 0, t)
 static inline int DCAL_session_Globals_wmm_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(20, t)
 
+static inline uint32_t DCAL_session_Globals_numprofiles(DCAL_session_Globals_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 21, 0, t)
+static inline int DCAL_session_Globals_numprofiles_is_present(DCAL_session_Globals_table_t t)
+__flatbuffers_field_present(21, t)
+
 
 struct DCAL_session_Profile_table { uint8_t unused__; };
 
@@ -516,6 +612,7 @@ __flatbuffers_define_integer_type(DCAL_session_Cmd_pl, DCAL_session_Cmd_pl_union
 #define DCAL_session_Cmd_pl_Profile ((DCAL_session_Cmd_pl_union_type_t)2U)
 #define DCAL_session_Cmd_pl_Profiles ((DCAL_session_Cmd_pl_union_type_t)3U)
 #define DCAL_session_Cmd_pl_U32 ((DCAL_session_Cmd_pl_union_type_t)4U)
+#define DCAL_session_Cmd_pl_String ((DCAL_session_Cmd_pl_union_type_t)5U)
 
 static inline const char *DCAL_session_Cmd_pl_type_name(DCAL_session_Cmd_pl_union_type_t type)
 {
@@ -525,6 +622,7 @@ static inline const char *DCAL_session_Cmd_pl_type_name(DCAL_session_Cmd_pl_unio
     case DCAL_session_Cmd_pl_Profile: return "Profile";
     case DCAL_session_Cmd_pl_Profiles: return "Profiles";
     case DCAL_session_Cmd_pl_U32: return "U32";
+    case DCAL_session_Cmd_pl_String: return "String";
     default: return "";
     }
 }

@@ -28,55 +28,71 @@ __flatbuffers_build_scalar(flatbuffers_, DCAL_session_Commands, DCAL_session_Com
 typedef struct DCAL_session_Cmd_pl_union_ref DCAL_session_Cmd_pl_union_ref_t;
 
 static const flatbuffers_voffset_t __DCAL_session_Handshake_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Handshake, 4)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Handshake, 6)
+static const flatbuffers_voffset_t __DCAL_session_Event_required[] = {0 };
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Event, 5)
 static const flatbuffers_voffset_t __DCAL_session_U32_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_U32, 1)
+static const flatbuffers_voffset_t __DCAL_session_String_required[] = {0 };
+__flatbuffers_build_table(flatbuffers_, DCAL_session_String, 1)
 static const flatbuffers_voffset_t __DCAL_session_Status_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Status, 16)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Status, 17)
 static const flatbuffers_voffset_t __DCAL_session_Version_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Version, 6)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Version, 8)
 static const flatbuffers_voffset_t __DCAL_session_Globals_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Globals, 21)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Globals, 22)
 static const flatbuffers_voffset_t __DCAL_session_Profile_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Profile, 15)
 static const flatbuffers_voffset_t __DCAL_session_Profiles_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Profiles, 1)
 static const flatbuffers_voffset_t __DCAL_session_Command_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Command, 3)
-#define __DCAL_session_Handshake_formal_args , flatbuffers_bool_t v0, DCAL_session_Magic_enum_t v1, flatbuffers_string_ref_t v2, uint32_t v3
-#define __DCAL_session_Handshake_call_args , v0, v1, v2, v3
+#define __DCAL_session_Handshake_formal_args ,\
+  flatbuffers_bool_t v0, DCAL_session_Magic_enum_t v1, flatbuffers_string_ref_t v2, uint32_t v3, uint32_t v4, uint32_t v5
+#define __DCAL_session_Handshake_call_args ,\
+  v0, v1, v2, v3, v4, v5
 static inline DCAL_session_Handshake_ref_t DCAL_session_Handshake_create(flatbuffers_builder_t *B __DCAL_session_Handshake_formal_args);
+#define __DCAL_session_Event_formal_args ,\
+  uint32_t v0, uint32_t v1, uint32_t v2, flatbuffers_string_ref_t v3, uint16_t v4
+#define __DCAL_session_Event_call_args ,\
+  v0, v1, v2, v3, v4
+static inline DCAL_session_Event_ref_t DCAL_session_Event_create(flatbuffers_builder_t *B __DCAL_session_Event_formal_args);
 #define __DCAL_session_U32_formal_args , uint32_t v0
 #define __DCAL_session_U32_call_args , v0
 static inline DCAL_session_U32_ref_t DCAL_session_U32_create(flatbuffers_builder_t *B __DCAL_session_U32_formal_args);
+#define __DCAL_session_String_formal_args , flatbuffers_string_ref_t v0
+#define __DCAL_session_String_call_args , v0
+static inline DCAL_session_String_ref_t DCAL_session_String_create(flatbuffers_builder_t *B __DCAL_session_String_formal_args);
 #define __DCAL_session_Status_formal_args ,\
   uint32_t v0, flatbuffers_string_ref_t v1, flatbuffers_uint8_vec_ref_t v2, uint32_t v3,\
   int32_t v4, flatbuffers_string_ref_t v5, flatbuffers_uint8_vec_ref_t v6, flatbuffers_uint8_vec_ref_t v7,\
   flatbuffers_string_vec_ref_t v8, flatbuffers_uint8_vec_ref_t v9, flatbuffers_uint8_vec_ref_t v10, flatbuffers_string_ref_t v11,\
-  uint32_t v12, uint32_t v13, uint32_t v14, uint32_t v15
+  uint32_t v12, uint32_t v13, uint32_t v14, uint32_t v15, uint32_t v16
 #define __DCAL_session_Status_call_args ,\
   v0, v1, v2, v3,\
   v4, v5, v6, v7,\
   v8, v9, v10, v11,\
-  v12, v13, v14, v15
+  v12, v13, v14, v15, v16
 static inline DCAL_session_Status_ref_t DCAL_session_Status_create(flatbuffers_builder_t *B __DCAL_session_Status_formal_args);
 #define __DCAL_session_Version_formal_args ,\
-  uint32_t v0, uint32_t v1, uint32_t v2, uint32_t v3, flatbuffers_string_ref_t v4, flatbuffers_string_ref_t v5
+  uint32_t v0, uint32_t v1, uint32_t v2, uint32_t v3,\
+  flatbuffers_string_ref_t v4, flatbuffers_string_ref_t v5, flatbuffers_string_ref_t v6, uint32_t v7
 #define __DCAL_session_Version_call_args ,\
-  v0, v1, v2, v3, v4, v5
+  v0, v1, v2, v3,\
+  v4, v5, v6, v7
 static inline DCAL_session_Version_ref_t DCAL_session_Version_create(flatbuffers_builder_t *B __DCAL_session_Version_formal_args);
 #define __DCAL_session_Globals_formal_args ,\
   uint32_t v0, uint32_t v1, uint32_t v2, uint32_t v3,\
   uint32_t v4, uint32_t v5, flatbuffers_bool_t v6, flatbuffers_string_ref_t v7,\
   flatbuffers_bool_t v8, uint32_t v9, uint32_t v10, uint32_t v11,\
   uint32_t v12, uint32_t v13, uint32_t v14, uint32_t v15,\
-  uint32_t v16, uint32_t v17, uint32_t v18, uint32_t v19, flatbuffers_bool_t v20
+  uint32_t v16, uint32_t v17, uint32_t v18, uint32_t v19, flatbuffers_bool_t v20, uint32_t v21
 #define __DCAL_session_Globals_call_args ,\
   v0, v1, v2, v3,\
   v4, v5, v6, v7,\
   v8, v9, v10, v11,\
   v12, v13, v14, v15,\
-  v16, v17, v18, v19, v20
+  v16, v17, v18, v19, v20, v21
 static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers_builder_t *B __DCAL_session_Globals_formal_args);
 #define __DCAL_session_Profile_formal_args ,\
   flatbuffers_string_ref_t v0, flatbuffers_uint8_vec_ref_t v1, flatbuffers_string_ref_t v2, uint32_t v3,\
@@ -105,6 +121,7 @@ struct DCAL_session_Cmd_pl_union_ref {
         DCAL_session_Profile_ref_t Profile;
         DCAL_session_Profiles_ref_t Profiles;
         DCAL_session_U32_ref_t U32;
+        DCAL_session_String_ref_t String;
     };
 };
 
@@ -118,11 +135,15 @@ static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_Profiles(DC
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_Profiles; uref.Profiles = ref; return uref; }
 static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_U32(DCAL_session_U32_ref_t ref)
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_U32; uref.U32 = ref; return uref; }
+static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_String(DCAL_session_String_ref_t ref)
+{ DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_String; uref.String = ref; return uref; }
 
 __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Handshake_server, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
 __flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Handshake_magic, DCAL_session_Magic, DCAL_session_Magic_enum_t, 4, 4, 0)
 __flatbuffers_build_string_field(2, flatbuffers_, DCAL_session_Handshake_ip)
 __flatbuffers_build_scalar_field(3, flatbuffers_, DCAL_session_Handshake_api_level, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(4, flatbuffers_, DCAL_session_Handshake_sdk_error, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(5, flatbuffers_, DCAL_session_Handshake_dcal_error, flatbuffers_uint32, uint32_t, 4, 4, 0)
 
 static inline DCAL_session_Handshake_ref_t DCAL_session_Handshake_create(flatbuffers_builder_t *B __DCAL_session_Handshake_formal_args)
 {
@@ -130,12 +151,34 @@ static inline DCAL_session_Handshake_ref_t DCAL_session_Handshake_create(flatbuf
         || DCAL_session_Handshake_magic_add(B, v1)
         || DCAL_session_Handshake_ip_add(B, v2)
         || DCAL_session_Handshake_api_level_add(B, v3)
+        || DCAL_session_Handshake_sdk_error_add(B, v4)
+        || DCAL_session_Handshake_dcal_error_add(B, v5)
         || DCAL_session_Handshake_server_add(B, v0)) {
         return 0;
     }
     return DCAL_session_Handshake_end(B);
 }
 __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Handshake, DCAL_session_Handshake_identifier, DCAL_session_Handshake_type_identifier)
+
+__flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Event_e_type, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Event_status, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(2, flatbuffers_, DCAL_session_Event_reason, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_string_field(3, flatbuffers_, DCAL_session_Event_eth_addr)
+__flatbuffers_build_scalar_field(4, flatbuffers_, DCAL_session_Event_flags, flatbuffers_uint16, uint16_t, 2, 2, 0)
+
+static inline DCAL_session_Event_ref_t DCAL_session_Event_create(flatbuffers_builder_t *B __DCAL_session_Event_formal_args)
+{
+    if (DCAL_session_Event_start(B)
+        || DCAL_session_Event_e_type_add(B, v0)
+        || DCAL_session_Event_status_add(B, v1)
+        || DCAL_session_Event_reason_add(B, v2)
+        || DCAL_session_Event_eth_addr_add(B, v3)
+        || DCAL_session_Event_flags_add(B, v4)) {
+        return 0;
+    }
+    return DCAL_session_Event_end(B);
+}
+__flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Event, DCAL_session_Event_identifier, DCAL_session_Event_type_identifier)
 
 __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_U32_value, flatbuffers_uint32, uint32_t, 4, 4, 0)
 
@@ -148,6 +191,18 @@ static inline DCAL_session_U32_ref_t DCAL_session_U32_create(flatbuffers_builder
     return DCAL_session_U32_end(B);
 }
 __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_U32, DCAL_session_U32_identifier, DCAL_session_U32_type_identifier)
+
+__flatbuffers_build_string_field(0, flatbuffers_, DCAL_session_String_value)
+
+static inline DCAL_session_String_ref_t DCAL_session_String_create(flatbuffers_builder_t *B __DCAL_session_String_formal_args)
+{
+    if (DCAL_session_String_start(B)
+        || DCAL_session_String_value_add(B, v0)) {
+        return 0;
+    }
+    return DCAL_session_String_end(B);
+}
+__flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_String, DCAL_session_String_identifier, DCAL_session_String_type_identifier)
 
 __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Status_cardState, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_string_field(1, flatbuffers_, DCAL_session_Status_ProfileName)
@@ -165,6 +220,7 @@ __flatbuffers_build_scalar_field(12, flatbuffers_, DCAL_session_Status_bitRate, 
 __flatbuffers_build_scalar_field(13, flatbuffers_, DCAL_session_Status_txPower, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(14, flatbuffers_, DCAL_session_Status_dtim, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(15, flatbuffers_, DCAL_session_Status_beaconPeriod, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(16, flatbuffers_, DCAL_session_Status_numipv6addrs, flatbuffers_uint32, uint32_t, 4, 4, 0)
 
 static inline DCAL_session_Status_ref_t DCAL_session_Status_create(flatbuffers_builder_t *B __DCAL_session_Status_formal_args)
 {
@@ -184,29 +240,34 @@ static inline DCAL_session_Status_ref_t DCAL_session_Status_create(flatbuffers_b
         || DCAL_session_Status_bitRate_add(B, v12)
         || DCAL_session_Status_txPower_add(B, v13)
         || DCAL_session_Status_dtim_add(B, v14)
-        || DCAL_session_Status_beaconPeriod_add(B, v15)) {
+        || DCAL_session_Status_beaconPeriod_add(B, v15)
+        || DCAL_session_Status_numipv6addrs_add(B, v16)) {
         return 0;
     }
     return DCAL_session_Status_end(B);
 }
 __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Status, DCAL_session_Status_identifier, DCAL_session_Status_type_identifier)
 
-__flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Version_cli, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Version_sdk, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(2, flatbuffers_, DCAL_session_Version_chipset, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Version_sdk, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Version_chipset, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(2, flatbuffers_, DCAL_session_Version_sys, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(3, flatbuffers_, DCAL_session_Version_driver, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_string_field(4, flatbuffers_, DCAL_session_Version_firmware)
 __flatbuffers_build_string_field(5, flatbuffers_, DCAL_session_Version_supplicant)
+__flatbuffers_build_string_field(6, flatbuffers_, DCAL_session_Version_release)
+__flatbuffers_build_scalar_field(7, flatbuffers_, DCAL_session_Version_dcas, flatbuffers_uint32, uint32_t, 4, 4, 0)
 
 static inline DCAL_session_Version_ref_t DCAL_session_Version_create(flatbuffers_builder_t *B __DCAL_session_Version_formal_args)
 {
     if (DCAL_session_Version_start(B)
-        || DCAL_session_Version_cli_add(B, v0)
-        || DCAL_session_Version_sdk_add(B, v1)
-        || DCAL_session_Version_chipset_add(B, v2)
+        || DCAL_session_Version_sdk_add(B, v0)
+        || DCAL_session_Version_chipset_add(B, v1)
+        || DCAL_session_Version_sys_add(B, v2)
         || DCAL_session_Version_driver_add(B, v3)
         || DCAL_session_Version_firmware_add(B, v4)
-        || DCAL_session_Version_supplicant_add(B, v5)) {
+        || DCAL_session_Version_supplicant_add(B, v5)
+        || DCAL_session_Version_release_add(B, v6)
+        || DCAL_session_Version_dcas_add(B, v7)) {
         return 0;
     }
     return DCAL_session_Version_end(B);
@@ -234,6 +295,7 @@ __flatbuffers_build_scalar_field(17, flatbuffers_, DCAL_session_Globals_scan_dfs
 __flatbuffers_build_scalar_field(18, flatbuffers_, DCAL_session_Globals_ttls, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(19, flatbuffers_, DCAL_session_Globals_uapsd, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(20, flatbuffers_, DCAL_session_Globals_wmm, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
+__flatbuffers_build_scalar_field(21, flatbuffers_, DCAL_session_Globals_numprofiles, flatbuffers_uint32, uint32_t, 4, 4, 0)
 
 static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers_builder_t *B __DCAL_session_Globals_formal_args)
 {
@@ -256,6 +318,7 @@ static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers
         || DCAL_session_Globals_scan_dfs_add(B, v17)
         || DCAL_session_Globals_ttls_add(B, v18)
         || DCAL_session_Globals_uapsd_add(B, v19)
+        || DCAL_session_Globals_numprofiles_add(B, v21)
         || DCAL_session_Globals_ccx_add(B, v6)
         || DCAL_session_Globals_date_check_add(B, v8)
         || DCAL_session_Globals_wmm_add(B, v20)) {
@@ -323,6 +386,7 @@ __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Profile, DCAL_session_Profile)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Profiles, DCAL_session_Profiles)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, U32, DCAL_session_U32)
+__flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, String, DCAL_session_String)
 
 static inline DCAL_session_Command_ref_t DCAL_session_Command_create(flatbuffers_builder_t *B __DCAL_session_Command_formal_args)
 {
