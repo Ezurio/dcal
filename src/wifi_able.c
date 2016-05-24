@@ -22,9 +22,9 @@ int build_issue_able( flatcc_builder_t *B, bool enable)
 	return 0;
 }
 
-DCAL_ERR do_wifiable( laird_session_handle s, bool enable)
+int do_wifiable( laird_session_handle s, bool enable)
 {
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
 	size_t i, size = 0;
 	flatcc_builder_t *B;
@@ -76,12 +76,12 @@ DCAL_ERR do_wifiable( laird_session_handle s, bool enable)
 	return REPORT_RETURN_DBG (ret);
 }
 
-DCAL_ERR dcal_wifi_enable( laird_session_handle session)
+int dcal_wifi_enable( laird_session_handle session)
 {
 	return do_wifiable(session, true);
 }
 
-DCAL_ERR dcal_wifi_disable( laird_session_handle session)
+int dcal_wifi_disable( laird_session_handle session)
 {
 	return do_wifiable(session, false);
 }

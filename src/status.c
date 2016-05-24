@@ -18,9 +18,9 @@ int build_query_status( flatcc_builder_t *B)
 	return 0;
 }
 
-DCAL_ERR dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_struct)
+int dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_struct)
 {
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
 	size_t i, size = 0;
 	flatcc_builder_t *B;
@@ -59,6 +59,9 @@ DCAL_ERR dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_stru
 
 //is return buffer a status buffer?
 	buftype = verify_buffer(buffer, size);
+
+	if(buftype == ns(Handshake_type_hash))
+		return handshake_error_code(ns(Handshake_as_root(buffer)));
 
 	if(buftype != ns(Status_type_hash)){
 		DBGERROR("could not verify status buffer.  Validated as: %s\n", buftype_to_string(buftype));

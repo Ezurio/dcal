@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <sys/time.h>
 #include "debug.h"
+#include "sdc_sdk_legacy.h"
 
 #include "dcal_internal_api.h"
 
@@ -98,11 +99,25 @@ void DbgPrintfLvl(int dbglvl, char *format, ...)
 #endif //DEBUG
 #define BUFSIZE 1024
 char debugbuf[BUFSIZE] = {0};
-const char *dcal_err_to_string( DCAL_ERR code)
+const char *dcal_err_to_string( int code)
 {
 	switch(code)
 	{
 		case DCAL_SUCCESS:           return "DCAL_SUCCESS";
+		case SDCERR_FAIL:                return "SDCERR_FAIL";
+		case SDCERR_INVALID_NAME:        return "SDCERR_INVALID_NAME";
+		case SDCERR_INVALID_CONFIG:      return "SDCERR_INVALID_CONFIG";
+		case SDCERR_INVALID_DELETE:      return "SDCERR_INVALID_DELETE";
+		case SDCERR_POWERCYCLE_REQUIRED: return "SDCERR_POWERCYCLE_REQUIRED";
+		case SDCERR_INVALID_PARAMETER:   return "SDCERR_INVALID_PARAMETER";
+		case SDCERR_INVALID_EAP_TYPE:    return "SDCERR_INVALID_EAP_TYPE";
+		case SDCERR_INVALID_WEP_TYPE:    return "SDCERR_INVALID_WEP_TYPE";
+		case SDCERR_INVALID_FILE:        return "SDCERR_INVALID_FILE";
+		case SDCERR_INSUFFICIENT_MEMORY: return "SDCERR_INSUFFICIENT_MEMORY";
+		case SDCERR_NOT_IMPLEMENTED:     return "SDCERR_NOT_IMPLEMENTED";
+		case SDCERR_NO_HARDWARE:         return "SDCERR_NO_HARDWARE";
+		case SDCERR_INVALID_VALUE:       return "SDCERR_INVALID_VALUE";
+
 		case DCAL_INVALID_PARAMETER: return "DCAL_INVALID_PARAMETER";
 		case DCAL_INVALID_HANDLE:    return "DCAL_INVALID_HANDLE";
 		case DCAL_HANDLE_IN_USE:     return "DCAL_HANDLE_IN_USE";

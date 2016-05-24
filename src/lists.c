@@ -78,32 +78,4 @@ DCAL_ERR remove_from_list( pointer_list **list, pvoid handle)
 	return ret;
 }
 
-static uint8_t valid_session_profile(pvoid handle, uint8_t session_profile)
-{
-	if (!session_profile)
-		return ((internal_session_struct *)handle)->state;
-
-	return ((internal_profile_struct *)handle)->valid;
-}
-
-DCAL_ERR validate_handle( pointer_list *list, pvoid handle, uint8_t session_profile)
-{
-	DCAL_ERR ret= DCAL_INVALID_HANDLE;
-	pointer_list *curr = list;
-
-	if ((list==NULL) || (handle==NULL))
-		ret = DCAL_INVALID_PARAMETER;
-	else {
-		while(curr!=NULL){
-			if (curr->handle==handle) {
-				if (valid_session_profile(handle, session_profile)==SESSION_ACTIVE)
-					ret = DCAL_SUCCESS;
-				break;
-			}
-			curr=curr->next;
-		}
-	}
-	return ret;
-}
-
 #endif

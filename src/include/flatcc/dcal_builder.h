@@ -28,7 +28,7 @@ __flatbuffers_build_scalar(flatbuffers_, DCAL_session_Commands, DCAL_session_Com
 typedef struct DCAL_session_Cmd_pl_union_ref DCAL_session_Cmd_pl_union_ref_t;
 
 static const flatbuffers_voffset_t __DCAL_session_Handshake_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Handshake, 6)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Handshake, 5)
 static const flatbuffers_voffset_t __DCAL_session_Event_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Event, 5)
 static const flatbuffers_voffset_t __DCAL_session_U32_required[] = {0 };
@@ -42,15 +42,15 @@ __flatbuffers_build_table(flatbuffers_, DCAL_session_Version, 8)
 static const flatbuffers_voffset_t __DCAL_session_Globals_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Globals, 22)
 static const flatbuffers_voffset_t __DCAL_session_Profile_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Profile, 15)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Profile, 17)
 static const flatbuffers_voffset_t __DCAL_session_Profiles_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Profiles, 1)
 static const flatbuffers_voffset_t __DCAL_session_Command_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Command, 3)
 #define __DCAL_session_Handshake_formal_args ,\
-  flatbuffers_bool_t v0, DCAL_session_Magic_enum_t v1, flatbuffers_string_ref_t v2, uint32_t v3, uint32_t v4, uint32_t v5
+  flatbuffers_bool_t v0, DCAL_session_Magic_enum_t v1, flatbuffers_string_ref_t v2, uint32_t v3, uint32_t v4
 #define __DCAL_session_Handshake_call_args ,\
-  v0, v1, v2, v3, v4, v5
+  v0, v1, v2, v3, v4
 static inline DCAL_session_Handshake_ref_t DCAL_session_Handshake_create(flatbuffers_builder_t *B __DCAL_session_Handshake_formal_args);
 #define __DCAL_session_Event_formal_args ,\
   uint32_t v0, uint32_t v1, uint32_t v2, flatbuffers_string_ref_t v3, uint16_t v4
@@ -98,12 +98,12 @@ static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers
   flatbuffers_string_ref_t v0, flatbuffers_uint8_vec_ref_t v1, flatbuffers_string_ref_t v2, uint32_t v3,\
   uint32_t v4, uint32_t v5, uint32_t v6, uint32_t v7,\
   uint32_t v8, uint32_t v9, uint32_t v10, flatbuffers_string_ref_t v11,\
-  flatbuffers_uint8_vec_ref_t v12, flatbuffers_uint8_vec_ref_t v13, flatbuffers_uint8_vec_ref_t v14
+  flatbuffers_string_ref_t v12, flatbuffers_string_ref_t v13, flatbuffers_string_ref_t v14, flatbuffers_string_ref_t v15, uint32_t v16
 #define __DCAL_session_Profile_call_args ,\
   v0, v1, v2, v3,\
   v4, v5, v6, v7,\
   v8, v9, v10, v11,\
-  v12, v13, v14
+  v12, v13, v14, v15, v16
 static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers_builder_t *B __DCAL_session_Profile_formal_args);
 #define __DCAL_session_Profiles_formal_args , DCAL_session_Profile_vec_ref_t v0
 #define __DCAL_session_Profiles_call_args , v0
@@ -142,8 +142,7 @@ __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Handshake_server,
 __flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Handshake_magic, DCAL_session_Magic, DCAL_session_Magic_enum_t, 4, 4, 0)
 __flatbuffers_build_string_field(2, flatbuffers_, DCAL_session_Handshake_ip)
 __flatbuffers_build_scalar_field(3, flatbuffers_, DCAL_session_Handshake_api_level, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(4, flatbuffers_, DCAL_session_Handshake_sdk_error, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(5, flatbuffers_, DCAL_session_Handshake_dcal_error, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(4, flatbuffers_, DCAL_session_Handshake_error, flatbuffers_uint32, uint32_t, 4, 4, 0)
 
 static inline DCAL_session_Handshake_ref_t DCAL_session_Handshake_create(flatbuffers_builder_t *B __DCAL_session_Handshake_formal_args)
 {
@@ -151,8 +150,7 @@ static inline DCAL_session_Handshake_ref_t DCAL_session_Handshake_create(flatbuf
         || DCAL_session_Handshake_magic_add(B, v1)
         || DCAL_session_Handshake_ip_add(B, v2)
         || DCAL_session_Handshake_api_level_add(B, v3)
-        || DCAL_session_Handshake_sdk_error_add(B, v4)
-        || DCAL_session_Handshake_dcal_error_add(B, v5)
+        || DCAL_session_Handshake_error_add(B, v4)
         || DCAL_session_Handshake_server_add(B, v0)) {
         return 0;
     }
@@ -332,17 +330,19 @@ __flatbuffers_build_string_field(0, flatbuffers_, DCAL_session_Profile_name)
 __flatbuffers_build_vector_field(1, flatbuffers_, DCAL_session_Profile_ssid, flatbuffers_uint8, uint8_t)
 __flatbuffers_build_string_field(2, flatbuffers_, DCAL_session_Profile_client_name)
 __flatbuffers_build_scalar_field(3, flatbuffers_, DCAL_session_Profile_txPwr, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(4, flatbuffers_, DCAL_session_Profile_auth, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(5, flatbuffers_, DCAL_session_Profile_eap, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(6, flatbuffers_, DCAL_session_Profile_pwrsave, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(7, flatbuffers_, DCAL_session_Profile_pspDelay, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(8, flatbuffers_, DCAL_session_Profile_wep, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(4, flatbuffers_, DCAL_session_Profile_pwrsave, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(5, flatbuffers_, DCAL_session_Profile_pspDelay, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(6, flatbuffers_, DCAL_session_Profile_weptype, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(7, flatbuffers_, DCAL_session_Profile_auth, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(8, flatbuffers_, DCAL_session_Profile_eap, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(9, flatbuffers_, DCAL_session_Profile_bitrate, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(10, flatbuffers_, DCAL_session_Profile_mode, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_string_field(11, flatbuffers_, DCAL_session_Profile_usr_name)
-__flatbuffers_build_vector_field(12, flatbuffers_, DCAL_session_Profile_pwd, flatbuffers_uint8, uint8_t)
-__flatbuffers_build_vector_field(13, flatbuffers_, DCAL_session_Profile_psk, flatbuffers_uint8, uint8_t)
-__flatbuffers_build_vector_field(14, flatbuffers_, DCAL_session_Profile_keys, flatbuffers_uint8, uint8_t)
+__flatbuffers_build_scalar_field(10, flatbuffers_, DCAL_session_Profile_radiomode, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_string_field(11, flatbuffers_, DCAL_session_Profile_security1)
+__flatbuffers_build_string_field(12, flatbuffers_, DCAL_session_Profile_security2)
+__flatbuffers_build_string_field(13, flatbuffers_, DCAL_session_Profile_security3)
+__flatbuffers_build_string_field(14, flatbuffers_, DCAL_session_Profile_security4)
+__flatbuffers_build_string_field(15, flatbuffers_, DCAL_session_Profile_security5)
+__flatbuffers_build_scalar_field(16, flatbuffers_, DCAL_session_Profile_weptxkey, flatbuffers_uint32, uint32_t, 4, 4, 0)
 
 static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers_builder_t *B __DCAL_session_Profile_formal_args)
 {
@@ -351,17 +351,19 @@ static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers
         || DCAL_session_Profile_ssid_add(B, v1)
         || DCAL_session_Profile_client_name_add(B, v2)
         || DCAL_session_Profile_txPwr_add(B, v3)
-        || DCAL_session_Profile_auth_add(B, v4)
-        || DCAL_session_Profile_eap_add(B, v5)
-        || DCAL_session_Profile_pwrsave_add(B, v6)
-        || DCAL_session_Profile_pspDelay_add(B, v7)
-        || DCAL_session_Profile_wep_add(B, v8)
+        || DCAL_session_Profile_pwrsave_add(B, v4)
+        || DCAL_session_Profile_pspDelay_add(B, v5)
+        || DCAL_session_Profile_weptype_add(B, v6)
+        || DCAL_session_Profile_auth_add(B, v7)
+        || DCAL_session_Profile_eap_add(B, v8)
         || DCAL_session_Profile_bitrate_add(B, v9)
-        || DCAL_session_Profile_mode_add(B, v10)
-        || DCAL_session_Profile_usr_name_add(B, v11)
-        || DCAL_session_Profile_pwd_add(B, v12)
-        || DCAL_session_Profile_psk_add(B, v13)
-        || DCAL_session_Profile_keys_add(B, v14)) {
+        || DCAL_session_Profile_radiomode_add(B, v10)
+        || DCAL_session_Profile_security1_add(B, v11)
+        || DCAL_session_Profile_security2_add(B, v12)
+        || DCAL_session_Profile_security3_add(B, v13)
+        || DCAL_session_Profile_security4_add(B, v14)
+        || DCAL_session_Profile_security5_add(B, v15)
+        || DCAL_session_Profile_weptxkey_add(B, v16)) {
         return 0;
     }
     return DCAL_session_Profile_end(B);

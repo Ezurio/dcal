@@ -103,3 +103,7 @@ char * buftype_to_string(flatbuffers_thash_t buftype)
 			return("unrecognized\n");
 	}
 }
+
+int handshake_error_code (ns(Handshake_table_t) handshake){
+	return ns(Handshake_error(handshake));
+}

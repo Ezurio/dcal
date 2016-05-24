@@ -11,6 +11,9 @@
 #define USER_SZ 64
 
 typedef struct _internal_session_handle {
+	#ifdef STATIC_MEM
+	bool valid;
+	#endif
 	uint32_t version;
 	uint8_t state;
 	ssh_session ssh;
@@ -38,8 +41,8 @@ typedef internal_session_struct * internal_session_handle;
 #define LAIRD_HELLO "HELLO DCAS"
 
 // internal use only
-DCAL_ERR dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes);
+int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes);
 // internal use only
-DCAL_ERR dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes);
+int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes);
 
 #endif //__session_h__

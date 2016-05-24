@@ -18,9 +18,9 @@ int build_query_version( flatcc_builder_t *B)
 	return 0;
 }
 
-DCAL_ERR dcal_device_version( laird_session_handle s, DCAL_VERSION_STRUCT * v_struct)
+int dcal_device_version( laird_session_handle s, DCAL_VERSION_STRUCT * v_struct)
 {
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
 	size_t i, size = 0;
 	flatcc_builder_t *B;
