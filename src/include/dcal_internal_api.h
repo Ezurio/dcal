@@ -26,13 +26,6 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define BUF_SZ 2048
 #define TBD 1024  //size to be determined
 
-typedef struct _internal_profile_handle {
-	uint32_t version;
-	uint8_t valid;
-	uint8_t data[TBD];
-} internal_profile_struct;
-typedef internal_profile_struct * internal_profile_handle;
-
 typedef void * pvoid;
 
 #endif //_DCAL_INTERNAL_API

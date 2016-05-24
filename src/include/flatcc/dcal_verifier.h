@@ -40,8 +40,7 @@ static int __DCAL_session_Handshake_table_verifier(flatcc_table_verifier_descrip
     if ((ret = flatcc_verify_field(td, 1, 4, 4) /* magic */)) return ret;
     if ((ret = flatcc_verify_string_field(td, 2, 0) /* ip */)) return ret;
     if ((ret = flatcc_verify_field(td, 3, 4, 4) /* api_level */)) return ret;
-    if ((ret = flatcc_verify_field(td, 4, 4, 4) /* sdk_error */)) return ret;
-    if ((ret = flatcc_verify_field(td, 5, 4, 4) /* dcal_error */)) return ret;
+    if ((ret = flatcc_verify_field(td, 4, 4, 4) /* error */)) return ret;
     return flatcc_verify_ok;
 }
 
@@ -282,17 +281,19 @@ static int __DCAL_session_Profile_table_verifier(flatcc_table_verifier_descripto
     if ((ret = flatcc_verify_vector_field(td, 1, 0, 1, 1, 4294967295) /* ssid */)) return ret;
     if ((ret = flatcc_verify_string_field(td, 2, 0) /* client_name */)) return ret;
     if ((ret = flatcc_verify_field(td, 3, 4, 4) /* txPwr */)) return ret;
-    if ((ret = flatcc_verify_field(td, 4, 4, 4) /* auth */)) return ret;
-    if ((ret = flatcc_verify_field(td, 5, 4, 4) /* eap */)) return ret;
-    if ((ret = flatcc_verify_field(td, 6, 4, 4) /* pwrsave */)) return ret;
-    if ((ret = flatcc_verify_field(td, 7, 4, 4) /* pspDelay */)) return ret;
-    if ((ret = flatcc_verify_field(td, 8, 4, 4) /* wep */)) return ret;
+    if ((ret = flatcc_verify_field(td, 4, 4, 4) /* pwrsave */)) return ret;
+    if ((ret = flatcc_verify_field(td, 5, 4, 4) /* pspDelay */)) return ret;
+    if ((ret = flatcc_verify_field(td, 6, 4, 4) /* weptype */)) return ret;
+    if ((ret = flatcc_verify_field(td, 7, 4, 4) /* auth */)) return ret;
+    if ((ret = flatcc_verify_field(td, 8, 4, 4) /* eap */)) return ret;
     if ((ret = flatcc_verify_field(td, 9, 4, 4) /* bitrate */)) return ret;
-    if ((ret = flatcc_verify_field(td, 10, 4, 4) /* mode */)) return ret;
-    if ((ret = flatcc_verify_string_field(td, 11, 0) /* usr_name */)) return ret;
-    if ((ret = flatcc_verify_vector_field(td, 12, 0, 1, 1, 4294967295) /* pwd */)) return ret;
-    if ((ret = flatcc_verify_vector_field(td, 13, 0, 1, 1, 4294967295) /* psk */)) return ret;
-    if ((ret = flatcc_verify_vector_field(td, 14, 0, 1, 1, 4294967295) /* keys */)) return ret;
+    if ((ret = flatcc_verify_field(td, 10, 4, 4) /* radiomode */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 11, 0) /* security1 */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 12, 0) /* security2 */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 13, 0) /* security3 */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 14, 0) /* security4 */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 15, 0) /* security5 */)) return ret;
+    if ((ret = flatcc_verify_field(td, 16, 4, 4) /* weptxkey */)) return ret;
     return flatcc_verify_ok;
 }
 

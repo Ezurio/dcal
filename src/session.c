@@ -19,10 +19,10 @@ static pointer_list * sessions = NULL;
 
 #endif
 
-static DCAL_ERR get_session_handle( laird_session_handle * session )
+static int get_session_handle( laird_session_handle * session )
 {
 	internal_session_handle handle=NULL;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 
@@ -136,10 +136,10 @@ static int verify_knownhost(ssh_session session)
 		return REPORT_RETURN_DBG(0);
 }
 
-DCAL_ERR dcal_session_create( laird_session_handle * s)
+int dcal_session_create( laird_session_handle * s)
 {
 	internal_session_handle *session = (internal_session_handle*)s;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 
@@ -157,10 +157,10 @@ DCAL_ERR dcal_session_create( laird_session_handle * s)
 	return REPORT_RETURN_DBG(ret);
 }
 
-DCAL_ERR dcal_set_host( laird_session_handle s, FQDN address )
+int dcal_set_host( laird_session_handle s, FQDN address )
 {
 	internal_session_handle session = (internal_session_handle)s;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (address==NULL) || !strlen(address))
@@ -172,10 +172,10 @@ DCAL_ERR dcal_set_host( laird_session_handle s, FQDN address )
 	return REPORT_RETURN_DBG(ret);
 }
 
-DCAL_ERR dcal_set_port( laird_session_handle s, unsigned int port )
+int dcal_set_port( laird_session_handle s, unsigned int port )
 {
 	internal_session_handle session = (internal_session_handle)s;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (port==0))
@@ -186,10 +186,10 @@ DCAL_ERR dcal_set_port( laird_session_handle s, unsigned int port )
 	return REPORT_RETURN_DBG(ret);
 }
 
-DCAL_ERR dcal_set_user( laird_session_handle s, char *user )
+int dcal_set_user( laird_session_handle s, char *user )
 {
 	internal_session_handle session = (internal_session_handle)s;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (user==NULL) || !strlen(user))
@@ -200,10 +200,10 @@ DCAL_ERR dcal_set_user( laird_session_handle s, char *user )
 	return REPORT_RETURN_DBG(ret);
 }
 
-DCAL_ERR dcal_set_pw( laird_session_handle s, char *pw )
+int dcal_set_pw( laird_session_handle s, char *pw )
 {
 	internal_session_handle session = (internal_session_handle)s;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (pw==NULL) || !strlen(pw))
@@ -214,34 +214,10 @@ DCAL_ERR dcal_set_pw( laird_session_handle s, char *pw )
 	return REPORT_RETURN_DBG(ret);
 }
 
-#if 0
-DCAL_ERR dcal_set_key( laird_session_handle session, char * keydata, int size)
-{
-	DCAL_ERR ret = DCAL_SUCCESS;
-
-	REPORT_ENTRY_DEBUG;
-	if ((session==NULL) || (keydata==NULL) || (size==0))
-		ret = DCAL_INVALID_PARAMETER;
-
-	else
-#ifdef STATIC_MEM
-	ret = (((internal_session_handle)session)->valid?DCAL_SUCCESS:DCAL_INVALID_HANDLE);
-#else
-	ret = validate_handle( sessions, session, SESSION);
-#endif //STATIC_MEM
-
-	if (ret==DCAL_SUCCESS) {
-		//TODO: do something interesting with keydata
-	}
-
-	return REPORT_RETURN_DBG(ret);
-}
-#endif
-
-DCAL_ERR dcal_session_open ( laird_session_handle s )
+int dcal_session_open ( laird_session_handle s )
 {
 	internal_session_handle session = (internal_session_handle)s;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 	int rc;
 
 	REPORT_ENTRY_DEBUG;
@@ -327,10 +303,10 @@ DCAL_ERR dcal_session_open ( laird_session_handle s )
 	return REPORT_RETURN_DBG(ret);
 }
 
-DCAL_ERR dcal_session_close( laird_session_handle s)
+int dcal_session_close( laird_session_handle s)
 {
 	internal_session_handle session = (internal_session_handle)s;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 
@@ -372,11 +348,11 @@ DCAL_ERR dcal_session_close( laird_session_handle s)
 }
 
 // internal use only
-DCAL_ERR dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes)
+int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes)
 {
 	internal_session_handle session = (internal_session_handle)s;
 	size_t nwrite;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 
@@ -390,11 +366,11 @@ DCAL_ERR dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes)
 }
 
 // internal use only
-DCAL_ERR dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes)
+int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes)
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int nread;
-	DCAL_ERR ret = DCAL_SUCCESS;
+	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 
