@@ -263,7 +263,10 @@ int dcal_wifi_profile_get_profile( laird_profile_handle profile,
 
 void dcal_wifi_profile_printf( laird_profile_handle profile);
 
-// interesting stuff
+// system controls
+
+int dcal_wifi_restart( laird_session_handle session);
+int dcal_system_restart( laird_session_handle session);
 
 const char *dcal_err_to_string( int code);
 
