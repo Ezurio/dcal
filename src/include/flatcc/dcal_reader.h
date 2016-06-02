@@ -80,6 +80,8 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)7UL)
 #define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)8UL)
 #define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)9UL)
+#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)10UL)
+#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)11UL)
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -94,6 +96,8 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_ACTIVATEPROFILE: return "ACTIVATEPROFILE";
     case DCAL_session_Commands_WIFIENABLE: return "WIFIENABLE";
     case DCAL_session_Commands_WIFIDISABLE: return "WIFIDISABLE";
+    case DCAL_session_Commands_WIFIRESTART: return "WIFIRESTART";
+    case DCAL_session_Commands_SYSTEMREBOOT: return "SYSTEMREBOOT";
     default: return "";
     }
 }
