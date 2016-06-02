@@ -25,8 +25,6 @@ Quick Start
     cd dcal
     make -f externals.mk
     make DEBUG=1
-    # For now, the IP address of the DUT-WB45 is hardcoded in examples, if you
-    # want to use them, you better edit the ip in examples/status/status_test.c
     make test_apps
     export LD_LIBRARY_PATH="/home/derosier/projects/dcal/api:$LD_LIBRARY_PATH"
     cd apps/examples
