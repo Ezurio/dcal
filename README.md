@@ -14,7 +14,7 @@ make test_apps
 
 To run, you will need to set your LD_LIBRARY_PATH. This requires a full path:
 
-export LD_LIBRARY_PATH="/home/derosier/projects/dcal/api:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="~/projects/dcal/api:$LD_LIBRARY_PATH"
 
 Then you can run the examples.
 
