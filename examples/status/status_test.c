@@ -48,34 +48,74 @@ int main (int argc, char *argv[])
 
 // device interaction
 
-	DCAL_STATUS_STRUCT status;
-	ret = dcal_device_status( session, &status );
+	unsigned int cache_time;
+	dcal_device_status_get_cache_timeout(&cache_time);
+
+	dcal_device_status_pull( session );
+	for (cache_time+=2;cache_time;cache_time--){
+		printf("%d..",cache_time);
+		fflush(stdout);
+		sleep(1);
+		}
+
+	if ((ret=dcal_device_status_get_settings( session, NULL, NULL, NULL, NULL)==DCAL_DATA_STALE))
+		printf("\ncorrectly received stale error return\n");
+	else
+		printf("\nincorrect return code: %d\n", ret);
+
+	dcal_device_status_pull( session );
+
+	char profilename[NAME_SZ];
+	char ssid[SSID_SZ];
+	unsigned int ssid_len;
+	char clientname[NAME_SZ];
+	ret = dcal_device_status_get_settings( session, profilename, ssid, &ssid_len, clientname);
+
+	if (ret != DCAL_SUCCESS)
+		printf("unable to get settings: %d\n", ret);
+
+	unsigned int cardstate;
+	unsigned int channel;
+	int rssi;
+	unsigned char mac[MAC_SZ];
+	unsigned char ipv4[IP4_SZ];
+	char ipv6[IP6_STR_SZ];
+	unsigned char ap_mac[MAC_SZ];
+	unsigned char ap_ip[IP4_SZ];
+	char ap_name[NAME_SZ];
+	unsigned int bitrate;
+	unsigned int txpower;
+	unsigned int dtim;
+	unsigned int beaconperiod;
+
+	ret = dcal_device_status_get_connection( session, &cardstate, &channel, &rssi, mac, ipv4, ipv6, ap_mac, ap_ip, ap_name, &bitrate, &txpower, &dtim, &beaconperiod);
+
 	if (ret != DCAL_SUCCESS)
 		printf("unable to read status\n");
 	else {
 		printf("Status:\n");
-		printf("\tStatus: %s\n",cardState_to_string(status.cardState));
-		printf("\tProfile Name: %s\n", status.ProfileName);
-		printf("\tSSID: %s\n", status.ssid);
-		printf("\tChannel: %d\n", status.channel);
-		printf("\trssi: %d\n", status.rssi);
-		printf("\tDevice Name: %s\n", status.clientName);
+		printf("\tStatus: %s\n",cardState_to_string(cardstate));
+		printf("\tProfile Name: %s\n", profilename);
+		printf("\tSSID: %s\n", ssid);
+		printf("\tChannel: %d\n", channel);
+		printf("\trssi: %d\n", rssi);
+		printf("\tDevice Name: %s\n", clientname);
 		printf("\tMAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
-		              status.mac[0],status.mac[1],status.mac[2],
-		              status.mac[3],status.mac[4],status.mac[5]);
+		              mac[0],mac[1],mac[2],
+		              mac[3],mac[4],mac[5]);
 
-		printf("\tIP: %d.%d.%d.%d\n",status.ipv4[0],status.ipv4[1],
-		                           status.ipv4[2],status.ipv4[3]);
-		printf("\tIPv6: %s\n", status.ipv6);
+		printf("\tIP: %d.%d.%d.%d\n",ipv4[0],ipv4[1],
+		                           ipv4[2],ipv4[3]);
+		printf("\tIPv6: %s\n", ipv6);
 		printf("\tAP MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
-		              status.ap_mac[0],status.ap_mac[1],status.ap_mac[2],
-		              status.ap_mac[3],status.ap_mac[4],status.ap_mac[5]);
-		printf("\tAP IP: %d.%d.%d.%d\n",status.ap_ip[0],status.ap_ip[1],
-		                              status.ap_ip[2],status.ap_ip[3]);
-		printf("\tBit Rate: %d\n", status.bitRate);
-		printf("\tTx Power: %d\n", status.txPower);
-		printf("\tBeacon Period: %d\n", status.beaconPeriod);
-		printf("\tDTIM: %d\n", status.dtim);
+		              ap_mac[0],ap_mac[1],ap_mac[2],
+		              ap_mac[3],ap_mac[4],ap_mac[5]);
+		printf("\tAP IP: %d.%d.%d.%d\n",ap_ip[0],ap_ip[1],
+		                              ap_ip[2],ap_ip[3]);
+		printf("\tBit Rate: %d\n", bitrate);
+		printf("\tTx Power: %d\n", txpower);
+		printf("\tBeacon Period: %d\n", beaconperiod);
+		printf("\tDTIM: %d\n", dtim);
 	}
 
 	ret = dcal_session_close( session );
