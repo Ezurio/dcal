@@ -53,23 +53,33 @@ int main (int argc, char *argv[])
 
 // device interaction
 
-	DCAL_VERSION_STRUCT versions;
-	ret = dcal_device_version( session, &versions );
+	unsigned int sdk;
+	RADIOCHIPSET chipset;
+	LRD_SYSTEM sys;
+	unsigned int driver;
+	unsigned int dcas;
+	unsigned int dcal;
+	char firmware[STR_SZ];
+	char supplicant[STR_SZ];
+	char release[STR_SZ];
+
+	ret = dcal_device_version_pull( session, &sdk, &chipset, &sys, &driver, &dcas, &dcal, firmware, supplicant, release);
+
 	if (ret != DCAL_SUCCESS)
 		printf("unable to read versions\n");
 	else {
 		printf("Versions:\n");
-		print_int_as_4_bytes("\tSDK", versions.sdk);
-		print_int_as_4_bytes("\tdriver", versions.driver);
-		print_int_as_4_bytes("\tDCAS", versions.dcas);
-		print_int_as_4_bytes("\tDCAL", versions.dcal);
-		printf("\tChipset: %s", chipset_to_string(versions.chipset));
-		if (LRD_SYSTEM_family(versions.sys)==LRD_SYS_FAM_WB)
+		print_int_as_4_bytes("\tSDK", sdk);
+		print_int_as_4_bytes("\tdriver", driver);
+		print_int_as_4_bytes("\tDCAS", dcas);
+		print_int_as_4_bytes("\tDCAL", dcal);
+		printf("\tChipset: %s", chipset_to_string(chipset));
+		if (LRD_SYSTEM_family(sys)==LRD_SYS_FAM_WB)
 			printf(" Workgroup Bridge");
 		printf("\n");
-		printf("\tfirmware: %s\n", versions.firmware);
-		printf("\tsupplicant: %s\n", versions.supplicant);
-		printf("\trelease: %s\n", versions.release);
+		printf("\tfirmware: %s\n", firmware);
+		printf("\tsupplicant: %s\n", supplicant);
+		printf("\trelease: %s\n", release);
 
 	}
 

@@ -1,4 +1,4 @@
-#include "buffer.h"
+#include "session.h"
 #include "debug.h"
 #include "buffer.h"
 #include "dcal_api.h"
@@ -18,7 +18,16 @@ int build_query_version( flatcc_builder_t *B)
 	return 0;
 }
 
-int dcal_device_version( laird_session_handle s, DCAL_VERSION_STRUCT * v_struct)
+int dcal_device_version_pull( laird_session_handle s,
+                              unsigned int *sdk,
+                              RADIOCHIPSET *chipset,
+                              LRD_SYSTEM *sys,
+                              unsigned int *driver,
+                              unsigned int *dcas,
+                              unsigned int *dcal,
+                              char *firmware,
+                              char *supplicant,
+                              char *release)
 {
 	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
@@ -30,9 +39,8 @@ int dcal_device_version( laird_session_handle s, DCAL_VERSION_STRUCT * v_struct)
 
 	REPORT_ENTRY_DEBUG;
 
-	if ((s==NULL) || (v_struct==NULL)){
+	if (s==NULL)
 		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
-	}
 
 	session = s;
 	if (!session->builder_init)
@@ -67,16 +75,32 @@ int dcal_device_version( laird_session_handle s, DCAL_VERSION_STRUCT * v_struct)
 
 	version = ns(Version_as_root(buffer));
 
-	memset(v_struct, 0, sizeof(DCAL_VERSION_STRUCT));
-	v_struct->dcal = DCAL_API_VERSION;
-	v_struct->sdk = ns(Version_sdk(version));
-	v_struct->chipset = ns(Version_chipset(version));
-	v_struct->sys = ns(Version_sys(version));
-	v_struct->driver = ns(Version_driver(version));
-	v_struct->dcas = ns(Version_dcas(version));
-	strncpy(v_struct->firmware, ns(Version_firmware(version)), STR_SZ);
-	strncpy(v_struct->supplicant, ns(Version_supplicant(version)), STR_SZ);
-	strncpy(v_struct->release, ns(Version_release(version)), STR_SZ);
+	if(sdk)
+		*sdk = ns(Version_sdk(version));
+
+	if(chipset)
+		*chipset = ns(Version_chipset(version));
+
+	if(sys)
+		*sys = ns(Version_sys(version));
+
+	if(driver)
+		*driver = ns(Version_driver(version));
+
+	if(dcas)
+		*dcas = ns(Version_dcas(version));
+
+	if(dcal)
+		*dcal = DCAL_API_VERSION;
+
+	if(firmware)
+		strncpy(firmware, ns(Version_firmware(version)), STR_SZ);
+
+	if(supplicant)
+		strncpy(supplicant, ns(Version_supplicant(version)), STR_SZ);
+
+	if(release)
+		strncpy(release, ns(Version_release(version)), STR_SZ);
 
 	return REPORT_RETURN_DBG (ret);
 }

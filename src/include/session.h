@@ -4,11 +4,45 @@
 #include <libssh/libssh.h>
 #include <libssh/server.h>
 #include <stdbool.h>
+#include <time.h>
 #include "flatcc/dcal_builder.h"
 #include "dcal_api.h"
 
 #define HOST_SZ 256
 #define USER_SZ 64
+
+#ifndef CACHE_TIME
+#define CACHE_TIME 10 //time pulled status data is valid in seconds - 0 means never expire
+#endif
+
+#define MAC_SZ 6
+#define IP4_SZ 4
+#define IP6_STR_SZ 46 //max string:0000:0000:0000:0000:0000:0000:xxx.xxx.xxx.xxx plus NULL (IPV4 mapped IPV6 address)
+#define NAME_SZ 48
+#define SSID_SZ 32
+
+#define STR_SZ 80
+
+typedef struct _laird_status_struct {
+	unsigned int cardState;
+	char ProfileName[NAME_SZ];
+	char ssid[SSID_SZ]; //32 characters.  Can contain non-ascii characters.  Not necessarily NULL terminated. Use ssid_len to access data.
+	unsigned int ssid_len;
+	unsigned int channel;
+	int rssi;
+	char clientName[NAME_SZ];
+	unsigned char mac[MAC_SZ];
+	unsigned char ipv4[IP4_SZ];
+	char ipv6[IP6_STR_SZ];
+	unsigned char ap_mac[MAC_SZ];
+	unsigned char ap_ip[IP4_SZ];
+	char ap_name[NAME_SZ];
+	unsigned int bitRate;
+	unsigned int txPower;
+	unsigned int dtim;
+	unsigned int beaconPeriod;
+	time_t timestamp;
+} DCAL_STATUS_STRUCT;
 
 typedef struct _internal_session_handle {
 	#ifdef STATIC_MEM
@@ -25,6 +59,7 @@ typedef struct _internal_session_handle {
 	int verbosity;
 	flatcc_builder_t builder;
 	bool builder_init;
+	DCAL_STATUS_STRUCT status;
 } internal_session_struct;
 typedef internal_session_struct * internal_session_handle;
 

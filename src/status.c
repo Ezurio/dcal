@@ -18,7 +18,133 @@ int build_query_status( flatcc_builder_t *B)
 	return 0;
 }
 
-int dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_struct)
+int dcal_device_status_get_settings( laird_session_handle s,
+                                     char * profilename,
+                                     char * ssid,
+                                     unsigned int *ssid_len,
+                                     char * clientname)
+{
+	int ret = DCAL_SUCCESS;
+	internal_session_handle session=NULL;
+	DCAL_STATUS_STRUCT * s_struct;
+	time_t now;
+
+	REPORT_ENTRY_DEBUG;
+
+	if (s==NULL) {
+		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
+	}
+
+	session = s;
+	if (!session->builder_init)
+		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
+	s_struct = &session->status;
+
+	time (&now);
+	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
+		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
+
+	if (profilename)
+		strncpy(profilename, s_struct->ProfileName, NAME_SZ);
+
+	if (ssid)
+		memcpy(ssid, s_struct->ssid, SSID_SZ);
+
+	if (ssid_len)
+		*ssid_len = s_struct->ssid_len;
+
+	if (clientname)
+		strncpy(clientname, s_struct->clientName, NAME_SZ);
+
+	return REPORT_RETURN_DBG(0);
+}
+
+int dcal_device_status_get_connection( laird_session_handle s,
+                                       unsigned int * cardstate,
+                                       unsigned int * channel,
+                                       int * rssi,
+                                       unsigned char *mac,
+                                       unsigned char *ipv4,
+                                       char *ipv6,
+                                       unsigned char *ap_mac,
+                                       unsigned char *ap_ip,
+                                       char *ap_name,
+                                       unsigned int *bitrate,
+                                       unsigned int *txpower,
+                                       unsigned int *dtim,
+                                       unsigned int *beaconperiod)
+{
+	int ret = DCAL_SUCCESS;
+	internal_session_handle session=NULL;
+	DCAL_STATUS_STRUCT * s_struct;
+	time_t now;
+
+	REPORT_ENTRY_DEBUG;
+
+	if (s==NULL) {
+		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
+	}
+
+	session = s;
+	if (!session->builder_init)
+		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
+	s_struct = &session->status;
+
+	time (&now);
+	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
+		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
+
+	if (cardstate)
+		*cardstate = s_struct->cardState;
+
+	if (channel)
+		*channel = s_struct->channel;
+
+	if (rssi)
+		*rssi = -s_struct->rssi;
+
+	if (mac)
+		memcpy(mac, s_struct->mac, MAC_SZ);
+
+	if (ipv4)
+		memcpy(ipv4, s_struct->ipv4, IP4_SZ);
+
+	if (ipv6)
+		strncpy(ipv6, s_struct->ipv6, IP6_STR_SZ);
+
+	if (ap_mac)
+		memcpy(ap_mac, s_struct->ap_mac, MAC_SZ);
+
+	if (ap_ip)
+		memcpy(ap_ip, s_struct->ap_ip, IP4_SZ);
+
+	if (ap_name)
+		strncpy(ap_name, s_struct->ap_name, NAME_SZ);
+
+	if (bitrate)
+		*bitrate = s_struct->bitRate;
+
+	if (txpower)
+		*txpower = s_struct->txPower;
+
+	if (dtim)
+		*dtim = s_struct->dtim;
+
+	if (beaconperiod)
+		*beaconperiod = s_struct->beaconPeriod;
+
+	return REPORT_RETURN_DBG(0);
+}
+
+int dcal_device_status_get_cache_timeout( unsigned int *timeout)
+{
+	if (!timeout)
+		return DCAL_INVALID_PARAMETER;
+	*timeout = CACHE_TIME;
+	return 0;
+}
+
+int dcal_device_status_pull( laird_session_handle s)
 {
 	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
@@ -27,16 +153,18 @@ int dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_struct)
 	ns(Status_table_t) status = NULL;
 	internal_session_handle session=NULL;
 	flatbuffers_thash_t buftype;
+	DCAL_STATUS_STRUCT * s_struct;
 
 	REPORT_ENTRY_DEBUG;
 
-	if ((s==NULL) || (s_struct==NULL)){
+	if (s==NULL) {
 		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
 	}
 
 	session = s;
 	if (!session->builder_init)
 		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
+	s_struct = &session->status;
 
 	B = &session->builder;
 
@@ -94,7 +222,7 @@ int dcal_device_status( laird_session_handle s, DCAL_STATUS_STRUCT * s_struct)
 	size_t num_ips = flatbuffers_string_vec_len(ipaddresses);
 	for (i=0; ((i < num_ips) && i < 1); i++)
 		strncpy(s_struct->ipv6, flatbuffers_string_vec_at(ipaddresses,i),IP6_STR_SZ);
-
+	time(&s_struct->timestamp);
 	return REPORT_RETURN_DBG (ret);
 }
 
