@@ -79,7 +79,7 @@ lib.local/flatcc/lib/libflatcc.a : lib.local/flatcc
 lib.local/flatcc : lib
 	cd lib.local && git clone git@github.com:dvidelabs/flatcc.git
 
-.PHONY: flatcc
+.PHONY: flatcc lib
 flatcc: lib.local/flatcc/lib/libflatcc.a
 
 ####
