@@ -63,7 +63,24 @@ int main (int argc, char *argv[])
 	char supplicant[STR_SZ];
 	char release[STR_SZ];
 
-	ret = dcal_device_version_pull( session, &sdk, &chipset, &sys, &driver, &dcas, &dcal, firmware, supplicant, release);
+	if (!ret)
+		ret = dcal_get_sdk_version(session, &sdk);
+	if (!ret)
+		ret = dcal_get_chipset_version(session, &chipset);
+	if (!ret)
+		ret = dcal_get_system_version(session, &sys);
+	if (!ret)
+		ret = dcal_get_driver_version(session, &driver);
+	if (!ret)
+		ret = dcal_get_dcas_version(session, &dcas);
+	if (!ret)
+		ret = dcal_get_dcal_version(session, &dcal);
+	if (!ret)
+		ret = dcal_get_firmware_version(session, firmware);
+	if (!ret)
+		ret = dcal_get_supplicant_version(session, supplicant);
+	if (!ret)
+		ret = dcal_get_release_version(session, release);
 
 	if (ret != DCAL_SUCCESS)
 		printf("unable to read versions\n");

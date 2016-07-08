@@ -9,5 +9,6 @@
 
 int handshake_init(internal_session_handle s);
 int is_handshake_ack_valid( ns(Handshake_table_t) handshake);
+int version_pull(internal_session_handle s);
 
 #endif // __handshake_h__

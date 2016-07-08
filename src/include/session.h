@@ -44,11 +44,24 @@ typedef struct _laird_status_struct {
 	time_t timestamp;
 } DCAL_STATUS_STRUCT;
 
+typedef struct _versions{
+	bool valid;
+	unsigned int sdk;
+	RADIOCHIPSET chipset;
+	LRD_SYSTEM sys;
+	unsigned int driver;
+	unsigned int dcas;
+	unsigned int dcal;
+	char firmware[STR_SZ];
+	char supplicant[STR_SZ];
+	char release[STR_SZ];
+} dcal_versions;
+
 typedef struct _internal_session_handle {
 	#ifdef STATIC_MEM
 	bool valid;
 	#endif
-	uint32_t version;
+	dcal_versions versions;
 	uint8_t state;
 	ssh_session ssh;
 	char host[HOST_SZ];
