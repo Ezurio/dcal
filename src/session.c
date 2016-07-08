@@ -290,8 +290,6 @@ int dcal_session_open ( laird_session_handle s )
 			goto bad_exit;
 		}
 
-		//indicate our builder is init so we can clean up later
-		session->builder_init = true;
 	}
 
 	return REPORT_RETURN_DBG(ret);

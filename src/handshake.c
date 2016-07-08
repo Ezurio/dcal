@@ -80,6 +80,12 @@ int handshake_init(internal_session_handle s)
 			rc = DCAL_FLATBUFF_ERROR;
 		else
 			rc = is_handshake_ack_valid(ns(Handshake_as_root(buffer)));
+
+		if(!rc)
+		{
+			s->builder_init = true;
+			rc = version_pull(s);
+		}
 	}
 
 exit:

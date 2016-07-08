@@ -61,8 +61,6 @@ typedef void * laird_profile_handle;
 
 #define STR_SZ 80
 
-
-
 // API session management
 
 int dcal_session_create( laird_session_handle * session);
@@ -75,17 +73,24 @@ int dcal_session_open ( laird_session_handle session );
 int dcal_session_close( laird_session_handle session);
 
 // Device Versions
-int dcal_device_version_pull( laird_session_handle session,
-                              unsigned int *sdk,
-                              RADIOCHIPSET *chipset,
-                              LRD_SYSTEM *sys,
-                              unsigned int *driver,
-                              unsigned int *dcas,
-                              unsigned int *dcal,
-                              char *firmware,
-                              char *supplicant,
-                              char *release
-);
+
+int dcal_get_sdk_version(laird_session_handle session, unsigned int *sdk);
+int dcal_get_chipset_version(laird_session_handle session,
+                              RADIOCHIPSET *chipset);
+int dcal_get_system_version(laird_session_handle session,
+                              LRD_SYSTEM *sys);
+int dcal_get_driver_version(laird_session_handle session,
+                              unsigned int *driver);
+int dcal_get_dcas_version(laird_session_handle session,
+                              unsigned int *dcas);
+int dcal_get_dcal_version(laird_session_handle session,
+                              unsigned int *dcal);
+int dcal_get_firmware_version(laird_session_handle session,
+                              char *firmware);
+int dcal_get_supplicant_version(laird_session_handle session,
+                              char *supplicant);
+int dcal_get_release_version(laird_session_handle session,
+                              char *release);
 
 // Device Status
 int dcal_device_status_pull( laird_session_handle session);
