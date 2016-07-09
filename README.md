@@ -26,6 +26,6 @@ Quick Start
     make -f externals.mk
     make DEBUG=1
     make test_apps
-    export LD_LIBRARY_PATH="/home/derosier/projects/dcal/api:$LD_LIBRARY_PATH"
+    export LD_LIBRARY_PATH="$PWD/api:$LD_LIBRARY_PATH"
     cd apps/examples
     ./status_test
