@@ -22,6 +22,18 @@ class version
 	boost::python::object release() const { return boost::python::object(_release); }
 };
 
+class settings
+{
+  public:
+	char _profilename[NAME_SZ];
+	boost::python::object profilename() const { return boost::python::object(_profilename); }
+	char _ssid[SSID_SZ];
+	boost::python::object ssid() const { return boost::python::object(_ssid); }
+	unsigned int ssid_len;
+	char _clientname[NAME_SZ];
+	boost::python::object clientname() const { return boost::python::object(_clientname); }
+};
+
 class dcal
 {
   public:
@@ -73,6 +85,26 @@ class dcal
 
 		return ret;
 	};
+	int device_status_pull() { return dcal_device_status_pull(session); };
+	int device_status_get_settings(class settings & s) {
+		int ret;
+		char profilename[NAME_SZ];
+		char ssid[SSID_SZ];
+		unsigned int ssid_len;
+		char clientname[NAME_SZ];
+		ret = dcal_device_status_get_settings( session, profilename,
+							ssid, &ssid_len,
+							clientname);
+
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(s._profilename, profilename, NAME_SZ);
+			memcpy(s._ssid, ssid, SSID_SZ);
+			s.ssid_len = ssid_len;
+			strncpy(s._clientname, clientname, NAME_SZ);
+		}
+		return ret;
+	}
 
   private:
 	laird_session_handle session;
@@ -94,6 +126,14 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("supplicant", &version::supplicant)
 		.def("release", &version::release)
 	;
+
+	class_<settings>("settings")
+		.def("profilename", &settings::profilename)
+		.def("ssid", &settings::ssid)
+		.def_readwrite("ssid_len", &settings::ssid_len)
+		.def("clientname", &settings::clientname)
+	;
+
 	class_<dcal>("dcal")
 		.def("session_create", &dcal::session_create)
 		.def("host", &dcal::host)
@@ -103,5 +143,7 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("session_open", &dcal::session_open)
 		.def("session_close", &dcal::session_close)
 		.def("version_pull", &dcal::version_pull)
+		.def("device_status_pull", &dcal::device_status_pull)
+		.def("device_status_get_settings", &dcal::device_status_get_settings)
 	;
 }
