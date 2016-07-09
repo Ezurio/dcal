@@ -8,7 +8,7 @@ LIBDIR=../../api
 FLATCCDIR=../../lib.local/flatcc/include
 OBJDIR=obj
 
-LIBS = -ldcal -lssh -lflatccrt
+LIBS = -ldcal
 LFLAGS = -L$(LIBDIR) $(LIBS)
 CFLAGS = -g -Wall -I$(APIDIR) -I$(INCDIR) -I$(FLATCCDIR)
 

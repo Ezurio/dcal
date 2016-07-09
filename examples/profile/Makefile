@@ -3,11 +3,11 @@ CC := $(CROSS_COMPILE)gcc
 LD := $(CROSS_COMPILE)ld
 IDIR=../../api
 APPDIR=../../apps/examples
-LIBDIR=../../api
+LIBDIR=-L../../api -L../../api/lib
 OBJDIR=obj
 
-LIBS = -ldcal -lssh -lflatccrt -lsessopt
-LFLAGS = -L$(LIBDIR) $(LIBS)
+LIBS = -ldcal -lsessopt -lssh
+LFLAGS = $(LIBDIR) $(LIBS)
 CFLAGS = -g -Wall -I$(IDIR)
 
 .PHONY: default all clean
