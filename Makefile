@@ -49,6 +49,16 @@ $(LIB): $(OBJECTS) api/dcal_api.h
 $(LIB).a:$(_OBJS)
 	$(AR) rcs $(LIB).a $(_OBJS)
 
+src/python_binding.o : src/python_binding.cpp
+	g++ -fPIC -I$(APIDIR) \
+	    -I/usr/include/python2.7 \
+	    -o src/python_binding.o -c src/python_binding.cpp
+
+python: $(LIB)  src/python_binding.o
+	g++ -shared -Wl,-soname,dcal_py.so \
+	    -o api/dcal_py.so src/python_binding.o \
+	    -Lapi -ldcal -lpython2.7 -lboost_python
+
 clean:
 	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(APILIB).*
 	rm -rf $(OBJDIR)
