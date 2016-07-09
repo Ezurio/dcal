@@ -46,7 +46,7 @@ class dcal
 	int session_open() { return dcal_session_open(session); };
 	int session_close() { return dcal_session_close(session); };
 
-	// WB information
+	// Device Status
 	int version_pull( class version & v )
 	{
 		int ret;
@@ -106,6 +106,9 @@ class dcal
 		return ret;
 	}
 
+	// WiFi Profile Management
+	int wifi_profile_activate_by_name( char * profilename ) { return dcal_wifi_profile_activate_by_name(session, profilename); }
+
   private:
 	laird_session_handle session;
 };
@@ -135,6 +138,7 @@ BOOST_PYTHON_MODULE(dcal_py)
 	;
 
 	class_<dcal>("dcal")
+		// Session management
 		.def("session_create", &dcal::session_create)
 		.def("host", &dcal::host)
 		.def("port", &dcal::port)
@@ -142,8 +146,11 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("pw", &dcal::pw)
 		.def("session_open", &dcal::session_open)
 		.def("session_close", &dcal::session_close)
+		// Device status/info
 		.def("version_pull", &dcal::version_pull)
 		.def("device_status_pull", &dcal::device_status_pull)
 		.def("device_status_get_settings", &dcal::device_status_get_settings)
+		// Wifi Profile Management
+		.def("wifi_profile_activate_by_name", &dcal::wifi_profile_activate_by_name)
 	;
 }
