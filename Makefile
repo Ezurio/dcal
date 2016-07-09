@@ -9,7 +9,7 @@ OBJDIR := obj
 SRCDIR := src
 APIDIR := api
 
-LIBS   +=
+LIBS   += -L./api -lflatccrt -lssh
 
 CFLAGS += -Wall -Werror -fPIC -I$(SRCDIR)/include -I$(SRCDIR) -I$(APIDIR)
 CFLAGS += -Ilib.local/flatcc/include/
@@ -17,7 +17,7 @@ COMPILEONLY = -c
 
 OBJECTS = $(patsubst src/%.c, $(OBJDIR)/%.o, $(wildcard src/*.c))
 
-	CFLAGS += -ggdb -DDEBUG
+CFLAGS += -ggdb -DDEBUG -fPIC
 
 APILIB = libdcal
 LIB= $(APIDIR)/$(APILIB).so.1.0
@@ -41,7 +41,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
 
 $(LIB): $(OBJECTS) api/dcal_api.h
 	$(CC) -shared -Wl,-soname,$(APILIB).so.1 \
-	-o $(APILIB).so.1.0 $(OBJECTS) -lc $(LIBS)
+	    -o $(APILIB).so.1.0 $(OBJECTS) -lc $(LIBS)
 	ln -fs $(APILIB).so.1.0 $(APILIB).so.1
 	ln -fs $(APILIB).so.1.0 $(APILIB).so
 	mv $(APILIB).so* $(APIDIR)

@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 6157f96..8355199 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -6,6 +6,8 @@ cmake_minimum_required (VERSION 2.8)
+ 
+ project (FlatCC)
+ 
++set(CMAKE_POSITION_INDEPENDENT_CODE true)
++
+ #
+ # NOTE: when changing build options, clean the build using:
+ #
