@@ -88,7 +88,7 @@ lib.local/flatcc/lib/libflatcc.a : lib.local/flatcc
 
 LIBFLATCC_INSTALL = api/libflatcc.a
 $(LIBFLATCC_INSTALL) : lib.local/flatcc/lib/libflatcc.a
-	cp lib.local/flatcc/lib/*.a api/.
+	cp lib.local/flatcc/lib/*.a api/lib/.
 
 .PHONY: flatcc
 flatcc: lib.local/flatcc/lib/libflatcc.a $(LIBFLATCC_INSTALL)
