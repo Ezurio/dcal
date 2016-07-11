@@ -10,7 +10,7 @@ OBJDIR=obj
 
 LIBS = -ldcal
 LFLAGS = -L$(LIBDIR) $(LIBS)
-CFLAGS = -g -Wall -I$(IDIR)
+CFLAGS = -g -Wall -I$(IDIR) -I$(IDIR)/include
 
 .PHONY: default all clean
 
