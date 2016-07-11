@@ -9,9 +9,9 @@ OBJDIR := obj
 SRCDIR := src
 APIDIR := api
 
-LIBS   += -L./api -lflatccrt -lssh
+LIBS   += -L./api/lib -lflatccrt -lssh
 
-CFLAGS += -Wall -Werror -fPIC -I$(SRCDIR)/include -I$(SRCDIR) -I$(APIDIR)
+CFLAGS += -Wall -Werror -fPIC -I$(SRCDIR)/include -I$(SRCDIR) -I$(APIDIR) -I$(APIDIR)/include
 CFLAGS += -Ilib.local/flatcc/include/
 COMPILEONLY = -c
 
