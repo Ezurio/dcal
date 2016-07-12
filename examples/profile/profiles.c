@@ -84,6 +84,17 @@ int main (int argc, char *argv[])
 
 	ret = dcal_wifi_profile_close_handle(profile);
 
+	printf("profile closed - pulling now to verify\n");
+
+	profile = NULL;
+
+	ret = dcal_wifi_profile_pull(session, &profile, "wifi");
+
+	if (ret==DCAL_SUCCESS)
+		dcal_wifi_profile_printf(profile);
+	else
+		printf("Error in dcal_wifi_profile_pull(): %s\n", dcal_err_to_string(ret));
+
 	ret = dcal_session_close( session );
 	if (ret!= DCAL_SUCCESS) {
 		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
