@@ -110,6 +110,7 @@ int main (int argc, char *argv[])
 		printf("\tAP MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
 		              ap_mac[0],ap_mac[1],ap_mac[2],
 		              ap_mac[3],ap_mac[4],ap_mac[5]);
+		printf("\tAP Name: %s\n", ap_name);
 		printf("\tAP IP: %d.%d.%d.%d\n",ap_ip[0],ap_ip[1],
 		                              ap_ip[2],ap_ip[3]);
 		printf("\tBit Rate: %d\n", bitrate);
