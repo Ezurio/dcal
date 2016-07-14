@@ -89,26 +89,38 @@ int dcal_device_version_pull( laird_session_handle session,
 
 // Device Status
 int dcal_device_status_pull( laird_session_handle session);
+
+// things that are fairly static
 int dcal_device_status_get_settings( laird_session_handle session,
                                      char * profilename,
                                      char * ssid,
                                      unsigned int * ssid_len,
-                                     char * clientname);
+                                     unsigned char *mac);
+// things that are ccx related
+int dcal_device_status_get_ccx( laird_session_handle session,
+                                       unsigned char *ap_ip,
+                                       char *ap_name,
+                                       char * clientname);
+// tcp stack related
+int dcal_device_status_get_tcp( laird_session_handle session,
+                                       unsigned char *ipv4,
+                                       char *ipv6);
+
+// things that could change moment to moment
 int dcal_device_status_get_connection( laird_session_handle session,
                                        unsigned int * cardstate,
                                        unsigned int * channel,
                                        int * rssi,
-                                       unsigned char *mac,
-                                       unsigned char *ipv4,
-                                       char *ipv6,
-                                       unsigned char *ap_mac,
-                                       unsigned char *ap_ip,
-                                       char *ap_name,
+                                       unsigned char *ap_mac);
+
+int dcal_device_status_get_connection_extended( laird_session_handle session,
                                        unsigned int *bitrate,
                                        unsigned int *txpower,
                                        unsigned int *dtim,
                                        unsigned int *beaconperiod);
 int dcal_device_status_get_cache_timeout( unsigned int *timeout);
+
+
 
 // WiFi Management
 int dcal_wifi_enable( laird_session_handle session);

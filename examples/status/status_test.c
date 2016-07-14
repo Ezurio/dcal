@@ -68,51 +68,73 @@ int main (int argc, char *argv[])
 	char profilename[NAME_SZ];
 	char ssid[SSID_SZ];
 	unsigned int ssid_len;
-	char clientname[NAME_SZ];
-	ret = dcal_device_status_get_settings( session, profilename, ssid, &ssid_len, clientname);
+	unsigned char mac[MAC_SZ];
+	ret = dcal_device_status_get_settings( session, profilename, ssid, &ssid_len, mac);
 
+	printf("Status:\n");
 	if (ret != DCAL_SUCCESS)
-		printf("unable to get settings: %d\n", ret);
+		printf("unable to get status: %d\n", ret);
+	else {
+		printf("\tProfile Name: %s\n", profilename);
+		// TODO - check id SSID is all ascii and print as hex if not
+		printf("\tSSID: %s\n", ssid);
+		printf("\tMAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
+		              mac[0],mac[1],mac[2],
+		              mac[3],mac[4],mac[5]);
+	}
+
+	unsigned char ap_ip[IP4_SZ];
+	char ap_name[NAME_SZ];
+	char clientname[NAME_SZ];
+	ret = dcal_device_status_get_ccx( session, ap_ip, ap_name, clientname);
+	printf("CCX status:\n");
+	if (ret != DCAL_SUCCESS)
+		printf("unable to get CCX status: %d\n", ret);
+	else {
+		printf("\tAP Name: %s\n", ap_name);
+		printf("\tAP IP: %d.%d.%d.%d\n",ap_ip[0],ap_ip[1],
+		                              ap_ip[2],ap_ip[3]);
+		printf("\tDevice Name: %s\n", clientname);
+	}
+
+	unsigned char ipv4[IP4_SZ];
+	char ipv6[IP6_STR_SZ];
+	ret = dcal_device_status_get_tcp(session, ipv4, ipv6);
+	printf("TCP status:\n");
+	if (ret != DCAL_SUCCESS)
+		printf("unable to get TCP status: %d\n", ret);
+	else {
+		printf("\tIP: %d.%d.%d.%d\n",ipv4[0],ipv4[1],
+		                           ipv4[2],ipv4[3]);
+		printf("\tIPv6: %s\n", ipv6);
+	}
 
 	unsigned int cardstate;
 	unsigned int channel;
 	int rssi;
-	unsigned char mac[MAC_SZ];
-	unsigned char ipv4[IP4_SZ];
-	char ipv6[IP6_STR_SZ];
 	unsigned char ap_mac[MAC_SZ];
-	unsigned char ap_ip[IP4_SZ];
-	char ap_name[NAME_SZ];
+	ret = dcal_device_status_get_connection(session, &cardstate, &channel, &rssi, ap_mac);
+	printf("Connection status:\n");
+	if (ret != DCAL_SUCCESS)
+		printf("unable to get connection status: %d\n", ret);
+	else {
+		printf("\tStatus: %s\n",cardState_to_string(cardstate));
+		printf("\tChannel: %d\n", channel);
+		printf("\trssi: %d\n", rssi);
+		printf("\tAP MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
+		              ap_mac[0],ap_mac[1],ap_mac[2],
+		              ap_mac[3],ap_mac[4],ap_mac[5]);
+	}
+
 	unsigned int bitrate;
 	unsigned int txpower;
 	unsigned int dtim;
 	unsigned int beaconperiod;
-
-	ret = dcal_device_status_get_connection( session, &cardstate, &channel, &rssi, mac, ipv4, ipv6, ap_mac, ap_ip, ap_name, &bitrate, &txpower, &dtim, &beaconperiod);
-
+	ret = dcal_device_status_get_connection_extended(session, &bitrate, &txpower, &dtim, &beaconperiod);
+	printf("extended connection status:\n");
 	if (ret != DCAL_SUCCESS)
-		printf("unable to read status\n");
+		printf("unable to get extended connection status: %d\n", ret);
 	else {
-		printf("Status:\n");
-		printf("\tStatus: %s\n",cardState_to_string(cardstate));
-		printf("\tProfile Name: %s\n", profilename);
-		printf("\tSSID: %s\n", ssid);
-		printf("\tChannel: %d\n", channel);
-		printf("\trssi: %d\n", rssi);
-		printf("\tDevice Name: %s\n", clientname);
-		printf("\tMAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
-		              mac[0],mac[1],mac[2],
-		              mac[3],mac[4],mac[5]);
-
-		printf("\tIP: %d.%d.%d.%d\n",ipv4[0],ipv4[1],
-		                           ipv4[2],ipv4[3]);
-		printf("\tIPv6: %s\n", ipv6);
-		printf("\tAP MAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
-		              ap_mac[0],ap_mac[1],ap_mac[2],
-		              ap_mac[3],ap_mac[4],ap_mac[5]);
-		printf("\tAP Name: %s\n", ap_name);
-		printf("\tAP IP: %d.%d.%d.%d\n",ap_ip[0],ap_ip[1],
-		                              ap_ip[2],ap_ip[3]);
 		printf("\tBit Rate: %d\n", bitrate);
 		printf("\tTx Power: %d\n", txpower);
 		printf("\tBeacon Period: %d\n", beaconperiod);
