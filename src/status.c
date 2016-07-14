@@ -212,6 +212,7 @@ int dcal_device_status_pull( laird_session_handle s)
 	memcpy(s_struct->ipv4, ns(Status_ip(status)), IP4_SZ);
 	memcpy(s_struct->ap_mac, ns(Status_AP_mac(status)), MAC_SZ);
 	memcpy(s_struct->ap_ip, ns(Status_AP_ip(status)), IP4_SZ);
+	strncpy(s_struct->ap_name, ns(Status_AP_name(status)), NAME_SZ);
 	s_struct->bitRate = ns(Status_bitRate(status))/2;
 	s_struct->txPower = ns(Status_txPower(status));
 	s_struct->beaconPeriod = ns(Status_beaconPeriod(status));
