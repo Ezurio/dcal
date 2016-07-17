@@ -5,19 +5,59 @@
 
 // First have to "object-ize" our api, because we have handles, but we can't
 // easily send those back and forth to python
-class version
+class sdk_version
 {
   public:
 	unsigned int sdk;
+};
+
+class chipset_version
+{
+  public:
 	int chipset;
+};
+
+class system_version
+{
+  public:
 	int sys;
+};
+
+class driver_version
+{
+  public:
 	unsigned int driver;
+};
+
+class dcas_version
+{
+  public:
 	unsigned int dcas;
+};
+
+class dcal_version
+{
+  public:
 	unsigned int dcal;
+};
+
+class firmware_version
+{
+  public:
 	char _firmware[STR_SZ];
 	boost::python::object firmware() const { return boost::python::object(_firmware); }
+};
+
+class supplicant_version
+{
+  public:
 	char _supplicant[STR_SZ];
 	boost::python::object supplicant() const { return boost::python::object(_supplicant); }
+};
+
+class release_version
+{
+  public:
 	char _release[STR_SZ];
 	boost::python::object release() const { return boost::python::object(_release); }
 };
@@ -86,44 +126,123 @@ class dcal
 	int session_close() { return dcal_session_close(session); };
 
 	// Device Status
-	int version_pull( class version & v )
-	{
+	int get_sdk_version( class sdk_version & v ){
 		int ret;
 		unsigned int sdk;
-		RADIOCHIPSET chipset;
-		LRD_SYSTEM sys;
-		unsigned int driver;
-		unsigned int dcas;
-		unsigned int dcal;
-		char firmware[STR_SZ];
-		char supplicant[STR_SZ];
-		char release[STR_SZ];
 
-		ret = dcal_device_version_pull( session,
-						&sdk,
-						&chipset,
-						&sys,
-						&driver,
-						&dcas,
-						&dcal,
-						firmware,
-						supplicant,
-						release);
+		ret = dcal_get_sdk_version( session, &sdk );
+
 		if (ret == DCAL_SUCCESS)
 		{
 			v.sdk = sdk;
-			v.chipset = chipset;
-			v.sys = sys;
-			v.driver = driver;
-			v.dcas = dcas;
-			v.dcal = dcal;
-			strncpy(v._firmware, firmware, STR_SZ);
-			strncpy(v._supplicant, supplicant, STR_SZ);
-			strncpy(v._release, release, STR_SZ);
 		}
-
 		return ret;
 	};
+
+	int get_chipset_version( class chipset_version & v ){
+		int ret;
+		RADIOCHIPSET chipset;
+
+		ret = dcal_get_chipset_version( session, &chipset );
+
+		if (ret == DCAL_SUCCESS)
+		{
+			v.chipset = chipset;
+		}
+		return ret;
+	};
+
+	int get_system_version( class system_version & v ){
+		int ret;
+		LRD_SYSTEM sys;
+
+		ret = dcal_get_system_version( session, &sys );
+
+		if (ret == DCAL_SUCCESS)
+		{
+			v.sys = sys;
+		}
+		return ret;
+	};
+
+	int get_driver_version( class driver_version & v ){
+		int ret;
+		unsigned int driver;
+
+		ret = dcal_get_driver_version( session, &driver );
+
+		if (ret == DCAL_SUCCESS)
+		{
+			v.driver = driver;
+		}
+		return ret;
+	};
+
+	int get_dcas_version( class dcas_version & v ){
+		int ret;
+		unsigned int dcas;
+
+		ret = dcal_get_dcas_version( session, &dcas );
+
+		if (ret == DCAL_SUCCESS)
+		{
+			v.dcas = dcas;
+		}
+		return ret;
+	};
+
+	int get_dcal_version( class dcal_version & v ){
+		int ret;
+		unsigned int dcal;
+
+		ret = dcal_get_dcal_version( session, &dcal );
+
+		if (ret == DCAL_SUCCESS)
+		{
+			v.dcal = dcal;
+		}
+		return ret;
+	};
+
+	int get_firmware_version( class firmware_version & v ){
+		int ret;
+		char firmware[STR_SZ];
+
+		ret = dcal_get_firmware_version( session, firmware );
+
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(v._firmware, firmware, STR_SZ);
+		}
+		return ret;
+	};
+
+	int get_supplicant_version( class supplicant_version & v ){
+		int ret;
+		char supplicant[STR_SZ];
+
+		ret = dcal_get_supplicant_version( session, supplicant );
+
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(v._supplicant, supplicant, STR_SZ);
+		}
+		return ret;
+	};
+
+	int get_release_version( class release_version & v ){
+		int ret;
+		char release[STR_SZ];
+
+		ret = dcal_get_supplicant_version( session, release );
+
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(v._release, release, STR_SZ);
+		}
+		return ret;
+	};
+
 	int device_status_pull() { return dcal_device_status_pull(session); };
 
 	int device_status_get_settings(class settings & s) {
@@ -250,16 +369,40 @@ using namespace boost::python;
 
 BOOST_PYTHON_MODULE(dcal_py)
 {
-	class_<version>("version")
-		.def_readwrite("sdk", &version::sdk)
-		.def_readwrite("chipset", &version::chipset)
-		.def_readwrite("sys", &version::sys)
-		.def_readwrite("driver", &version::driver)
-		.def_readwrite("dcas", &version::dcas)
-		.def_readwrite("dcal", &version::dcal)
-		.def("firmware", &version::firmware)
-		.def("supplicant", &version::supplicant)
-		.def("release", &version::release)
+	class_<sdk_version>("sdk_version")
+		.def_readwrite("sdk", &sdk_version::sdk)
+	;
+
+	class_<chipset_version>("chipset_version")
+		.def_readwrite("chipset", &chipset_version::chipset)
+	;
+
+	class_<system_version>("system_version")
+		.def_readwrite("sys", &system_version::sys)
+	;
+
+	class_<driver_version>("driver_version")
+		.def_readwrite("driver", &driver_version::driver)
+	;
+
+	class_<dcas_version>("dcas_version")
+		.def_readwrite("dcas", &dcas_version::dcas)
+	;
+
+	class_<dcal_version>("dcal_version")
+		.def_readwrite("dcal", &dcal_version::dcal)
+	;
+
+	class_<firmware_version>("firmware_version")
+		.def("firmware", &firmware_version::firmware)
+	;
+
+	class_<supplicant_version>("supplicant_version")
+		.def("supplicant", &supplicant_version::supplicant)
+	;
+
+	class_<release_version>("release_version")
+		.def("release", &release_version::release)
 	;
 
 	class_<settings>("settings")
@@ -304,7 +447,15 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("session_open", &dcal::session_open)
 		.def("session_close", &dcal::session_close)
 		// Device status/info
-		.def("version_pull", &dcal::version_pull)
+		.def("get_sdk_version", &dcal::get_sdk_version)
+		.def("get_chipset_version", &dcal::get_chipset_version)
+		.def("get_system_version", &dcal::get_system_version)
+		.def("get_driver_version", &dcal::get_driver_version)
+		.def("get_dcas_version", &dcal::get_dcas_version)
+		.def("get_dcal_version", &dcal::get_dcal_version)
+		.def("get_firmware_version", &dcal::get_firmware_version)
+		.def("get_supplicant_version", &dcal::get_supplicant_version)
+		.def("get_release_version", &dcal::get_release_version)
 		.def("device_status_pull", &dcal::device_status_pull)
 		.def("device_status_get_settings", &dcal::device_status_get_settings)
 		.def("device_status_get_ccx", &dcal::device_status_get_ccx)
