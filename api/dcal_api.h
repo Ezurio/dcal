@@ -21,14 +21,13 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "version.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #include "sdc_sdk_legacy.h"
-
-#define DCAL_API_VERSION 0x01010101
 
 typedef enum _DCAL_ERR{
 	DCAL_SUCCESS = 0,
