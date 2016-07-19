@@ -6,8 +6,8 @@ APPDIR=../../apps/examples
 LIBDIR=../../api
 OBJDIR=obj
 
-LIBS = -ldcal -lssh -lflatccrt -lsessopt
-LFLAGS = -L$(LIBDIR) $(LIBS)
+LIBS = -ldcal -lflatccrt -lsessopt -lssh
+LFLAGS = -L$(LIBDIR) $(LIBS) -L$(LIBDIR)/lib
 CFLAGS = -g -Wall -I$(IDIR)
 
 .PHONY: default all clean
