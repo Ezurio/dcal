@@ -50,8 +50,16 @@ int main (int argc, char *argv[])
 
 	unsigned int cache_time;
 	dcal_device_status_get_cache_timeout(&cache_time);
-
 	dcal_device_status_pull( session );
+	printf("status pulled from device\n");
+	char profilename[NAME_SZ];
+	ret = dcal_device_status_get_settings( session, profilename, NULL, NULL, NULL);
+	if (ret != DCAL_SUCCESS)
+		printf("unable to get status: %d\n", ret);
+	else 
+		printf("\tProfile Name: %s\n", profilename);
+
+	printf ("Checking for data going stale - should do so in %d seconds\n", cache_time);
 	for (cache_time+=2;cache_time;cache_time--){
 		printf("%d..",cache_time);
 		fflush(stdout);
@@ -64,8 +72,8 @@ int main (int argc, char *argv[])
 		printf("\nincorrect return code: %d\n", ret);
 
 	dcal_device_status_pull( session );
+	printf("status pulled from device again\n");
 
-	char profilename[NAME_SZ];
 	char ssid[SSID_SZ];
 	unsigned int ssid_len;
 	unsigned char mac[MAC_SZ];
