@@ -12,7 +12,7 @@ int build_query_version( flatcc_builder_t *B)
 	flatbuffers_buffer_start(B, ns(Command_type_identifier));
 
 	ns(Command_start(B));
-	ns(Command_command_add(B, ns(Commands_GETVERSION)));
+	ns(Command_command_add(B, ns(Commands_GETVERSIONS)));
 	ns(Command_end_as_root(B));
 
 	return 0;

@@ -108,23 +108,126 @@ int dcal_wifi_profile_create( laird_profile_handle * profile)
 }
 
 int dcal_wifi_profile_pull( laird_session_handle session,
-                                 laird_profile_handle profile,
+                                 laird_profile_handle * profile,
                                  char * profilename)
 {
 	int ret = DCAL_SUCCESS;
 	REPORT_ENTRY_DEBUG;
 
-	if ((session==NULL) || (profile==NULL) ||
-	                       (profilename==NULL) || (profilename[0]==0))
+
+	if ((session==NULL) || (profilename==NULL) || (profilename[0]==0))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		//TODO
-		//
-		//first pull profile from WB
-		//
+		internal_session_handle s = (internal_session_handle)session;
+		ns(Cmd_pl_union_ref_t) cmd_pl;
+		// Attempt to retrieve profile from device
+		flatcc_builder_t *B;
+		char buffer[BUF_SZ] = {0};
+		size_t size = BUF_SZ;
+		flatbuffers_thash_t buftype;
+
+		B = &s->builder;
+		flatcc_builder_reset(B);
+
+		ns(String_start(B));
+		ns(String_value_create_str(B, profilename));
+
+		cmd_pl.String = ns(String_end(B));
+		cmd_pl.type = ns(Cmd_pl_String);
+
+		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+		ns(Command_start(B));
+		ns(Command_cmd_pl_add(B, cmd_pl));
+		ns(Command_command_add(B, ns(Commands_GETPROFILE)));
+		ns(Command_end_as_root(B));
+
+		size=flatcc_builder_get_buffer_size(B);
+		assert(size<=BUF_SZ);
+		flatcc_builder_copy_buffer(B, buffer, size);
+		ret = dcal_send_buffer(session, buffer, size);
+
+		if (ret != DCAL_SUCCESS)
+			return REPORT_RETURN_DBG(ret);
+
+		//get response
+		size=BUF_SZ;
+		ret = dcal_read_buffer(session, buffer, &size);
+
+		if (ret != DCAL_SUCCESS)
+			return REPORT_RETURN_DBG(ret);
+
+		//is return buffer an ack buffer?
+		buftype = verify_buffer(buffer, size);
+
+		if(buftype != ns(Profile_type_hash)) {
+			if(buftype != ns(Handshake_type_hash)){
+				DBGERROR("could not verify handshake buffer.  Validated as: %s\n", buftype_to_string(buftype));
+				return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
+			}
+
+			ret =handshake_error_code(ns(Handshake_as_root(buffer)));
+
+			DBGERROR("Failed to retrieve profile: %s.  Error received: %d\n",
+			          profilename ,ret);
+			return REPORT_RETURN_DBG(ret);
+		}
+
 		//if valid, get handle (ifdef for STATIC or not)
-		//
-		//copy data from buffer to handle 
+		dcal_wifi_profile_create( profile);
+
+
+		assert(*profile);
+		//copy data from buffer to handle
+		internal_profile_handle p = (internal_profile_handle)*profile;
+
+		ns(Profile_table_t) pt = ns(Profile_as_root(buffer));
+
+		strncpy(p->profilename, ns(Profile_name(pt)), CONFIG_NAME_SZ);
+		p->ssid.len = flatbuffers_uint8_vec_len(ns(Profile_ssid(pt)));
+		assert(p->ssid.len <= SSID_SZ);
+		memcpy(p->ssid.val, ns(Profile_ssid(pt)), p->ssid.len);
+		strncpy(p->clientname, ns(Profile_client_name(pt)), CLIENT_NAME_SZ);
+		p->txpower = ns(Profile_txPwr(pt));
+		p->authtype = ns(Profile_auth(pt));
+		p->eap = ns(Profile_eap(pt));
+		p->pspdelay = ns(Profile_pspDelay(pt));
+		p->powersave = ns(Profile_pwrsave(pt));
+		p->weptype = ns(Profile_weptype(pt));
+		switch(p->weptype){
+			case WPA_PSK:
+			case WPA2_PSK:
+			case WPA_PSK_AES:
+			case WPA2_PSK_TKIP:
+			case WAPI_PSK:
+				p->psk = true;
+				break;
+			default:
+				p->psk = false;
+				break;
+		}
+		switch(p->weptype){
+			case WPA2_AES:
+			case CCKM_AES:
+			case WPA_PSK_AES:
+			case WPA_AES:
+			case WPA2_PSK:
+				p->aes = true;
+				break;
+			default:
+				p->aes = false;
+				break;
+		}
+
+		p->bitrate = ns(Profile_bitrate(pt));
+		p->radiomode = ns(Profile_radiomode(pt));
+//
+//TODO
+//	handle auto profile value in profile
+//	p->autoprofile = ns(Profile_???(pt));
+		#ifdef STATIC_MEM
+		p->valid = true;
+		#endif
+
 	}
 	return REPORT_RETURN_DBG(ret);
 }
@@ -283,6 +386,67 @@ int dcal_wifi_profile_activate_by_name( laird_session_handle session,
 		ns(Command_start(B));
 		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_ACTIVATEPROFILE)));
+		ns(Command_end_as_root(B));
+
+		size=flatcc_builder_get_buffer_size(B);
+		assert(size<=BUF_SZ);
+		flatcc_builder_copy_buffer(B, buffer, size);
+		ret = dcal_send_buffer(session, buffer, size);
+
+		if (ret != DCAL_SUCCESS)
+			return REPORT_RETURN_DBG(ret);
+
+		//get response
+		size=BUF_SZ;
+		ret = dcal_read_buffer(session, buffer, &size);
+
+		if (ret != DCAL_SUCCESS)
+			return REPORT_RETURN_DBG(ret);
+
+		//is return buffer an ack buffer?
+			buftype = verify_buffer(buffer, size);
+
+		if(buftype != ns(Handshake_type_hash)){
+			DBGERROR("could not verify handshake buffer.  Validated as: %s\n", buftype_to_string(buftype));
+			return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
+		}
+
+		ret =handshake_error_code(ns(Handshake_as_root(buffer)));
+
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_profile_delete_from_device( laird_session_handle session,
+                                          char * profile_name)
+{
+	int ret = DCAL_SUCCESS;
+	internal_session_handle s = (internal_session_handle)session;
+	ns(Cmd_pl_union_ref_t) cmd_pl;
+	REPORT_ENTRY_DEBUG;
+
+	if ((session==NULL) || (profile_name==NULL) || (profile_name[0]==0))
+		ret = DCAL_INVALID_PARAMETER;
+	else {
+		flatcc_builder_t *B;
+		char buffer[BUF_SZ] = {0};
+		size_t size = BUF_SZ;
+		flatbuffers_thash_t buftype;
+
+		B = &s->builder;
+		flatcc_builder_reset(B);
+
+		ns(String_start(B));
+		ns(String_value_create_str(B, profile_name));
+
+		cmd_pl.String = ns(String_end(B));
+		cmd_pl.type = ns(Cmd_pl_String);
+
+		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+		ns(Command_start(B));
+		ns(Command_cmd_pl_add(B, cmd_pl));
+		ns(Command_command_add(B, ns(Commands_DELPROFILE)));
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);
@@ -1301,7 +1465,7 @@ void dcal_wifi_profile_printf( laird_profile_handle profile)
 		return;
 	}
 	#ifdef STATIC_MEM
-		printf("\tvalid: %svalid\n",p->vaid?"":"not ");
+		printf("\tvalid: %svalid\n",p->valid?"":"not ");
 	#endif
 	printf("\tprofilename: %s\n", p->profilename);
 	printf("\tssid: %s\n", p->ssid.val);

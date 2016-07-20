@@ -134,7 +134,7 @@ int dcal_wifi_disable( laird_session_handle session);
 // both the create and pull functions will allocate a laird_profile_handle that require the close_handle function to be called when done with then handle
 int dcal_wifi_profile_create( laird_profile_handle * profile);
 int dcal_wifi_profile_pull( laird_session_handle session,
-                                 laird_profile_handle profile,
+                                 laird_profile_handle * profile,
                                  char * profilename);
 int dcal_wifi_profile_close_handle( laird_profile_handle profile);
 
@@ -144,6 +144,8 @@ int dcal_wifi_profile_push( laird_session_handle session,
 int dcal_wifi_profile_activate( laird_session_handle sesion,
                                      laird_profile_handle profile);
 int dcal_wifi_profile_activate_by_name( laird_session_handle session,
+                                          char * profile_name);
+int dcal_wifi_profile_delete_from_device( laird_session_handle session,
                                           char * profile_name);
 
 int dcal_wifi_profile_set_profilename(laird_profile_handle profile,
