@@ -251,9 +251,9 @@ int dcal_wifi_profile_set_clientname( laird_profile_handle profile,
 int dcal_wifi_profile_get_clientname( laird_profile_handle profile,
                                 char * clientname_buffer);
 
-int dcal_wifi_profile_set_radionmode( laird_profile_handle profile,
+int dcal_wifi_profile_set_radiomode( laird_profile_handle profile,
                                 RADIOMODE mode);
-int dcal_wifi_profile_get_radionmode( laird_profile_handle profile,
+int dcal_wifi_profile_get_radiomode( laird_profile_handle profile,
                                 RADIOMODE * mode);
 
 int dcal_wifi_profile_set_powersave( laird_profile_handle profile,
