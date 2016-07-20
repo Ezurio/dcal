@@ -276,9 +276,9 @@ int dcal_wifi_profile_set_bitrate( laird_profile_handle profile,
 int dcal_wifi_profile_get_bitrate( laird_profile_handle profile,
                                BITRATE *bitrate);
 
-int dcal_wifi_profile_set_profile( laird_profile_handle profile,
+int dcal_wifi_profile_set_autoprofile( laird_profile_handle profile,
                                bool autoprofile);
-int dcal_wifi_profile_get_profile( laird_profile_handle profile,
+int dcal_wifi_profile_get_autoprofile( laird_profile_handle profile,
                                bool *autoprofile);
 
 void dcal_wifi_profile_printf( laird_profile_handle profile);
