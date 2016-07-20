@@ -693,17 +693,18 @@ int dcal_wifi_profile_set_psk( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_psk( laird_profile_handle profile,
-                                    char * psk_buffer)
+int dcal_wifi_profile_psk_is_set( laird_profile_handle profile,
+                                    bool * psk)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	REPORT_ENTRY_DEBUG;
 
-	if ((profile==NULL) || (psk_buffer==NULL))
+	if ((profile==NULL) || (psk==NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		copy_psk(p, psk_buffer);
+		//assumes no null characters allowed in field
+		*psk = p->security1[0]==0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -729,17 +730,18 @@ int dcal_wifi_profile_set_user( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_user( laird_profile_handle profile,
-                                     char * user_buffer)
+int dcal_wifi_profile_user_is_set( laird_profile_handle profile,
+                                     bool * user)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	REPORT_ENTRY_DEBUG;
 
-	if ((profile==NULL) || (user_buffer==NULL))
+	if ((profile==NULL) || (user==NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		copy_user(p, user_buffer);
+		//assumes no null characters allowed in field
+		*user=p->security1[0]==0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -765,17 +767,18 @@ int dcal_wifi_profile_set_password( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_password( laird_profile_handle profile,
-                                         char * password_buffer)
+int dcal_wifi_profile_password_is_set( laird_profile_handle profile,
+                                         bool * password)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	REPORT_ENTRY_DEBUG;
 
-	if ((profile==NULL) || (password_buffer==NULL))
+	if ((profile==NULL) || (password==NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		copy_password(p, password_buffer);
+		//assumes no null characters allowed in field
+		*password = p->security2[0]==0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -801,17 +804,18 @@ int dcal_wifi_profile_set_cacert( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_cacert( laird_profile_handle profile,
-                                       char * cacert_buffer)
+int dcal_wifi_profile_cacert_is_set( laird_profile_handle profile,
+                                       bool * cacert)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	REPORT_ENTRY_DEBUG;
 
-	if ((profile==NULL) || (cacert_buffer==NULL))
+	if ((profile==NULL) || (cacert==NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		copy_cacert(p, cacert_buffer);
+		//assumes no null characters allowed in field
+		*cacert = p->security3[0]==0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -838,16 +842,17 @@ int dcal_wifi_profile_set_pacfile( laird_profile_handle profile,
 }
 
 int dcal_wifi_profile_get_pacfile( laird_profile_handle profile,
-                                 char * pacfilename_buffer)
+                                 bool * pacfilename)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	REPORT_ENTRY_DEBUG;
 
-	if ((profile==NULL) || (pacfilename_buffer==NULL))
+	if ((profile==NULL) || (pacfilename==NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		copy_pacfilename(p, pacfilename_buffer);
+		//assumes no null characters allowed in field
+		*pacfilename = p->security3[0]==0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -873,17 +878,18 @@ int dcal_wifi_profile_set_pacpassword( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_pacpassword( laird_profile_handle profile,
-                                 char * pacpassword_buffer)
+int dcal_wifi_profile_pacpassword_is_set( laird_profile_handle profile,
+                                 bool * pacpassword)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	REPORT_ENTRY_DEBUG;
 
-	if ((profile==NULL) || (pacpassword_buffer==NULL))
+	if ((profile==NULL) || (pacpassword==NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		copy_pacpassword(p, pacpassword_buffer);
+		//assumes no null characters allowed in field
+		*pacpassword = p->security4[0]==0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -909,17 +915,18 @@ int dcal_wifi_profile_set_usercert( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_usercert( laird_profile_handle profile,
-                                 char * usercert_buffer)
+int dcal_wifi_profile_usercert_is_set( laird_profile_handle profile,
+                                 bool * usercert)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	REPORT_ENTRY_DEBUG;
 
-	if ((profile==NULL) || (usercert_buffer==NULL))
+	if ((profile==NULL) || (usercert==NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		copy_usercert(p, usercert_buffer);
+		//assumes no null characters allowed in field
+		*usercert= p->security4[0]==0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -945,17 +952,18 @@ int dcal_wifi_profile_set_usercert_password( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_usercert_password( laird_profile_handle profile,
-                                 char * usercert_password_buffer)
+int dcal_wifi_profile_usercert_password_is_set( laird_profile_handle profile,
+                                 bool * usercert_password)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	REPORT_ENTRY_DEBUG;
 
-	if ((profile==NULL) || (usercert_password_buffer==NULL))
+	if ((profile==NULL) || (usercert_password==NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	else {
-		copy_usercertpassword(p, usercert_password_buffer);
+		//assumes no null characters allowed in field
+		*usercert_password= p->security4[0]==0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -1286,6 +1294,12 @@ void dcal_wifi_profile_printf( laird_profile_handle profile)
 	char * str=NULL;
 
 	printf("Profile:\n");
+
+	if (p==NULL)
+	{
+		printf("is null\n");
+		return;
+	}
 	#ifdef STATIC_MEM
 		printf("\tvalid: %svalid\n",p->vaid?"":"not ");
 	#endif
