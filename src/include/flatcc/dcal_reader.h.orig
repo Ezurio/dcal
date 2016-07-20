@@ -43,12 +43,9 @@ typedef flatbuffers_uoffset_t *DCAL_session_Globals_mutable_vec_t;
 typedef const struct DCAL_session_Profile_table *DCAL_session_Profile_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Profile_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Profile_mutable_vec_t;
-typedef const struct DCAL_session_P_entry_table *DCAL_session_P_entry_table_t;
-typedef const flatbuffers_uoffset_t *DCAL_session_P_entry_vec_t;
-typedef flatbuffers_uoffset_t *DCAL_session_P_entry_mutable_vec_t;
-typedef const struct DCAL_session_Profile_list_table *DCAL_session_Profile_list_table_t;
-typedef const flatbuffers_uoffset_t *DCAL_session_Profile_list_vec_t;
-typedef flatbuffers_uoffset_t *DCAL_session_Profile_list_mutable_vec_t;
+typedef const struct DCAL_session_Profiles_table *DCAL_session_Profiles_table_t;
+typedef const flatbuffers_uoffset_t *DCAL_session_Profiles_vec_t;
+typedef flatbuffers_uoffset_t *DCAL_session_Profiles_mutable_vec_t;
 typedef const struct DCAL_session_Command_table *DCAL_session_Command_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Command_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Command_mutable_vec_t;
@@ -74,33 +71,34 @@ static inline const char *DCAL_session_Magic_name(DCAL_session_Magic_enum_t valu
 typedef uint32_t DCAL_session_Commands_enum_t;
 __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_enum_t, 32)
 #define DCAL_session_Commands_INVALID ((DCAL_session_Commands_enum_t)0UL)
-#define DCAL_session_Commands_GETVERSIONS ((DCAL_session_Commands_enum_t)1UL)
+#define DCAL_session_Commands_GETVERSION ((DCAL_session_Commands_enum_t)1UL)
 #define DCAL_session_Commands_GETSTATUS ((DCAL_session_Commands_enum_t)2UL)
 #define DCAL_session_Commands_GETPROFILE ((DCAL_session_Commands_enum_t)3UL)
 #define DCAL_session_Commands_SETPROFILE ((DCAL_session_Commands_enum_t)4UL)
 #define DCAL_session_Commands_DELPROFILE ((DCAL_session_Commands_enum_t)5UL)
-#define DCAL_session_Commands_GETPROFILELIST ((DCAL_session_Commands_enum_t)6UL)
+#define DCAL_session_Commands_GETPROFILES ((DCAL_session_Commands_enum_t)6UL)
 #define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)7UL)
+<<<<<<< HEAD
+#define DCAL_session_Commands_ENABLERADIO ((DCAL_session_Commands_enum_t)8UL)
+#define DCAL_session_Commands_DISABLERADIO ((DCAL_session_Commands_enum_t)9UL)
+=======
 #define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)8UL)
 #define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)9UL)
-#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)10UL)
-#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)11UL)
+>>>>>>> edc8090... add version command
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
     switch (value) {
     case DCAL_session_Commands_INVALID: return "INVALID";
-    case DCAL_session_Commands_GETVERSIONS: return "GETVERSIONS";
+    case DCAL_session_Commands_GETVERSION: return "GETVERSION";
     case DCAL_session_Commands_GETSTATUS: return "GETSTATUS";
     case DCAL_session_Commands_GETPROFILE: return "GETPROFILE";
     case DCAL_session_Commands_SETPROFILE: return "SETPROFILE";
     case DCAL_session_Commands_DELPROFILE: return "DELPROFILE";
-    case DCAL_session_Commands_GETPROFILELIST: return "GETPROFILELIST";
+    case DCAL_session_Commands_GETPROFILES: return "GETPROFILES";
     case DCAL_session_Commands_ACTIVATEPROFILE: return "ACTIVATEPROFILE";
     case DCAL_session_Commands_WIFIENABLE: return "WIFIENABLE";
     case DCAL_session_Commands_WIFIDISABLE: return "WIFIDISABLE";
-    case DCAL_session_Commands_WIFIRESTART: return "WIFIRESTART";
-    case DCAL_session_Commands_SYSTEMREBOOT: return "SYSTEMREBOOT";
     default: return "";
     }
 }
@@ -140,10 +138,15 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 3, 0, t)
 static inline int DCAL_session_Handshake_api_level_is_present(DCAL_session_Handshake_table_t t)
 __flatbuffers_field_present(3, t)
 
-static inline uint32_t DCAL_session_Handshake_error(DCAL_session_Handshake_table_t t)
+static inline uint32_t DCAL_session_Handshake_sdk_error(DCAL_session_Handshake_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 4, 0, t)
-static inline int DCAL_session_Handshake_error_is_present(DCAL_session_Handshake_table_t t)
+static inline int DCAL_session_Handshake_sdk_error_is_present(DCAL_session_Handshake_table_t t)
 __flatbuffers_field_present(4, t)
+
+static inline uint32_t DCAL_session_Handshake_dcal_error(DCAL_session_Handshake_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 5, 0, t)
+static inline int DCAL_session_Handshake_dcal_error_is_present(DCAL_session_Handshake_table_t t)
+__flatbuffers_field_present(5, t)
 
 
 struct DCAL_session_Event_table { uint8_t unused__; };
@@ -533,29 +536,29 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 3, 0, t)
 static inline int DCAL_session_Profile_txPwr_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(3, t)
 
-static inline uint32_t DCAL_session_Profile_pwrsave(DCAL_session_Profile_table_t t)
+static inline uint32_t DCAL_session_Profile_auth(DCAL_session_Profile_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 4, 0, t)
-static inline int DCAL_session_Profile_pwrsave_is_present(DCAL_session_Profile_table_t t)
+static inline int DCAL_session_Profile_auth_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(4, t)
 
-static inline uint32_t DCAL_session_Profile_pspDelay(DCAL_session_Profile_table_t t)
+static inline uint32_t DCAL_session_Profile_eap(DCAL_session_Profile_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 5, 0, t)
-static inline int DCAL_session_Profile_pspDelay_is_present(DCAL_session_Profile_table_t t)
+static inline int DCAL_session_Profile_eap_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(5, t)
 
-static inline uint32_t DCAL_session_Profile_weptype(DCAL_session_Profile_table_t t)
+static inline uint32_t DCAL_session_Profile_pwrsave(DCAL_session_Profile_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 6, 0, t)
-static inline int DCAL_session_Profile_weptype_is_present(DCAL_session_Profile_table_t t)
+static inline int DCAL_session_Profile_pwrsave_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(6, t)
 
-static inline uint32_t DCAL_session_Profile_auth(DCAL_session_Profile_table_t t)
+static inline uint32_t DCAL_session_Profile_pspDelay(DCAL_session_Profile_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 7, 0, t)
-static inline int DCAL_session_Profile_auth_is_present(DCAL_session_Profile_table_t t)
+static inline int DCAL_session_Profile_pspDelay_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(7, t)
 
-static inline uint32_t DCAL_session_Profile_eap(DCAL_session_Profile_table_t t)
+static inline uint32_t DCAL_session_Profile_wep(DCAL_session_Profile_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 8, 0, t)
-static inline int DCAL_session_Profile_eap_is_present(DCAL_session_Profile_table_t t)
+static inline int DCAL_session_Profile_wep_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(8, t)
 
 static inline uint32_t DCAL_session_Profile_bitrate(DCAL_session_Profile_table_t t)
@@ -563,87 +566,48 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 9, 0, t)
 static inline int DCAL_session_Profile_bitrate_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(9, t)
 
-static inline uint32_t DCAL_session_Profile_radiomode(DCAL_session_Profile_table_t t)
+static inline uint32_t DCAL_session_Profile_mode(DCAL_session_Profile_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 10, 0, t)
-static inline int DCAL_session_Profile_radiomode_is_present(DCAL_session_Profile_table_t t)
+static inline int DCAL_session_Profile_mode_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(10, t)
 
-static inline flatbuffers_string_t DCAL_session_Profile_security1(DCAL_session_Profile_table_t t)
+static inline flatbuffers_string_t DCAL_session_Profile_usr_name(DCAL_session_Profile_table_t t)
 __flatbuffers_vector_field(flatbuffers_string_t, 11, t, 0)
-static inline int DCAL_session_Profile_security1_is_present(DCAL_session_Profile_table_t t)
+static inline int DCAL_session_Profile_usr_name_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(11, t)
 
-static inline flatbuffers_string_t DCAL_session_Profile_security2(DCAL_session_Profile_table_t t)
-__flatbuffers_vector_field(flatbuffers_string_t, 12, t, 0)
-static inline int DCAL_session_Profile_security2_is_present(DCAL_session_Profile_table_t t)
+static inline flatbuffers_uint8_vec_t DCAL_session_Profile_pwd(DCAL_session_Profile_table_t t)
+__flatbuffers_vector_field(flatbuffers_uint8_vec_t, 12, t, 0)
+static inline int DCAL_session_Profile_pwd_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(12, t)
 
-static inline flatbuffers_string_t DCAL_session_Profile_security3(DCAL_session_Profile_table_t t)
-__flatbuffers_vector_field(flatbuffers_string_t, 13, t, 0)
-static inline int DCAL_session_Profile_security3_is_present(DCAL_session_Profile_table_t t)
+static inline flatbuffers_uint8_vec_t DCAL_session_Profile_psk(DCAL_session_Profile_table_t t)
+__flatbuffers_vector_field(flatbuffers_uint8_vec_t, 13, t, 0)
+static inline int DCAL_session_Profile_psk_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(13, t)
 
-static inline flatbuffers_string_t DCAL_session_Profile_security4(DCAL_session_Profile_table_t t)
-__flatbuffers_vector_field(flatbuffers_string_t, 14, t, 0)
-static inline int DCAL_session_Profile_security4_is_present(DCAL_session_Profile_table_t t)
+static inline flatbuffers_uint8_vec_t DCAL_session_Profile_keys(DCAL_session_Profile_table_t t)
+__flatbuffers_vector_field(flatbuffers_uint8_vec_t, 14, t, 0)
+static inline int DCAL_session_Profile_keys_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(14, t)
 
-static inline flatbuffers_string_t DCAL_session_Profile_security5(DCAL_session_Profile_table_t t)
-__flatbuffers_vector_field(flatbuffers_string_t, 15, t, 0)
-static inline int DCAL_session_Profile_security5_is_present(DCAL_session_Profile_table_t t)
-__flatbuffers_field_present(15, t)
 
-static inline uint32_t DCAL_session_Profile_weptxkey(DCAL_session_Profile_table_t t)
-__flatbuffers_scalar_field(flatbuffers_uint32, 16, 0, t)
-static inline int DCAL_session_Profile_weptxkey_is_present(DCAL_session_Profile_table_t t)
-__flatbuffers_field_present(16, t)
+struct DCAL_session_Profiles_table { uint8_t unused__; };
 
-
-struct DCAL_session_P_entry_table { uint8_t unused__; };
-
-#ifndef DCAL_session_P_entry_identifier
-#define DCAL_session_P_entry_identifier flatbuffers_identifier
+#ifndef DCAL_session_Profiles_identifier
+#define DCAL_session_Profiles_identifier flatbuffers_identifier
 #endif
-#define DCAL_session_P_entry_type_hash ((flatbuffers_thash_t)0xf897aa7e)
-#define DCAL_session_P_entry_type_identifier "\x7e\xaa\x97\xf8"
-static inline size_t DCAL_session_P_entry_vec_len(DCAL_session_P_entry_vec_t vec)
+#define DCAL_session_Profiles_type_hash ((flatbuffers_thash_t)0x60148279)
+#define DCAL_session_Profiles_type_identifier "\x79\x82\x14\x60"
+static inline size_t DCAL_session_Profiles_vec_len(DCAL_session_Profiles_vec_t vec)
 __flatbuffers_vec_len(vec)
-static inline DCAL_session_P_entry_table_t DCAL_session_P_entry_vec_at(DCAL_session_P_entry_vec_t vec, size_t i)
-__flatbuffers_offset_vec_at(DCAL_session_P_entry_table_t, vec, i, 0)
-__flatbuffers_table_as_root(DCAL_session_P_entry)
+static inline DCAL_session_Profiles_table_t DCAL_session_Profiles_vec_at(DCAL_session_Profiles_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(DCAL_session_Profiles_table_t, vec, i, 0)
+__flatbuffers_table_as_root(DCAL_session_Profiles)
 
-static inline flatbuffers_string_t DCAL_session_P_entry_name(DCAL_session_P_entry_table_t t)
-__flatbuffers_vector_field(flatbuffers_string_t, 0, t, 0)
-static inline int DCAL_session_P_entry_name_is_present(DCAL_session_P_entry_table_t t)
-__flatbuffers_field_present(0, t)
-
-static inline flatbuffers_bool_t DCAL_session_P_entry_active(DCAL_session_P_entry_table_t t)
-__flatbuffers_scalar_field(flatbuffers_bool, 1, 0, t)
-static inline int DCAL_session_P_entry_active_is_present(DCAL_session_P_entry_table_t t)
-__flatbuffers_field_present(1, t)
-
-static inline flatbuffers_bool_t DCAL_session_P_entry_autoprof(DCAL_session_P_entry_table_t t)
-__flatbuffers_scalar_field(flatbuffers_bool, 2, 0, t)
-static inline int DCAL_session_P_entry_autoprof_is_present(DCAL_session_P_entry_table_t t)
-__flatbuffers_field_present(2, t)
-
-
-struct DCAL_session_Profile_list_table { uint8_t unused__; };
-
-#ifndef DCAL_session_Profile_list_identifier
-#define DCAL_session_Profile_list_identifier flatbuffers_identifier
-#endif
-#define DCAL_session_Profile_list_type_hash ((flatbuffers_thash_t)0xe6d21719)
-#define DCAL_session_Profile_list_type_identifier "\x19\x17\xd2\xe6"
-static inline size_t DCAL_session_Profile_list_vec_len(DCAL_session_Profile_list_vec_t vec)
-__flatbuffers_vec_len(vec)
-static inline DCAL_session_Profile_list_table_t DCAL_session_Profile_list_vec_at(DCAL_session_Profile_list_vec_t vec, size_t i)
-__flatbuffers_offset_vec_at(DCAL_session_Profile_list_table_t, vec, i, 0)
-__flatbuffers_table_as_root(DCAL_session_Profile_list)
-
-static inline DCAL_session_P_entry_vec_t DCAL_session_Profile_list_profiles(DCAL_session_Profile_list_table_t t)
-__flatbuffers_vector_field(DCAL_session_P_entry_vec_t, 0, t, 0)
-static inline int DCAL_session_Profile_list_profiles_is_present(DCAL_session_Profile_list_table_t t)
+static inline DCAL_session_Profile_vec_t DCAL_session_Profiles_profiles(DCAL_session_Profiles_table_t t)
+__flatbuffers_vector_field(DCAL_session_Profile_vec_t, 0, t, 0)
+static inline int DCAL_session_Profiles_profiles_is_present(DCAL_session_Profiles_table_t t)
 __flatbuffers_field_present(0, t)
 
 typedef uint8_t DCAL_session_Cmd_pl_union_type_t;
@@ -651,8 +615,9 @@ __flatbuffers_define_integer_type(DCAL_session_Cmd_pl, DCAL_session_Cmd_pl_union
 #define DCAL_session_Cmd_pl_NONE ((DCAL_session_Cmd_pl_union_type_t)0U)
 #define DCAL_session_Cmd_pl_Globals ((DCAL_session_Cmd_pl_union_type_t)1U)
 #define DCAL_session_Cmd_pl_Profile ((DCAL_session_Cmd_pl_union_type_t)2U)
-#define DCAL_session_Cmd_pl_U32 ((DCAL_session_Cmd_pl_union_type_t)3U)
-#define DCAL_session_Cmd_pl_String ((DCAL_session_Cmd_pl_union_type_t)4U)
+#define DCAL_session_Cmd_pl_Profiles ((DCAL_session_Cmd_pl_union_type_t)3U)
+#define DCAL_session_Cmd_pl_U32 ((DCAL_session_Cmd_pl_union_type_t)4U)
+#define DCAL_session_Cmd_pl_String ((DCAL_session_Cmd_pl_union_type_t)5U)
 
 static inline const char *DCAL_session_Cmd_pl_type_name(DCAL_session_Cmd_pl_union_type_t type)
 {
@@ -660,6 +625,7 @@ static inline const char *DCAL_session_Cmd_pl_type_name(DCAL_session_Cmd_pl_unio
     case DCAL_session_Cmd_pl_NONE: return "NONE";
     case DCAL_session_Cmd_pl_Globals: return "Globals";
     case DCAL_session_Cmd_pl_Profile: return "Profile";
+    case DCAL_session_Cmd_pl_Profiles: return "Profiles";
     case DCAL_session_Cmd_pl_U32: return "U32";
     case DCAL_session_Cmd_pl_String: return "String";
     default: return "";
