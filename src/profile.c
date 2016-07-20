@@ -28,7 +28,7 @@ static void clear_and_strncpy( char * dest, const char * src, size_t size)
 
 static void clear_security_by_index(internal_profile_handle p, int i)
 {
-	assert((i<1)||(i>5));
+	assert((i>0)&&(i<6));
 	switch(i){
 		case 1: memset(p->security1,0,CRYPT_BUFFER_SIZE);
 		case 2: memset(p->security2,0,CRYPT_BUFFER_SIZE);
