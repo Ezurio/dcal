@@ -58,8 +58,14 @@ flatbuffers_thash_t verify_buffer(const void * buf, const size_t size)
 				ret = 0;
 				}
 			break;
-		case ns(Profiles_type_hash):
-			if(ns(Profiles_verify_as_root(buf,size))){
+		case ns(P_entry_type_hash):
+			if(ns(P_entry_verify_as_root(buf,size))){
+				DBGERROR("%s: unable to verify buffer\n", __func__);
+				ret = 0;
+				}
+			break;
+		case ns(Profile_list_type_hash):
+			if(ns(Profile_list_verify_as_root(buf,size))){
 				DBGERROR("%s: unable to verify buffer\n", __func__);
 				ret = 0;
 				}
@@ -95,8 +101,10 @@ char * buftype_to_string(flatbuffers_thash_t buftype)
 		case ns(Profile_type_hash):
 			return "Profile";
 			break;
-		case ns(Profiles_type_hash):
-			return "Profiles";
+		case ns(P_entry_type_hash):
+			return "P_entry";
+		case ns(Profile_list_type_hash):
+			return "Profile_list";
 			break;
 
 		default:
