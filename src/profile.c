@@ -221,23 +221,16 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 		p->bitrate = ns(Profile_bitrate(pt));
 		p->radiomode = ns(Profile_radiomode(pt));
 		// we don't actually send the encrypted data - only null or "1"
-#if 0
-		printf("security: %s\n", ns(Profile_security1(pt)));
-		if(flatbuffers_string_len(ns(Profile_security1(pt))));
+		if(flatbuffers_string_len(ns(Profile_security1(pt))))
 			strncpy(p->security1, ns(Profile_security1(pt)), 1);
-		printf("security: %s\n", ns(Profile_security2(pt)));
-		if(flatbuffers_string_len(ns(Profile_security2(pt))));
+		if(flatbuffers_string_len(ns(Profile_security2(pt))))
 			strncpy(p->security2, ns(Profile_security2(pt)), 1);
-		printf("security: %s\n", ns(Profile_security3(pt)));
-		if(flatbuffers_string_len(ns(Profile_security3(pt))));
+		if(flatbuffers_string_len(ns(Profile_security3(pt))))
 			strncpy(p->security3, ns(Profile_security3(pt)), 1);
-		printf("security: %s\n", ns(Profile_security4(pt)));
-		if(flatbuffers_string_len(ns(Profile_security4(pt))));
+		if(flatbuffers_string_len(ns(Profile_security4(pt))))
 			strncpy(p->security4, ns(Profile_security4(pt)), 1);
-		printf("security: %s\n", ns(Profile_security5(pt)));
-		if(flatbuffers_string_len(ns(Profile_security5(pt))));
+		if(flatbuffers_string_len(ns(Profile_security5(pt))))
 			strncpy(p->security5, ns(Profile_security5(pt)), 1);
-#endif
 //
 //TODO
 //	handle auto profile value in profile
