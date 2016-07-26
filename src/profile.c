@@ -760,6 +760,7 @@ int dcal_wifi_profile_get_encryption( laird_profile_handle profile,
 			case CCKM_AES:
 			case WPA_AES:
 			case WPA_PSK_AES:
+			case WPA2_PSK:
 				*enc = ENC_AES;
 				break;
 			default:
