@@ -31,7 +31,20 @@ extern "C" {
 
 typedef enum _DCAL_ERR{
 	DCAL_SUCCESS = 0,
-	// save room for SDK errors
+	DCAL_HOST_GENERAL_FAIL,
+	DCAL_HOST_INVALID_NAME,
+	DCAL_HOST_INVALID_CONFIG,
+	DCAL_HOST_INVALID_DELETE,
+	DCAL_HOST_POWERCYCLE_REQUIRED,
+	DCAL_HOST_INVALID_PARAMETER,
+	DCAL_HOST_INVALID_EAP_TYPE,
+	DCAL_HOST_INVALID_WEP_TYPE,
+	DCAL_HOST_INVALID_FILE,
+	DCAL_HOST_INSUFFICIENT_MEMORY,
+	DCAL_HOST_NOT_IMPLEMENTED,
+	DCAL_HOST_NO_HARDWARE,
+	DCAL_HOST_INVALID_VALUE,
+
 	DCAL_INVALID_PARAMETER = 100,
 	DCAL_INVALID_HANDLE,
 	DCAL_HANDLE_IN_USE,
@@ -124,21 +137,23 @@ int dcal_device_status_get_connection_extended( laird_session_handle session,
                                        unsigned int *beaconperiod);
 int dcal_device_status_get_cache_timeout( unsigned int *timeout);
 
-
-
 // WiFi Management
 int dcal_wifi_enable( laird_session_handle session);
 int dcal_wifi_disable( laird_session_handle session);
 
 // WiFi Profile Management_
-// both the create and pull functions will allocate a laird_profile_handle that require the close_handle function to be called when done with then handle
+// both the create and pull functions will allocate a laird_profile_handle
+// that require the close_handle function to be called when done with then
+// handle
 int dcal_wifi_profile_create( laird_profile_handle * profile);
 int dcal_wifi_profile_pull( laird_session_handle session,
                                  laird_profile_handle * profile,
                                  char * profilename);
 int dcal_wifi_profile_close_handle( laird_profile_handle profile);
 
-//    push and profile_activate both send the local profile to the remote radio device.  Activate_by_name only activates the named profile on the remote radio
+// push and profile_activate both send the local profile to the remote radio
+// device.  Activate_by_name only activates the named profile on the remote
+// radio
 int dcal_wifi_profile_push( laird_session_handle session,
                                  laird_profile_handle profile);
 int dcal_wifi_profile_activate( laird_session_handle sesion,
@@ -153,7 +168,10 @@ int dcal_wifi_profile_set_profilename(laird_profile_handle profile,
 int dcal_wifi_profile_get_profilename(laird_profile_handle profile,
                                            char * profilename );
 
-// note the SSID is not a string as SSIDs can contain embedded non-ascii characters including embedded nulls  (the SDK on the device may not yet support non-ascii characters)
+// note the SSID is not a string as SSIDs can contain embedded non-ascii
+// characters including embedded nulls  (the SDK on the device may not yet
+// support non-ascii characters but handling it as if it can will allow us
+// future capabilities)
 int dcal_wifi_profile_set_SSID( laird_profile_handle profile,
                                        LRD_WF_SSID *ssid);
 int dcal_wifi_profile_get_SSID( laird_profile_handle profile,
@@ -281,6 +299,10 @@ int dcal_wifi_profile_set_autoprofile( laird_profile_handle profile,
 int dcal_wifi_profile_get_autoprofile( laird_profile_handle profile,
                                bool *autoprofile);
 
+// Note that encrypted fields are not sent from the host.  Therefore
+// printing out locally created fields will allow the viewing of the
+// security fields, while printing profiles pulled from host will only
+// show if the security field has been set or not.
 void dcal_wifi_profile_printf( laird_profile_handle profile);
 
 // system controls
