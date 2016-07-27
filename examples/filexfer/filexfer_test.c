@@ -1,33 +1,32 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <getopt.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <strings.h>
-#include <stdarg.h>
+#include <libgen.h>
+#include "dcal_api.h"
+#include "sess_opts.h"
 
 #include <libssh/libssh.h>
 #include <libssh/server.h>
 
-#include "dcal_api.h"
-#include "sess_opts.h"
+#define cert_size 1024
 
-static int verbose_lvl = 0;
-char * application_name = NULL;
+#define DUMPLOCATION {printf("%s: %d\n", __func__, __LINE__);}
 
-void printmsg( int lvl, char * format, ...)
-{
-	va_list args;
-	if (lvl <= verbose_lvl)
-	{
-		va_start( args, format );
-		vprintf(format, args);
-		va_end (args );
-	}
-}
+#define DEFAULT_HOST "localhost"
+#define DEFAULT_USER "libssh"
+#define DEFAULT_PWD  "libssh"
 
-static void usage(char * app_name)
+#define param_max_sz 127
+#define param_max_sz_with_null (param_max_sz+1)
+
+char local_file[256];
+char remote_file[256];
+bool sendfile = true;
+int verbose_lvl = 0;
+
+void usage(char * app_name)
 {
 	printf("usage: %s [OPTIONS]\n\n", app_name);
 	printf("Device Control API Library (DCAL) application: %s\n", application_name);
@@ -39,17 +38,14 @@ static void usage(char * app_name)
 	       "  -P <value>      password for ssh connection\n"
 	       "  -v              enable verbose ssh output\n"
 	       "  -d              increase debug verbosity (example -ddd for level 3)\n"
-	       "\nexample: %s -h 192.168.2.114 -p 1234 -u username -P apwd -ddd\n\n", app_name);
+	       "  -l <value>      local filename (with path) (defaults to remote name)\n"
+	       "  -r <value>      remote filename (defaults to local basename)\n"
+	       "  -x <value>      g==get file from remote, otherwise send to remote\n"
+	       "\nexample: %s -h 192.168.2.114 -p 1234 -u username -P apwd -ddd -l foo.txt -r foo.txt -x g\n\n", app_name);
+	printf("(note sending a file to remote will always be placed in remote's /tmp directory\n");
 }
 
-#define DEFAULT_HOST "localhost"
-#define DEFAULT_USER "libssh"
-#define DEFAULT_PWD  "libssh"
-
-#define param_max_sz 127
-#define param_max_sz_with_null (param_max_sz+1)
-
-int session_connect_with_opts( laird_session_handle session, int argc, char *argv[])
+int session_connect( laird_session_handle session, int argc, char *argv[])
 {
 	int verbosity = SSH_LOG_PROTOCOL;
 	DCAL_ERR ret;
@@ -66,6 +62,9 @@ int session_connect_with_opts( laird_session_handle session, int argc, char *arg
 		{"verbose", no_argument, NULL, 'v'},
 		{"password", required_argument, NULL, 'P'},
 		{"debug", no_argument, NULL, 'd'},
+		{"local_file", required_argument, NULL, 'l'},
+		{"remote_file", required_argument, NULL, 'r'},
+		{"direction", required_argument, NULL, 'x'},
 		{NULL, 0, NULL, 0}
 	};
 	int c;
@@ -75,7 +74,7 @@ int session_connect_with_opts( laird_session_handle session, int argc, char *arg
 	strncpy(user, DEFAULT_USER, param_max_sz);
 	strncpy(password, DEFAULT_PWD, param_max_sz);
 
-	while ((c=getopt_long(argc,argv,"h:p:u:P:vd?",longopt,&optidx)) != -1) {
+	while ((c=getopt_long(argc,argv,"h:p:u:P:l:r:x:vd?",longopt,&optidx)) != -1) {
 		switch(c) {
 		case 'v':
 			ssh_options_set(session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity);
@@ -94,6 +93,15 @@ int session_connect_with_opts( laird_session_handle session, int argc, char *arg
 			break;
 		case 'd':
 			verbose_lvl++;
+			break;
+		case 'l':
+			strncpy(local_file, optarg, 256);
+			break;
+		case 'r':
+			strncpy(remote_file, optarg, 256);
+			break;
+		case 'x':
+			sendfile = *((char*)optarg)!='g';
 			break;
 		case '?':
 			usage(argv[0]);
@@ -130,6 +138,22 @@ int session_connect_with_opts( laird_session_handle session, int argc, char *arg
 		goto exit;
 	}
 
+	if ((remote_file[0]==0) && (local_file[0]==0)){
+		DBGERROR("Error - must provide a local or remote file name (or both)\n");
+		usage(argv[0]);
+		goto exit;
+	}
+
+	if (sendfile){
+		if (remote_file[0]==0)
+			strncpy(remote_file, local_file, 256);
+	}
+	else if (local_file[0]==0){
+		char temp[256];
+		strncpy(temp, remote_file, 256);
+		strncpy(local_file, basename(temp), 256);
+	}
+
 	ret = dcal_session_open(session);
 	if (ret != DCAL_SUCCESS) {
 			DBGERROR("Error connecting to host %s: %s\n", host, dcal_err_to_string(ret));
@@ -138,8 +162,49 @@ int session_connect_with_opts( laird_session_handle session, int argc, char *arg
 
 	DBGINFO("SSH connection!\n");
 
+	printf("\n%s file\n", sendfile?"send":"get");
+	printf("local file: %s\n", local_file);
+	printf("remote file: %s\n", remote_file);
+
 exit:
 
 	return ret;
 }
 
+int main (int argc, char *argv[])
+{
+	int ret;
+
+	laird_session_handle session;
+
+	ret = dcal_session_create( &session );
+	if (ret!= DCAL_SUCCESS) {
+		printf("received %s at line %d\n", dcal_err_to_string(ret), __LINE__-2);
+		goto cleanup;
+	}
+
+	application_name = "filexfer";
+
+	if((ret = session_connect(session, argc, argv))){
+		printf("unable to make connection\n");
+		dcal_session_close(session);
+		session = NULL;
+		goto cleanup;
+	}
+
+// device interaction
+if (sendfile)
+	ret =dcal_file_push_to_wb(session, local_file, remote_file);
+else
+	ret = dcal_file_pull_from_wb(session, remote_file, local_file);
+
+	if (ret)
+		printf("error in %s(): %s\n",sendfile?"push":"pull", dcal_err_to_string(ret));
+	else
+		printf("file %s\n", sendfile?"sent":"received");
+
+cleanup:
+
+	return (ret!=DCAL_SUCCESS);
+
+}

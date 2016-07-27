@@ -124,3 +124,18 @@ char * buftype_to_string(flatbuffers_thash_t buftype)
 int handshake_error_code (ns(Handshake_table_t) handshake){
 	return ns(Handshake_error(handshake));
 }
+
+char *strdup(const char *src)
+{
+	if (src==NULL)
+		return NULL;
+	size_t len = strlen(src);
+	char *copy = malloc(len + 1);
+	if (copy == NULL)
+			return NULL;
+
+	strncpy(copy, src, len);
+	copy[len]=0;
+	return copy;
+}
+

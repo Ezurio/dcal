@@ -37,19 +37,19 @@ extern "C" {
 
 typedef enum _DCAL_ERR{
 	DCAL_SUCCESS = 0,
-	DCAL_HOST_GENERAL_FAIL,
-	DCAL_HOST_INVALID_NAME,
-	DCAL_HOST_INVALID_CONFIG,
-	DCAL_HOST_INVALID_DELETE,
-	DCAL_HOST_POWERCYCLE_REQUIRED,
-	DCAL_HOST_INVALID_PARAMETER,
-	DCAL_HOST_INVALID_EAP_TYPE,
-	DCAL_HOST_INVALID_WEP_TYPE,
-	DCAL_HOST_INVALID_FILE,
-	DCAL_HOST_INSUFFICIENT_MEMORY,
-	DCAL_HOST_NOT_IMPLEMENTED,
-	DCAL_HOST_NO_HARDWARE,
-	DCAL_HOST_INVALID_VALUE,
+	DCAL_WB_GENERAL_FAIL,
+	DCAL_WB_INVALID_NAME,
+	DCAL_WB_INVALID_CONFIG,
+	DCAL_WB_INVALID_DELETE,
+	DCAL_WB_POWERCYCLE_REQUIRED,
+	DCAL_WB_INVALID_PARAMETER,
+	DCAL_WB_INVALID_EAP_TYPE,
+	DCAL_WB_INVALID_WEP_TYPE,
+	DCAL_WB_INVALID_FILE,
+	DCAL_WB_INSUFFICIENT_MEMORY,
+	DCAL_WB_NOT_IMPLEMENTED,
+	DCAL_WB_NO_HARDWARE,
+	DCAL_WB_INVALID_VALUE,
 
 	DCAL_INVALID_PARAMETER = 100,
 	DCAL_INVALID_HANDLE,
@@ -570,11 +570,22 @@ int dcal_file_pull_from_wb(laird_session_handle session,
                              char * remote_file_name,
                              char * local_file_name);
 
-// firmware update will be attempted on the fw.txt file in /tmp.
-// use dcal_file_push_to_wb() to send each individual binary file
-// and fw.txt before calling. parameter_string is the parameters for the
-// fw_update execution
-int dcal_fw_update(laird_session_handle session, char * parameter_string);
+typedef enum _fw_update_flags {
+	FWU_FORCE            = 1 << 0, // force image overwrite
+	FWU_DISABLE_NOTIFY   = 1 << 1, // disable notification when complete
+	FWU_DISABLE_TRANSFER = 1 << 2  // disable transference
+} FW_UPDATE_FLAGS;
+
+// in order to issue the fw_update() function, the desired files must first
+// be transfered to the remote device.  This includes the fw.txt file.  The
+// files will be placed in the /tmp directory on the WB.  When this function
+// is executed, firmware update will be attempted on the transfered fw.txt
+// file in /tmp.  fw_update flags can be set in the flags variable.  Flags
+// can also be set in the fw.txt file itself.
+// NOTE: The disable reboot flag will be added by dcas so the user must
+// specifically call dcal_system_restart() when desiring restart after
+// fw_update.
+int dcal_fw_update(laird_session_handle session, int flags);
 
 // dest_file is full location and file name where log should be saved
 int dcal_pull_logs(laird_session_handle session, char * dest_file);
