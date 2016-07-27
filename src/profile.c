@@ -231,6 +231,8 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 			strncpy(p->security4, ns(Profile_security4(pt)), 1);
 		if(flatbuffers_string_len(ns(Profile_security5(pt))))
 			strncpy(p->security5, ns(Profile_security5(pt)), 1);
+
+		p->txkey = ns(Profile_weptxkey(pt));
 //
 //TODO
 //	handle auto profile value in profile
