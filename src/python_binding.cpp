@@ -113,6 +113,149 @@ class connection_extended
 	unsigned int beaconperiod;
 };
 
+class profile_profilename
+{
+  public:
+	char _profilename[CONFIG_NAME_SZ];
+	boost::python::object profilename() const { return boost::python::object(_profilename); }
+};
+
+class profile_SSID
+{
+  public:
+	int len;
+	char _val[LRD_WF_MAX_SSID_LEN];
+	boost::python::object val() const { return boost::python::object(_val); }
+};
+
+class profile_encryption_std
+{
+  public:
+	int encryption_std;
+};
+
+class profile_encryption
+{
+  public:
+	int encryption;
+};
+
+class profile_auth
+{
+  public:
+	int auth;
+};
+
+class profile_eap
+{
+  public:
+	int eap;
+};
+
+class profile_psk
+{
+  public:
+	int psk;
+};
+
+class profile_user
+{
+  public:
+	int user;
+};
+
+class profile_password
+{
+  public:
+	int password;
+};
+
+class profile_cacert
+{
+  public:
+	int cacert;
+};
+
+class profile_pacfile
+{
+  public:
+	int pacfile;
+};
+
+class profile_pacpassword
+{
+  public:
+	int pacpassword;
+};
+
+class profile_usercert
+{
+  public:
+	int usercert;
+};
+
+class profile_usercert_password
+{
+  public:
+	int usercert_password;
+};
+
+class profile_wep_key
+{
+  public:
+	int wep_key;
+};
+
+class profile_wep_txkey
+{
+  public:
+	unsigned int txkey;
+};
+
+class profile_clientname
+{
+  public:
+	char _clientname_buffer[CLIENT_NAME_SZ];
+	boost::python::object clientname_buffer() const { return boost::python::object(_clientname_buffer); }
+};
+
+class profile_radiomode
+{
+  public:
+	int mode;
+};
+
+class profile_powersave
+{
+  public:
+	int powersave;
+};
+
+class profile_pspdelay
+{
+  public:
+	unsigned int pspdelay;
+};
+
+class profile_txpower
+{
+  public:
+	int txpower;
+};
+
+class profile_bitrate
+{
+  public:
+	int bitrate;
+};
+
+class profile_autoprofile
+{
+  public:
+	int autoprofile;
+};
+
+
 class dcal
 {
   public:
@@ -356,12 +499,344 @@ class dcal
 		}
 		return ret;
 	}
+	// WiFi Management
+	int wifi_enable() { return dcal_wifi_enable( session ); }
+	int wifi_disable() { return dcal_wifi_disable( session ); }
 
 	// WiFi Profile Management
+	int wifi_profile_create() { return dcal_wifi_profile_create( &profile ); }
+	int wifi_profile_pull( char * profilename ) { return dcal_wifi_profile_pull(session, &profile, profilename); }
+	int wifi_profile_close_handle() { return dcal_wifi_profile_close_handle( profile ); }
+	int wifi_profile_push() { return dcal_wifi_profile_push( session, profile ); }
 	int wifi_profile_activate_by_name( char * profilename ) { return dcal_wifi_profile_activate_by_name(session, profilename); }
+	int wifi_profile_delete_from_device( char * profilename ) { return dcal_wifi_profile_delete_from_device(session, profilename); }
+	int wifi_profile_set_profilename( char * profilename ) { return dcal_wifi_profile_set_profilename(profile, profilename); }
+	int wifi_profile_get_profilename( class profile_profilename & p ) {
+		int ret;
+		char profilename[CONFIG_NAME_SZ];
+		ret = dcal_wifi_profile_get_profilename(profile, profilename);
+		if (ret == DCAL_SUCCESS)
+		{
+			memcpy(p._profilename, profilename, CONFIG_NAME_SZ);
+		}
+		return ret;
+	}
+	int wifi_profile_set_SSID( char * profilename ) {
+		LRD_WF_SSID *ssid;
+		strcpy((char*)ssid->val, profilename);
+		ssid->len = strlen((char*)ssid->val);
+		return dcal_wifi_profile_set_SSID(profile, ssid);
+	}
+
+	int wifi_profile_get_SSID( class profile_SSID & s ) {
+		int ret;
+		LRD_WF_SSID ssid={0};
+		ret = dcal_wifi_profile_get_SSID( profile, &ssid );
+		if (ret == DCAL_SUCCESS)
+		{
+			s.len = ssid.len;
+			memcpy(s._val, ssid.val, LRD_WF_MAX_SSID_LEN);
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_encrypt_std( int encryption_std ) {
+		ENCRYPT_STD estd;
+		estd = (ENCRYPT_STD) encryption_std;
+		return dcal_wifi_profile_set_encrypt_std(profile, estd);
+	}
+
+	int wifi_profile_get_encrypt_std( class profile_encryption_std & e ) {
+		int ret;
+		ENCRYPT_STD encryption_std;
+		ret = dcal_wifi_profile_get_encrypt_std(profile, &encryption_std);
+		if (ret == DCAL_SUCCESS)
+		{
+			e.encryption_std = (int) encryption_std;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_encryption( int encrypt ) {
+		ENCRYPTION encryption;
+		encryption = (ENCRYPTION) encrypt;
+		return dcal_wifi_profile_set_encryption(profile, encryption);
+	}
+
+	int wifi_profile_get_encryption( class profile_encryption & e ) {
+		int ret;
+		ENCRYPTION encryption;
+		ret = dcal_wifi_profile_get_encryption(profile, &encryption);
+		if (ret == DCAL_SUCCESS)
+		{
+			e.encryption = (int) encryption;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_auth( int auth_type ) {
+		AUTH auth;
+		auth = (AUTH) auth_type;
+		return dcal_wifi_profile_set_auth(profile, auth);
+	}
+
+	int wifi_profile_get_auth( class profile_auth & a ) {
+		int ret;
+		AUTH auth;
+		ret = dcal_wifi_profile_get_auth(profile, &auth);
+		if (ret == DCAL_SUCCESS)
+		{
+			a.auth = (int) auth;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_eap( int eap_type ) {
+		EAPTYPE eap;
+		eap = (EAPTYPE) eap_type;
+		return dcal_wifi_profile_set_eap(profile, eap);
+	}
+
+	int wifi_profile_get_eap( class profile_eap & e ) {
+		int ret;
+		EAPTYPE eap;
+		ret = dcal_wifi_profile_get_eap(profile, &eap);
+		if (ret == DCAL_SUCCESS)
+		{
+			e.eap = (int) eap;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_psk( char * psk ) { return dcal_wifi_profile_set_psk(profile, psk); }
+	int wifi_profile_psk_is_set( class profile_psk & p ) {
+		int ret;
+		bool psk;
+		ret = dcal_wifi_profile_psk_is_set(profile, &psk);
+		if (ret == DCAL_SUCCESS)
+		{
+			p.psk = (int) psk;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_user( char * user ) { return dcal_wifi_profile_set_user(profile, user); }
+	int wifi_profile_user_is_set( class profile_user & u ) {
+		int ret;
+		bool user;
+		ret = dcal_wifi_profile_user_is_set(profile, &user);
+		if (ret == DCAL_SUCCESS)
+		{
+			u.user = (int) user;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_password( char * password ) { return dcal_wifi_profile_set_password(profile, password); }
+	int wifi_profile_password_is_set( class profile_password & p ) {
+		int ret;
+		bool password;
+		ret = dcal_wifi_profile_user_is_set(profile, &password);
+		if (ret == DCAL_SUCCESS)
+		{
+			p.password = (int) password;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_cacert( char * cacert ) { return dcal_wifi_profile_set_cacert(profile, cacert); }
+	int wifi_profile_cacert_is_set( class profile_cacert & c ) {
+		int ret;
+		bool cacert;
+		ret = dcal_wifi_profile_cacert_is_set(profile, &cacert);
+		if (ret == DCAL_SUCCESS)
+		{
+			c.cacert = (int) cacert;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_pacfile( char * pacfilename ) { return dcal_wifi_profile_set_pacfile(profile, pacfilename); }
+	int wifi_profile_pacfile_is_set( class profile_pacfile & p ) {
+		int ret;
+		bool pacfile;
+		ret = dcal_wifi_profile_pacfile_is_set(profile, &pacfile);
+		if (ret == DCAL_SUCCESS)
+		{
+			p.pacfile = (int) pacfile;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_pacpassword( char * pacpassword ) { return dcal_wifi_profile_set_pacpassword(profile, pacpassword); }
+	int wifi_profile_pacpassword_is_set( class profile_pacpassword & p ) {
+		int ret;
+		bool pacpassword;
+		ret = dcal_wifi_profile_pacpassword_is_set(profile, &pacpassword);
+		if (ret == DCAL_SUCCESS)
+		{
+			p.pacpassword = (int) pacpassword;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_usercert( char * usercert ) { return dcal_wifi_profile_set_usercert(profile, usercert); }
+	int wifi_profile_usercert_is_set( class profile_usercert & u ) {
+		int ret;
+		bool usercert;
+		ret = dcal_wifi_profile_usercert_is_set(profile, &usercert);
+		if (ret == DCAL_SUCCESS)
+		{
+			u.usercert = (int) usercert;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_usercert_password( char * usercert_password ) { return dcal_wifi_profile_set_usercert_password(profile, usercert_password); }
+	int wifi_profile_usercert_password_is_set( class profile_usercert_password & u ) {
+		int ret;
+		bool usercert_password;
+		ret = dcal_wifi_profile_usercert_password_is_set(profile, &usercert_password);
+		if (ret == DCAL_SUCCESS)
+		{
+			u.usercert_password = (int) usercert_password;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_wep_key( char * wepkey, int index ) { return dcal_wifi_profile_set_wep_key(profile, wepkey, index); }
+	int wifi_profile_wep_key_is_set( class profile_wep_key & w, int wep_index ) {
+		int ret;
+		bool wep_key;
+		int index = (int) wep_index;
+		ret = dcal_wifi_profile_wep_key_is_set(profile, &wep_key, index);
+		if (ret == DCAL_SUCCESS)
+		{
+			w.wep_key = (int) wep_key;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_wep_txkey( unsigned int txkey) { return dcal_wifi_profile_set_wep_txkey(profile, txkey); }
+	int wifi_profile_get_wep_txkey( class profile_wep_txkey & w ) {
+		int ret;
+		unsigned int txkey;
+		ret = dcal_wifi_profile_get_wep_txkey(profile, &txkey);
+		if (ret == DCAL_SUCCESS)
+		{
+			w.txkey = (int) txkey;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_clientname( char * clientname ) { return dcal_wifi_profile_set_clientname(profile, clientname); }
+	int wifi_profile_get_clientname( class profile_clientname & c ) {
+		int ret;
+		char clientname_buffer[CLIENT_NAME_SZ];
+		ret = dcal_wifi_profile_get_clientname(profile, clientname_buffer);
+		if (ret == DCAL_SUCCESS)
+		{
+			memcpy(c._clientname_buffer, clientname_buffer, CLIENT_NAME_SZ);
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_radiomode( int radio_mode ) {
+		RADIOMODE mode;
+		mode = (RADIOMODE) radio_mode;
+		return dcal_wifi_profile_set_radiomode(profile, mode);
+	}
+
+	int wifi_profile_get_radiomode( class profile_radiomode & r ) {
+		int ret;
+		RADIOMODE mode;
+		ret = dcal_wifi_profile_get_radiomode(profile, &mode);
+		if (ret == DCAL_SUCCESS)
+		{
+			r.mode = (int) mode;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_powersave( int power_save ) {
+		POWERSAVE powersave;
+		powersave = (POWERSAVE) power_save;
+		return dcal_wifi_profile_set_powersave(profile, powersave);
+	}
+
+	int wifi_profile_get_powersave( class profile_powersave & p ) {
+		int ret;
+		POWERSAVE powersave;
+		ret = dcal_wifi_profile_get_powersave(profile, &powersave);
+		if (ret == DCAL_SUCCESS)
+		{
+			p.powersave = (int) powersave;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_psp_delay( unsigned int pspdelay) { return dcal_wifi_profile_set_psp_delay(profile, pspdelay); }
+	int wifi_profile_get_psp_delay( class profile_pspdelay & p ) {
+		int ret;
+		unsigned int pspdelay;
+		ret = dcal_wifi_profile_get_psp_delay(profile, &pspdelay);
+		if (ret == DCAL_SUCCESS)
+		{
+			p.pspdelay = pspdelay;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_txpower( int txpower) { return dcal_wifi_profile_set_txpower(profile, txpower); }
+	int wifi_profile_get_txpower( class profile_txpower & t ) {
+		int ret;
+		int txpower;
+		ret = dcal_wifi_profile_get_txpower(profile, &txpower);
+		if (ret == DCAL_SUCCESS)
+		{
+			t.txpower = txpower;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_bitrate( int bit_rate ) {
+		BITRATE bitrate;
+		bitrate = (BITRATE) bit_rate;
+		return dcal_wifi_profile_set_bitrate(profile, bitrate);
+	}
+
+	int wifi_profile_get_bitrate( class profile_bitrate & b ) {
+		int ret;
+		BITRATE bitrate;
+		ret = dcal_wifi_profile_get_bitrate(profile, &bitrate);
+		if (ret == DCAL_SUCCESS)
+		{
+			b.bitrate = (int) bitrate;
+		}
+		return ret;
+	}
+
+	int wifi_profile_set_autoprofile( bool autoprofile) { return dcal_wifi_profile_set_autoprofile(profile, autoprofile); }
+	int wifi_profile_get_autoprofile( class profile_autoprofile & a ) {
+		int ret;
+		bool autoprofile;
+		ret = dcal_wifi_profile_get_autoprofile(profile, &autoprofile);
+		if (ret == DCAL_SUCCESS)
+		{
+			a.autoprofile = (int) autoprofile;
+		}
+		return ret;
+	}
+
+	void wifi_profile_printf() { return dcal_wifi_profile_printf(profile); }
+
+	// system controls
+	int wifi_restart() { return dcal_wifi_restart(session); }
+	int system_restart() { return dcal_system_restart(session); }
 
   private:
 	laird_session_handle session;
+	laird_profile_handle profile;
 };
 
 using namespace boost::python;
@@ -437,6 +912,99 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def_readwrite("beaconperiod", &connection_extended::beaconperiod)
 	;
 
+	class_<profile_profilename>("profile_profilename")
+		.def("profilename", &profile_profilename::profilename)
+	;
+
+	class_<profile_SSID>("profile_SSID")
+		.def_readwrite("len", &profile_SSID::len)
+		.def("val", &profile_SSID::val)
+	;
+
+	class_<profile_encryption_std>("profile_encryption_std")
+		.def_readwrite("encryption_std", &profile_encryption_std::encryption_std)
+	;
+
+	class_<profile_encryption>("profile_encryption")
+		.def_readwrite("encryption", &profile_encryption::encryption)
+	;
+
+	class_<profile_auth>("profile_auth")
+		.def_readwrite("auth", &profile_auth::auth)
+	;
+
+	class_<profile_eap>("profile_eap")
+		.def_readwrite("eap", &profile_eap::eap)
+	;
+
+	class_<profile_psk>("profile_psk")
+		.def_readwrite("psk", &profile_psk::psk)
+	;
+
+	class_<profile_user>("profile_user")
+		.def_readwrite("user", &profile_user::user)
+	;
+
+	class_<profile_password>("profile_password")
+		.def_readwrite("password", &profile_password::password)
+	;
+
+	class_<profile_cacert>("profile_cacert")
+		.def_readwrite("cacert", &profile_cacert::cacert)
+	;
+
+	class_<profile_pacfile>("profile_pacfile")
+		.def_readwrite("pacfile", &profile_pacfile::pacfile)
+	;
+
+	class_<profile_pacpassword>("profile_pacpassword")
+		.def_readwrite("pacpassword", &profile_pacpassword::pacpassword)
+	;
+
+	class_<profile_usercert>("profile_usercert")
+		.def_readwrite("usercert", &profile_usercert::usercert)
+	;
+
+	class_<profile_usercert_password>("profile_usercert_password")
+		.def_readwrite("usercert_password", &profile_usercert_password::usercert_password)
+	;
+
+	class_<profile_wep_key>("profile_wep_key")
+		.def_readwrite("wep_key", &profile_wep_key::wep_key)
+	;
+
+	class_<profile_wep_txkey>("profile_wep_txkey")
+		.def_readwrite("txkey", &profile_wep_txkey::txkey)
+	;
+
+	class_<profile_clientname>("profile_clientname")
+		.def("clientname_buffer", &profile_clientname::clientname_buffer)
+	;
+
+	class_<profile_radiomode>("profile_radiomode")
+		.def_readwrite("mode", &profile_radiomode::mode)
+	;
+
+	class_<profile_powersave>("profile_powersave")
+		.def_readwrite("powersave", &profile_powersave::powersave)
+	;
+
+	class_<profile_pspdelay>("profile_pspdelay")
+		.def_readwrite("pspdelay", &profile_pspdelay::pspdelay)
+	;
+
+	class_<profile_txpower>("profile_txpower")
+		.def_readwrite("txpower", &profile_txpower::txpower)
+	;
+
+	class_<profile_bitrate>("profile_bitrate")
+		.def_readwrite("bitrate", &profile_bitrate::bitrate)
+	;
+
+	class_<profile_autoprofile>("profile_autoprofile")
+		.def_readwrite("autoprofile", &profile_autoprofile::autoprofile)
+	;
+
 	class_<dcal>("dcal")
 		// Session management
 		.def("session_create", &dcal::session_create)
@@ -462,7 +1030,64 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("device_status_get_tcp", &dcal::device_status_get_tcp)
 		.def("device_status_get_connection", &dcal::device_status_get_connection)
 		.def("device_status_get_connection_extended", &dcal::device_status_get_connection_extended)
+		// WiFi Management
+		.def("wifi_enable", &dcal::wifi_enable)
+		.def("wifi_disable", &dcal::wifi_disable)
 		// Wifi Profile Management
+		.def("wifi_profile_create", &dcal::wifi_profile_create)
+		.def("wifi_profile_pull", &dcal::wifi_profile_pull)
+		.def("wifi_profile_close_handle", &dcal::wifi_profile_close_handle)
+		.def("wifi_profile_push", &dcal::wifi_profile_push)
 		.def("wifi_profile_activate_by_name", &dcal::wifi_profile_activate_by_name)
+		.def("wifi_profile_delete_from_device", &dcal::wifi_profile_delete_from_device)
+		.def("wifi_profile_set_profilename", &dcal::wifi_profile_set_profilename)
+		.def("wifi_profile_get_profilename", &dcal::wifi_profile_get_profilename)
+		.def("wifi_profile_set_SSID", &dcal::wifi_profile_set_SSID)
+		.def("wifi_profile_get_SSID", &dcal::wifi_profile_get_SSID)
+		.def("wifi_profile_set_encrypt_std", &dcal::wifi_profile_set_encrypt_std)
+		.def("wifi_profile_get_encrypt_std", &dcal::wifi_profile_get_encrypt_std)
+		.def("wifi_profile_set_encryption", &dcal::wifi_profile_set_encryption)
+		.def("wifi_profile_get_encryption", &dcal::wifi_profile_get_encryption)
+		.def("wifi_profile_get_auth", &dcal::wifi_profile_get_auth)
+		.def("wifi_profile_set_eap", &dcal::wifi_profile_set_eap)
+		.def("wifi_profile_get_eap", &dcal::wifi_profile_get_eap)
+		.def("wifi_profile_set_psk", &dcal::wifi_profile_set_psk)
+		.def("wifi_profile_psk_is_set", &dcal::wifi_profile_psk_is_set)
+		.def("wifi_profile_set_user", &dcal::wifi_profile_set_user)
+		.def("wifi_profile_user_is_set", &dcal::wifi_profile_user_is_set)
+		.def("wifi_profile_set_password", &dcal::wifi_profile_set_password)
+		.def("wifi_profile_password_is_set", &dcal::wifi_profile_password_is_set)
+		.def("wifi_profile_set_cacert", &dcal::wifi_profile_set_cacert)
+		.def("wifi_profile_cacert_is_set", &dcal::wifi_profile_cacert_is_set)
+		.def("wifi_profile_set_pacfile", &dcal::wifi_profile_set_pacfile)
+		.def("wifi_profile_pacfile_is_set", &dcal::wifi_profile_pacfile_is_set)
+		.def("wifi_profile_set_pacpassword", &dcal::wifi_profile_set_pacpassword)
+		.def("wifi_profile_pacpassword_is_set", &dcal::wifi_profile_pacpassword_is_set)
+		.def("wifi_profile_set_usercert", &dcal::wifi_profile_set_usercert)
+		.def("wifi_profile_usercert_is_set", &dcal::wifi_profile_usercert_is_set)
+		.def("wifi_profile_set_usercert_password", &dcal::wifi_profile_set_usercert_password)
+		.def("wifi_profile_usercert_password_is_set", &dcal::wifi_profile_usercert_password_is_set)
+		.def("wifi_profile_set_wep_key", &dcal::wifi_profile_set_wep_key)
+		.def("wifi_profile_wep_key_is_set", &dcal::wifi_profile_wep_key_is_set)
+		.def("wifi_profile_set_wep_txkey", &dcal::wifi_profile_set_wep_txkey)
+		.def("wifi_profile_get_wep_txkey", &dcal::wifi_profile_get_wep_txkey)
+		.def("wifi_profile_set_clientname", &dcal::wifi_profile_set_clientname)
+		.def("wifi_profile_get_clientname", &dcal::wifi_profile_get_clientname)
+		.def("wifi_profile_set_radiomode", &dcal::wifi_profile_set_radiomode)
+		.def("wifi_profile_get_radiomode", &dcal::wifi_profile_get_radiomode)
+		.def("wifi_profile_set_powersave", &dcal::wifi_profile_set_powersave)
+		.def("wifi_profile_get_powersave", &dcal::wifi_profile_get_powersave)
+		.def("wifi_profile_set_psp_delay", &dcal::wifi_profile_set_psp_delay)
+		.def("wifi_profile_get_psp_delay", &dcal::wifi_profile_get_psp_delay)
+		.def("wifi_profile_set_txpower", &dcal::wifi_profile_set_txpower)
+		.def("wifi_profile_get_txpower", &dcal::wifi_profile_get_txpower)
+		.def("wifi_profile_set_bitrate", &dcal::wifi_profile_set_bitrate)
+		.def("wifi_profile_get_bitrate", &dcal::wifi_profile_get_bitrate)
+		.def("wifi_profile_set_autoprofile", &dcal::wifi_profile_set_autoprofile)
+		.def("wifi_profile_get_autoprofile", &dcal::wifi_profile_get_autoprofile)
+		.def("wifi_profile_printf", &dcal::wifi_profile_printf)
+		// System controls
+		.def("wifi_restart", &dcal::wifi_restart)
+		.def("system_restart", &dcal::system_restart)
 	;
 }
