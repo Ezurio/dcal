@@ -19,6 +19,23 @@ static pointer_list * sessions = NULL;
 
 #endif
 
+void __attribute__ ((constructor)) initsessions(void)
+{
+	int rc;
+	rc = initlist(&sessions);
+	if (rc)
+		DBGERROR("initlist() failed for sessions list with:%d\n", rc);
+}
+
+void __attribute__ ((destructor)) sessions_fini(void)
+{
+	int rc;
+	rc = freelist(&sessions);
+	sessions = NULL;
+	if(rc)
+		DBGERROR("freelist() failed for sessions list with: %d\n", rc);
+}
+
 static int get_session_handle( laird_session_handle * session )
 {
 	internal_session_handle handle=NULL;
@@ -145,7 +162,8 @@ int dcal_session_create( laird_session_handle * s)
 
 	if (session==NULL)
 		ret = DCAL_INVALID_PARAMETER;
-
+	else if(validate_handle(sessions, s))
+		ret = DCAL_HANDLE_IN_USE;
 	else
 		ret = get_session_handle( s );
 
@@ -165,9 +183,10 @@ int dcal_set_host( laird_session_handle s, FQDN address )
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (address==NULL) || !strlen(address))
 		ret = DCAL_INVALID_PARAMETER;
-	else{
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
+	else
 		strncpy(session->host, address, HOST_SZ);
-	}
 
 	return REPORT_RETURN_DBG(ret);
 }
@@ -180,6 +199,8 @@ int dcal_set_port( laird_session_handle s, unsigned int port )
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (port==0))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
 	else
 		session->port = port;
 
@@ -194,6 +215,8 @@ int dcal_set_user( laird_session_handle s, char *user )
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (user==NULL) || !strlen(user))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
 	else
 		strncpy(session->user, user, USER_SZ);
 
@@ -208,6 +231,8 @@ int dcal_set_pw( laird_session_handle s, char *pw )
 	REPORT_ENTRY_DEBUG;
 	if ((session==NULL) || (pw==NULL) || !strlen(pw))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
 	else
 		strncpy(session->pw, pw, USER_SZ);
 
@@ -223,6 +248,8 @@ int dcal_session_open ( laird_session_handle s )
 	REPORT_ENTRY_DEBUG;
 	if (session==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		session->verbosity = SSH_LOG_NOLOG;
 		session->ssh=ssh_new();
@@ -310,8 +337,9 @@ int dcal_session_close( laird_session_handle s)
 
 	if (session==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
 	else {
-
 		if (session->builder_init){
 			flatcc_builder_clear(&session->builder);
 			session->builder_init = false;
@@ -354,6 +382,10 @@ int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes)
 
 	REPORT_ENTRY_DEBUG;
 
+	if ((s==NULL) || (buffer==NULL))
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
 	if (session->channel != NULL)
 		nwrite = ssh_channel_write(session->channel, buffer, nbytes);
 
@@ -367,26 +399,27 @@ int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes)
 int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes)
 {
 	internal_session_handle session = (internal_session_handle)s;
-	int nread;
+	int nread=0;
 	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;
 
-	nread = ssh_channel_read(session->channel, buffer, *nbytes, 0);
-	if (nread < 0){
-		ssh_channel_close(session->channel);
-		ssh_channel_free(session->channel);
-		session->channel=NULL;
-		DBGERROR("Error reading from SSH\n");
-		ret = DCAL_SSH_ERROR;
+	if ((s==NULL) || (buffer==NULL))
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		nread = ssh_channel_read(session->channel, buffer, *nbytes, 0);
+		if (nread < 0){
+			ssh_channel_close(session->channel);
+			ssh_channel_free(session->channel);
+			session->channel=NULL;
+			DBGERROR("Error reading from SSH\n");
+			ret = DCAL_SSH_ERROR;
+		}
+		else
+			*nbytes=nread;
 	}
-	else
-		*nbytes=nread;
-
 	return REPORT_RETURN_DBG(ret);
 }
-
-
-
-
 
