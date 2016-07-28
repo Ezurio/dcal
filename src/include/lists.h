@@ -17,17 +17,23 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define __lists_h__
 
 #ifndef STATIC_MEM
+#include <pthread.h>
+
+typedef struct _list_element{
+	struct _list_element *next;
+	pvoid handle;
+} list_element;
 
 typedef struct _pointer_list{
-	struct _pointer_list *next;
-	pvoid handle;
+	list_element *head;
+	pthread_mutex_t *lock;
 } pointer_list;
 
 DCAL_ERR add_to_list( pointer_list **list, pvoid handle);
 DCAL_ERR remove_from_list( pointer_list **list, pvoid handle);
-DCAL_ERR validate_handle( pointer_list *list, pvoid handle, uint8_t session_profile); //session_profile -> 0==session; 1==profile
-#define SESSION 0
-#define PROFILE 1
+bool validate_handle( pointer_list *list, pvoid handle);
+DCAL_ERR initlist(pointer_list **list);
+DCAL_ERR freelist(pointer_list **list);
 
 #endif // STATIC_MEM
 #endif // _lists_h_

@@ -308,6 +308,7 @@ void dcal_wifi_profile_printf( laird_profile_handle profile);
 // system controls
 
 int dcal_wifi_restart( laird_session_handle session);
+// dcal_system_restart will close the session handle
 int dcal_system_restart( laird_session_handle session);
 
 const char *dcal_err_to_string( int code);

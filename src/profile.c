@@ -18,6 +18,23 @@ static pointer_list * profiles = NULL;
 
 #endif
 
+void __attribute__ ((constructor)) initprofiles(void)
+{
+	int rc;
+	rc = initlist(&profiles);
+	if (rc)
+		DBGERROR("initlist() failed for profiles list with:%d\n", rc);
+}
+
+void __attribute__ ((destructor)) profiles_fini(void)
+{
+	int rc;
+	rc = freelist(&profiles);
+	profiles = NULL;
+	if(rc)
+		DBGERROR("freelist() failed for profiles list with: %d\n", rc);
+}
+
 static void clear_and_strncpy( char * dest, const char * src, size_t size)
 {
 	assert(dest);
@@ -89,16 +106,20 @@ int dcal_wifi_profile_create( laird_profile_handle * profile)
 			handle = &static_profile;
 			memset(handle, 0, sizeof(internal_profile_struct));
 	#else // not STATIC_MEM
-		handle = (internal_profile_handle) malloc(sizeof(internal_profile_struct));
-		if (handle==NULL)
-			ret = DCAL_NO_MEMORY;
+		if(validate_handle(profiles, profile))
+			ret = DCAL_HANDLE_IN_USE;
 		else {
-			memset(handle, 0, sizeof(internal_profile_struct));
-			ret = add_to_list(&profiles, handle);
-			// profile defaults
-			handle->radiomode = RADIOMODE_ABGN;
-			handle->powersave = POWERSAVE_FAST;
-			handle->pspdelay = DEFAULT_PSP_DELAY;
+			handle = (internal_profile_handle) malloc(sizeof(internal_profile_struct));
+			if (handle==NULL)
+				ret = DCAL_NO_MEMORY;
+			else {
+				memset(handle, 0, sizeof(internal_profile_struct));
+				ret = add_to_list(&profiles, handle);
+				// profile defaults
+				handle->radiomode = RADIOMODE_ABGN;
+				handle->powersave = POWERSAVE_FAST;
+				handle->pspdelay = DEFAULT_PSP_DELAY;
+			}
 		}
 	#endif // STATIC_MEM
 	}
@@ -117,6 +138,8 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 
 	if ((session==NULL) || (profilename==NULL) || (profilename[0]==0))
 		ret = DCAL_INVALID_PARAMETER;
+	else if (validate_handle(profiles, profile))
+		ret = DCAL_HANDLE_IN_USE;
 	else {
 		internal_session_handle s = (internal_session_handle)session;
 		ns(Cmd_pl_union_ref_t) cmd_pl;
@@ -254,6 +277,8 @@ int dcal_wifi_profile_close_handle( laird_profile_handle p)
 
 	if(profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, p))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		#ifdef STATIC_MEM
 			((internal_profile_handle)profile)->valid = false;
@@ -282,6 +307,8 @@ int dcal_wifi_profile_push( laird_session_handle session,
 
 	if ((session==NULL) || (profile==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		flatcc_builder_t *B;
 		char buffer[BUF_SZ] = {0};
@@ -359,8 +386,9 @@ int dcal_wifi_profile_activate( laird_session_handle session,
 
 	if ((session==NULL) || (profile==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
-
 		ret = dcal_wifi_profile_push(session, profile);
 
 		if (!ret)
@@ -501,6 +529,8 @@ int dcal_wifi_profile_set_profilename(laird_profile_handle profile,
 
 	if ((profile==NULL) || (profilename==NULL) || (profilename[0]==0))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		clear_and_strncpy(p->profilename, profilename, CONFIG_NAME_SZ);
 	}
@@ -517,6 +547,8 @@ int dcal_wifi_profile_get_profilename(laird_profile_handle profile,
 
 	if ((profile==NULL) || (profilename==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		clear_and_strncpy(profilename, p->profilename, CONFIG_NAME_SZ);
 	}
@@ -533,6 +565,8 @@ int dcal_wifi_profile_set_SSID( laird_profile_handle profile,
 
 	if ((profile==NULL) || (ssid==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		clear_and_strncpy((char*)&p->ssid, (char*)ssid, sizeof(LRD_WF_SSID));
 	}
@@ -549,6 +583,8 @@ int dcal_wifi_profile_get_SSID( laird_profile_handle profile,
 
 	if ((profile==NULL) || (ssid==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		clear_and_strncpy((char*)ssid, (char*)&p->ssid, sizeof(LRD_WF_SSID));
 	}
@@ -578,6 +614,8 @@ int dcal_wifi_profile_set_encrypt_std( laird_profile_handle profile,
 
 	if ((profile==NULL) || (estd < ES_NONE) || (estd > ES_CCKM))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		switch(estd){
 			case ES_WEP:
@@ -627,6 +665,8 @@ int dcal_wifi_profile_get_encrypt_std( laird_profile_handle profile,
 
 	if ((profile==NULL) || (estd==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		switch(p->weptype){
 			case WEP_ON:
@@ -665,6 +705,8 @@ int dcal_wifi_profile_set_encryption( laird_profile_handle profile,
 
 	if ((profile==NULL) || (enc < ENC_NONE) || (enc > ENC_TKIP))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		switch(enc){
 			case ENC_AES:
@@ -752,6 +794,8 @@ int dcal_wifi_profile_get_encryption( laird_profile_handle profile,
 
 	if ((profile==NULL) || (enc==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		switch(p->weptype){
 			case WPA_TKIP:
@@ -783,6 +827,8 @@ int dcal_wifi_profile_set_auth( laird_profile_handle profile,
 
 	if ((profile==NULL) || (auth < AUTH_OPEN) || (auth > AUTH_NETWORK_EAP))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->authtype = auth;
 	}
@@ -799,6 +845,8 @@ int dcal_wifi_profile_get_auth( laird_profile_handle profile,
 
 	if ((profile==NULL) || (auth==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*auth = p->authtype;
 	}
@@ -816,6 +864,8 @@ int dcal_wifi_profile_set_eap( laird_profile_handle profile,
 
 	if ((profile==NULL) || (eap < EAP_NONE) || (eap > EAP_WAPI_CERT))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->psk = false;
 		if (p->eap != eap)
@@ -835,6 +885,8 @@ int dcal_wifi_profile_get_eap( laird_profile_handle profile,
 
 	if ((profile==NULL) || (eap==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*eap = p->eap;
 	}
@@ -852,6 +904,8 @@ int dcal_wifi_profile_set_psk( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->psk = true;  //even if the psk field is cleared, we want to mark the profile as psk
 		switch(p->weptype) {
@@ -880,6 +934,8 @@ int dcal_wifi_profile_psk_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (psk==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		//assumes no null characters allowed in field
 		*psk = p->security1[0]!=0;
@@ -898,6 +954,8 @@ int dcal_wifi_profile_set_user( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(user)
 			set_user(p, user);
@@ -917,6 +975,8 @@ int dcal_wifi_profile_user_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (user==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		//assumes no null characters allowed in field
 		*user=p->security1[0]!=0;
@@ -935,6 +995,8 @@ int dcal_wifi_profile_set_password( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(password)
 			set_password(p, password);
@@ -954,6 +1016,8 @@ int dcal_wifi_profile_password_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (password==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		//assumes no null characters allowed in field
 		*password = p->security2[0]!=0;
@@ -972,6 +1036,8 @@ int dcal_wifi_profile_set_cacert( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(cacert)
 			set_cacert(p, cacert);
@@ -991,6 +1057,8 @@ int dcal_wifi_profile_cacert_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (cacert==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		//assumes no null characters allowed in field
 		*cacert = p->security3[0]!=0;
@@ -1009,6 +1077,8 @@ int dcal_wifi_profile_set_pacfile( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(pacfilename)
 			set_pacfilename(p, pacfilename);
@@ -1028,6 +1098,8 @@ int dcal_wifi_profile_pacfile_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (pacfilename==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		//assumes no null characters allowed in field
 		*pacfilename = p->security3[0]!=0;
@@ -1046,6 +1118,8 @@ int dcal_wifi_profile_set_pacpassword( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(pacpassword)
 			set_pacpassword(p, pacpassword);
@@ -1065,6 +1139,8 @@ int dcal_wifi_profile_pacpassword_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (pacpassword==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		//assumes no null characters allowed in field
 		*pacpassword = p->security4[0]!=0;
@@ -1083,6 +1159,8 @@ int dcal_wifi_profile_set_usercert( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(usercert)
 			set_usercert(p, usercert);
@@ -1102,6 +1180,8 @@ int dcal_wifi_profile_usercert_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (usercert==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		//assumes no null characters allowed in field
 		*usercert= p->security4[0]!=0;
@@ -1120,6 +1200,8 @@ int dcal_wifi_profile_set_usercert_password( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(usercert_password)
 			set_usercertpassword(p, usercert_password);
@@ -1139,6 +1221,8 @@ int dcal_wifi_profile_usercert_password_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (usercert_password==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		//assumes no null characters allowed in field
 		*usercert_password= p->security4[0]!=0;
@@ -1158,6 +1242,8 @@ int dcal_wifi_profile_set_wep_key( laird_profile_handle profile,
 
 	if ((profile==NULL) || (wepkey==NULL) || (index<1) || (index>4))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(wepkey){
 			switch(index) {
@@ -1186,6 +1272,8 @@ int dcal_wifi_profile_wep_key_is_set( laird_profile_handle profile,
 
 	if ((profile==NULL) || (wepkey==NULL) || (index <1) || (index>4))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		switch(index) {
 			case 1: src = (char*)&p->security1; break;
@@ -1209,6 +1297,8 @@ int dcal_wifi_profile_set_wep_txkey( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->txkey = txkey;
 	}
@@ -1225,6 +1315,8 @@ int dcal_wifi_profile_get_wep_txkey( laird_profile_handle profile,
 
 	if ((profile==NULL) || (txkey==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*txkey = p->txkey;
 	}
@@ -1242,6 +1334,8 @@ int dcal_wifi_profile_set_clientname( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		if(clientname)
 			clear_and_strncpy((char*)&p->clientname, clientname, CLIENT_NAME_SZ);
@@ -1261,6 +1355,8 @@ int dcal_wifi_profile_get_clientname( laird_profile_handle profile,
 
 	if ((profile==NULL) || (clientname_buffer==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		memcpy(clientname_buffer, p->clientname, CLIENT_NAME_SZ);
 	}
@@ -1278,6 +1374,8 @@ int dcal_wifi_profile_set_radiomode( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->radiomode = mode;
 	}
@@ -1294,6 +1392,8 @@ int dcal_wifi_profile_get_radiomode( laird_profile_handle profile,
 
 	if ((profile==NULL) || (mode==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*mode = p->radiomode;
 	}
@@ -1311,6 +1411,8 @@ int dcal_wifi_profile_set_powersave( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->powersave = powersave;
 	}
@@ -1327,6 +1429,8 @@ int dcal_wifi_profile_get_powersave( laird_profile_handle profile,
 
 	if ((profile==NULL) || (powersave==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*powersave = p->powersave;
 	}
@@ -1344,6 +1448,8 @@ int dcal_wifi_profile_set_psp_delay( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->pspdelay = pspdelay;
 	}
@@ -1360,6 +1466,8 @@ int dcal_wifi_profile_get_psp_delay( laird_profile_handle profile,
 
 	if ((profile==NULL) || (pspdelay==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*pspdelay = p->pspdelay;
 	}
@@ -1377,6 +1485,8 @@ int dcal_wifi_profile_set_txpower( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->txpower = txpower;
 	}
@@ -1393,6 +1503,8 @@ int dcal_wifi_profile_get_txpower( laird_profile_handle profile,
 
 	if ((profile==NULL) || (txpower==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*txpower = p->txpower;
 	}
@@ -1410,6 +1522,8 @@ int dcal_wifi_profile_set_bitrate( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->bitrate = bitrate;
 	}
@@ -1426,6 +1540,8 @@ int dcal_wifi_profile_get_bitrate( laird_profile_handle profile,
 
 	if ((profile==NULL) || (bitrate==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*bitrate = p->bitrate;
 	}
@@ -1442,6 +1558,8 @@ int dcal_wifi_profile_set_autoprofile( laird_profile_handle profile,
 
 	if (profile==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->autoprofile = autoprofile;
 	}
@@ -1458,6 +1576,8 @@ int dcal_wifi_profile_get_autoprofile( laird_profile_handle profile,
 
 	if ((profile==NULL) || (autoprofile==NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(profiles, profile))
+		ret = DCAL_INVALID_HANDLE;
 	else {
 		*autoprofile = p->autoprofile;
 	}
@@ -1473,9 +1593,12 @@ void dcal_wifi_profile_printf( laird_profile_handle profile)
 
 	printf("Profile:\n");
 
-	if (p==NULL)
-	{
+	if (p==NULL) {
 		printf("is null\n");
+		return;
+	}
+	else if(!validate_handle(profiles, profile)) {
+		printf("invalid profile handle\n");
 		return;
 	}
 	#ifdef STATIC_MEM

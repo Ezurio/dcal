@@ -68,7 +68,12 @@ int do_command( laird_session_handle s, unsigned long cmd)
 
 int dcal_wifi_restart( laird_session_handle session)
 {
-	return do_command(session, ns(Commands_WIFIRESTART));
+	int ret = do_command(session, ns(Commands_WIFIRESTART));
+
+	if (ret==DCAL_SUCCESS)
+		ret = dcal_session_close(session);
+
+	return ret;
 }
 
 int dcal_system_restart( laird_session_handle session)
