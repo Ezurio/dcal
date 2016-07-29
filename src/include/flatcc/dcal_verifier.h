@@ -294,6 +294,7 @@ static int __DCAL_session_Profile_table_verifier(flatcc_table_verifier_descripto
     if ((ret = flatcc_verify_string_field(td, 14, 0) /* security4 */)) return ret;
     if ((ret = flatcc_verify_string_field(td, 15, 0) /* security5 */)) return ret;
     if ((ret = flatcc_verify_field(td, 16, 4, 4) /* weptxkey */)) return ret;
+    if ((ret = flatcc_verify_field(td, 17, 1, 1) /* autoprofile */)) return ret;
     return flatcc_verify_ok;
 }
 

@@ -42,7 +42,7 @@ __flatbuffers_build_table(flatbuffers_, DCAL_session_Version, 8)
 static const flatbuffers_voffset_t __DCAL_session_Globals_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Globals, 22)
 static const flatbuffers_voffset_t __DCAL_session_Profile_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Profile, 17)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Profile, 18)
 static const flatbuffers_voffset_t __DCAL_session_P_entry_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_P_entry, 3)
 static const flatbuffers_voffset_t __DCAL_session_Profile_list_required[] = {0 };
@@ -100,12 +100,12 @@ static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers
   flatbuffers_string_ref_t v0, flatbuffers_uint8_vec_ref_t v1, flatbuffers_string_ref_t v2, uint32_t v3,\
   uint32_t v4, uint32_t v5, uint32_t v6, uint32_t v7,\
   uint32_t v8, uint32_t v9, uint32_t v10, flatbuffers_string_ref_t v11,\
-  flatbuffers_string_ref_t v12, flatbuffers_string_ref_t v13, flatbuffers_string_ref_t v14, flatbuffers_string_ref_t v15, uint32_t v16
+  flatbuffers_string_ref_t v12, flatbuffers_string_ref_t v13, flatbuffers_string_ref_t v14, flatbuffers_string_ref_t v15, uint32_t v16, flatbuffers_bool_t v17
 #define __DCAL_session_Profile_call_args ,\
   v0, v1, v2, v3,\
   v4, v5, v6, v7,\
   v8, v9, v10, v11,\
-  v12, v13, v14, v15, v16
+  v12, v13, v14, v15, v16, v17
 static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers_builder_t *B __DCAL_session_Profile_formal_args);
 #define __DCAL_session_P_entry_formal_args , flatbuffers_string_ref_t v0, flatbuffers_bool_t v1, flatbuffers_bool_t v2
 #define __DCAL_session_P_entry_call_args , v0, v1, v2
@@ -345,6 +345,7 @@ __flatbuffers_build_string_field(13, flatbuffers_, DCAL_session_Profile_security
 __flatbuffers_build_string_field(14, flatbuffers_, DCAL_session_Profile_security4)
 __flatbuffers_build_string_field(15, flatbuffers_, DCAL_session_Profile_security5)
 __flatbuffers_build_scalar_field(16, flatbuffers_, DCAL_session_Profile_weptxkey, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(17, flatbuffers_, DCAL_session_Profile_autoprofile, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
 
 static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers_builder_t *B __DCAL_session_Profile_formal_args)
 {
@@ -365,7 +366,8 @@ static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers
         || DCAL_session_Profile_security3_add(B, v13)
         || DCAL_session_Profile_security4_add(B, v14)
         || DCAL_session_Profile_security5_add(B, v15)
-        || DCAL_session_Profile_weptxkey_add(B, v16)) {
+        || DCAL_session_Profile_weptxkey_add(B, v16)
+        || DCAL_session_Profile_autoprofile_add(B, v17)) {
         return 0;
     }
     return DCAL_session_Profile_end(B);

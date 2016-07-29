@@ -598,6 +598,11 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 16, 0, t)
 static inline int DCAL_session_Profile_weptxkey_is_present(DCAL_session_Profile_table_t t)
 __flatbuffers_field_present(16, t)
 
+static inline flatbuffers_bool_t DCAL_session_Profile_autoprofile(DCAL_session_Profile_table_t t)
+__flatbuffers_scalar_field(flatbuffers_bool, 17, 0, t)
+static inline int DCAL_session_Profile_autoprofile_is_present(DCAL_session_Profile_table_t t)
+__flatbuffers_field_present(17, t)
+
 
 struct DCAL_session_P_entry_table { uint8_t unused__; };
 
