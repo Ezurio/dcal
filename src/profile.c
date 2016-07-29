@@ -106,9 +106,12 @@ int dcal_wifi_profile_create( laird_profile_handle * profile)
 			handle = &static_profile;
 			memset(handle, 0, sizeof(internal_profile_struct));
 	#else // not STATIC_MEM
+	#ifdef DEBUG
 		if(validate_handle(profiles, profile))
 			ret = DCAL_HANDLE_IN_USE;
-		else {
+		else
+	#endif
+		{
 			handle = (internal_profile_handle) malloc(sizeof(internal_profile_struct));
 			if (handle==NULL)
 				ret = DCAL_NO_MEMORY;
@@ -138,8 +141,10 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 
 	if ((session==NULL) || (profilename==NULL) || (profilename[0]==0))
 		ret = DCAL_INVALID_PARAMETER;
+	#ifdef DEBUG
 	else if (validate_handle(profiles, profile))
 		ret = DCAL_HANDLE_IN_USE;
+	#endif
 	else {
 		internal_session_handle s = (internal_session_handle)session;
 		ns(Cmd_pl_union_ref_t) cmd_pl;

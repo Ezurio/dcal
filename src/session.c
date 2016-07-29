@@ -162,8 +162,10 @@ int dcal_session_create( laird_session_handle * s)
 
 	if (session==NULL)
 		ret = DCAL_INVALID_PARAMETER;
+	#ifdef DEBUG
 	else if(validate_handle(sessions, s))
 		ret = DCAL_HANDLE_IN_USE;
+	#endif
 	else
 		ret = get_session_handle( s );
 
