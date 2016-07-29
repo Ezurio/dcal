@@ -136,6 +136,7 @@ DCAL_ERR remove_from_list( pointer_list **list, pvoid handle)
 			item = (*list)->head;
 			(*list)->head = item->next;
 		} else {
+			LOCK((*list)->lock);
 			curr = (*list)->head;
 			while(curr!=NULL){
 				if((curr->next) && (curr->next->handle == handle)){
@@ -146,6 +147,8 @@ DCAL_ERR remove_from_list( pointer_list **list, pvoid handle)
 			}
 			if ((curr) && (item))
 				curr->next = item->next;
+
+			UNLOCK((*list)->lock);
 		}
 	}
 
