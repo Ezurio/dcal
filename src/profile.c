@@ -256,10 +256,7 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 			strncpy(p->security5, ns(Profile_security5(pt)), 1);
 
 		p->txkey = ns(Profile_weptxkey(pt));
-//
-//TODO
-//	handle auto profile value in profile
-//	p->autoprofile = ns(Profile_???(pt));
+		p->autoprofile = ns(Profile_autoprofile(pt));
 		#ifdef STATIC_MEM
 		p->valid = true;
 		#endif
@@ -336,6 +333,7 @@ int dcal_wifi_profile_push( laird_session_handle session,
 		ns(Profile_security3_create_str(B, p->security3));
 		ns(Profile_security4_create_str(B, p->security4));
 		ns(Profile_security5_create_str(B, p->security5));
+		ns(Profile_autoprofile_add(B, p->autoprofile));
 
 		cmd_pl.Profile = ns(Profile_end(B));
 		cmd_pl.type = ns(Cmd_pl_Profile);
