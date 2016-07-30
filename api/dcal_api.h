@@ -69,12 +69,15 @@ typedef char * FQDN;
 
 typedef void * laird_session_handle;
 typedef void * laird_profile_handle;
+typedef void * laird_global_handle;
 
 #define MAC_SZ 6
 #define IP4_SZ 4
 #define IP6_STR_SZ 46 //max string:0000:0000:0000:0000:0000:0000:xxx.xxx.xxx.xxx plus NULL (IPV4 mapped IPV6 address)
 #define NAME_SZ 48
+#ifndef SSID_SZ
 #define SSID_SZ 32
+#endif
 
 #define STR_SZ 80
 
@@ -162,8 +165,8 @@ int dcal_wifi_global_push( laird_session_handle session,
 //Type 1 - server that uses PEAPv1 for PEAP with EAP-MSCHAPV2 (PEAP-MSCHAP).
 //Type 2 -uses PEAPv0 for PEAP-MSCHAP.
 typedef enum _server_auth{
-	TYPE1 = 1,
-	TYPE2 = 2
+	TYPE1 = 0,
+	TYPE2 = 1
 } SERVER_AUTH;
 
 int dcal_wifi_global_set_auth_server( laird_global_handle global,
@@ -172,57 +175,59 @@ int dcal_wifi_global_get_auth_server( laird_global_handle global,
                                       SERVER_AUTH *auth);
 
 typedef enum _bchannels_masks{
-	b_1 = 1>>0, //2412 GHz
-	b_2 = 1>>1, //2417 GHz
-	b_3 = 1>>2, //2422 GHz
-	b_4 = 1>>3, //2427 GHz
-	b_5 = 1>>4, //2432 GHz
-	b_6 = 1>>5, //2437 GHz
-	b_7 = 1>>6, //2442 GHz
-	b_8 = 1>>7, //2447 GHz
-	b_9 = 1>>8, //2452 GHz
-	b_10 = 1>>9, //2457 GHz
-	b_11 = 1>>10, //2462 GHz
-	b_12 = 1>>11, //2467 GHz
-	b_13 = 1>>12, //2472 GHz
-	b_14 = 1>>13, //2484 GHz
+	b_1 = 1<<0, //2412 GHz
+	b_2 = 1<<1, //2417 GHz
+	b_3 = 1<<2, //2422 GHz
+	b_4 = 1<<3, //2427 GHz
+	b_5 = 1<<4, //2432 GHz
+	b_6 = 1<<5, //2437 GHz
+	b_7 = 1<<6, //2442 GHz
+	b_8 = 1<<7, //2447 GHz
+	b_9 = 1<<8, //2452 GHz
+	b_10 = 1<<9, //2457 GHz
+	b_11 = 1<<10, //2462 GHz
+	b_12 = 1<<11, //2467 GHz
+	b_13 = 1<<12, //2472 GHz
+	b_14 = 1<<13, //2484 GHz
+	b_full = 0xffff // all channels
 } B_CHAN_MASKS;
 
 typedef enum _achannels_masks{
-	a_36 = 1>>0, //5180 GHz (U-NII-1)
-	a_40 = 1>>1, //5200 GHz
-	a_44 = 1>>2, //5220 GHz
-	a_48 = 1>>3, //5240 GHz
-	a_52 = 1>>4, //5260 GHz (U-NII-2/DFS)
-	a_56 = 1>>5, //5280 GHz
-	a_60 = 1>>6, //5300 GHz
-	a_64 = 1>>7, //5320 GHz
-	a_100 = 1>>8, //5500 GHz
-	a_104 = 1>>9, //5520 GHz
-	a_108 = 1>>10, //5540 GHz
-	a_112 = 1>>11, //5560 GHz
-	a_116 = 1>>12, //5580 GHz
-	a_120 = 1>>13, //5600 GHz
-	a_124 = 1>>14, //5620 GHz
-	a_128 = 1>>15, //5640 GHz
-	a_132 = 1>>16, //5660 GHz
-	a_136 = 1>>17, //5680 GHz
-	a_140 = 1>>18, //5700 GHz
-	a_149 = 1>>19, //5745 GHz (U-NII-3)
-	a_153 = 1>>20, //5765 GHz
-	a_157 = 1>>21, //5785 GHz
-	a_161 = 1>>22, //5805 GHz
-	a_165 = 1>>23, //5825 GHz
+	a_36 = 1<<0, //5180 GHz (U-NII-1)
+	a_40 = 1<<1, //5200 GHz
+	a_44 = 1<<2, //5220 GHz
+	a_48 = 1<<3, //5240 GHz
+	a_52 = 1<<4, //5260 GHz (U-NII-2/DFS)
+	a_56 = 1<<5, //5280 GHz
+	a_60 = 1<<6, //5300 GHz
+	a_64 = 1<<7, //5320 GHz
+	a_100 = 1<<8, //5500 GHz
+	a_104 = 1<<9, //5520 GHz
+	a_108 = 1<<10, //5540 GHz
+	a_112 = 1<<11, //5560 GHz
+	a_116 = 1<<12, //5580 GHz
+	a_120 = 1<<13, //5600 GHz
+	a_124 = 1<<14, //5620 GHz
+	a_128 = 1<<15, //5640 GHz
+	a_132 = 1<<16, //5660 GHz
+	a_136 = 1<<17, //5680 GHz
+	a_140 = 1<<18, //5700 GHz
+	a_149 = 1<<19, //5745 GHz (U-NII-3)
+	a_153 = 1<<20, //5765 GHz
+	a_157 = 1<<21, //5785 GHz
+	a_161 = 1<<22, //5805 GHz
+	a_165 = 1<<23, //5825 GHz
+	a_full = 0xffffff // all channels
 } A_CHAN_MASKS;
 
-int dcal_wifi_global_set_channel_set_a( laird_global_handle global,
+int dcal_wifi_global_set_achannel_mask( laird_global_handle global,
                                         unsigned int channel_set_a);
-int dcal_wifi_global_get_channel_set_a( laird_global_handle global,
+int dcal_wifi_global_get_achannel_mask( laird_global_handle global,
                                         unsigned int *channel_set_a);
 
-int dcal_wifi_global_set_channel_set_b( laird_global_handle global,
+int dcal_wifi_global_set_bchannel_mask( laird_global_handle global,
                                         unsigned int channel_set_b);
-int dcal_wifi_global_get_channel_set_b( laird_global_handle global,
+int dcal_wifi_global_get_bchannel_mask( laird_global_handle global,
                                         unsigned int *channel_set_b);
 
 int dcal_wifi_global_set_auto_profile( laird_global_handle global,
@@ -412,7 +417,13 @@ int dcal_wifi_profile_set_encryption( laird_profile_handle profile,
                                            ENCRYPTION enc);
 int dcal_wifi_profile_get_encryption( laird_profile_handle profile,
                                            ENCRYPTION *enc);
-
+#ifndef _SDC_SDK_H_
+typedef enum _auth_type {
+	AUTH_OPEN = 0,  // only valid in profiles - no globals
+	AUTH_SHARED,
+	AUTH_NETWORK_EAP,
+} AUTH;
+#endif
 int dcal_wifi_profile_set_auth( laird_profile_handle profile,
                                      AUTH auth);
 int dcal_wifi_profile_get_auth( laird_profile_handle profile,

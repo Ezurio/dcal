@@ -22,8 +22,8 @@ The constants and structures herein come from sdc_sdk.h. The full header may be
 found in our Linux MSD release packages.
 */
 
-#ifndef _SDC_SDK_H_
-#define _SDC_SDK_H_ 1
+#ifndef _SDC_SDK_LEGACY_H_
+#define _SDC_SDK_LEGACY_H_ 1
 
 #ifdef __cplusplus
 extern "C" {
@@ -49,12 +49,6 @@ typedef enum _SDCERR {
 #define CONFIG_NAME_SZ  33
 #define CLIENT_NAME_SZ  17
 #define CRYPT_BUFFER_SIZE 120
-
-typedef enum _AUTH {
-	AUTH_OPEN = 0,
-	AUTH_SHARED,
-	AUTH_NETWORK_EAP,
-} AUTH;
 
 typedef enum _EAPTYPE {
 	EAP_NONE = 0,
@@ -228,4 +222,4 @@ typedef struct _LRD_WF_SSID{
 #ifdef __cplusplus
 }
 #endif
-#endif//_SDC_SDK_H_;
+#endif//_SDC_SDK_LEGACY_H_;
