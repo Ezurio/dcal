@@ -138,8 +138,10 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 	int ret = DCAL_SUCCESS;
 	REPORT_ENTRY_DEBUG;
 
-
-	if ((session==NULL) || (profilename==NULL) || (profilename[0]==0))
+// must have a session, a profile pointer to receive the value,
+// a string for the name, and the string cannot be a null string
+	if ((session==NULL) || (profile==NULL) ||
+	    (profilename==NULL) || (profilename[0]==0))
 		ret = DCAL_INVALID_PARAMETER;
 	#ifdef DEBUG
 	else if (validate_handle(profiles, profile))
