@@ -76,15 +76,17 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_INVALID ((DCAL_session_Commands_enum_t)0UL)
 #define DCAL_session_Commands_GETVERSIONS ((DCAL_session_Commands_enum_t)1UL)
 #define DCAL_session_Commands_GETSTATUS ((DCAL_session_Commands_enum_t)2UL)
-#define DCAL_session_Commands_GETPROFILE ((DCAL_session_Commands_enum_t)3UL)
-#define DCAL_session_Commands_SETPROFILE ((DCAL_session_Commands_enum_t)4UL)
-#define DCAL_session_Commands_DELPROFILE ((DCAL_session_Commands_enum_t)5UL)
-#define DCAL_session_Commands_GETPROFILELIST ((DCAL_session_Commands_enum_t)6UL)
-#define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)7UL)
-#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)8UL)
-#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)9UL)
-#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)10UL)
-#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)11UL)
+#define DCAL_session_Commands_GETGLOBALS ((DCAL_session_Commands_enum_t)3UL)
+#define DCAL_session_Commands_SETGLOBALS ((DCAL_session_Commands_enum_t)4UL)
+#define DCAL_session_Commands_GETPROFILE ((DCAL_session_Commands_enum_t)5UL)
+#define DCAL_session_Commands_SETPROFILE ((DCAL_session_Commands_enum_t)6UL)
+#define DCAL_session_Commands_DELPROFILE ((DCAL_session_Commands_enum_t)7UL)
+#define DCAL_session_Commands_GETPROFILELIST ((DCAL_session_Commands_enum_t)8UL)
+#define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)9UL)
+#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)10UL)
+#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)11UL)
+#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)12UL)
+#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)13UL)
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -92,6 +94,8 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_INVALID: return "INVALID";
     case DCAL_session_Commands_GETVERSIONS: return "GETVERSIONS";
     case DCAL_session_Commands_GETSTATUS: return "GETSTATUS";
+    case DCAL_session_Commands_GETGLOBALS: return "GETGLOBALS";
+    case DCAL_session_Commands_SETGLOBALS: return "SETGLOBALS";
     case DCAL_session_Commands_GETPROFILE: return "GETPROFILE";
     case DCAL_session_Commands_SETPROFILE: return "SETPROFILE";
     case DCAL_session_Commands_DELPROFILE: return "DELPROFILE";
@@ -404,8 +408,8 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 2, 0, t)
 static inline int DCAL_session_Globals_channel_set_b_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(2, t)
 
-static inline uint32_t DCAL_session_Globals_auto_profile(DCAL_session_Globals_table_t t)
-__flatbuffers_scalar_field(flatbuffers_uint32, 3, 0, t)
+static inline flatbuffers_bool_t DCAL_session_Globals_auto_profile(DCAL_session_Globals_table_t t)
+__flatbuffers_scalar_field(flatbuffers_bool, 3, 0, t)
 static inline int DCAL_session_Globals_auto_profile_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(3, t)
 
@@ -414,8 +418,8 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 4, 0, t)
 static inline int DCAL_session_Globals_beacon_miss_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(4, t)
 
-static inline uint32_t DCAL_session_Globals_bt_coex(DCAL_session_Globals_table_t t)
-__flatbuffers_scalar_field(flatbuffers_uint32, 5, 0, t)
+static inline flatbuffers_bool_t DCAL_session_Globals_bt_coex(DCAL_session_Globals_table_t t)
+__flatbuffers_scalar_field(flatbuffers_bool, 5, 0, t)
 static inline int DCAL_session_Globals_bt_coex_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(5, t)
 
@@ -439,8 +443,8 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 9, 0, t)
 static inline int DCAL_session_Globals_def_adhoc_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(9, t)
 
-static inline uint32_t DCAL_session_Globals_fips(DCAL_session_Globals_table_t t)
-__flatbuffers_scalar_field(flatbuffers_uint32, 10, 0, t)
+static inline flatbuffers_bool_t DCAL_session_Globals_fips(DCAL_session_Globals_table_t t)
+__flatbuffers_scalar_field(flatbuffers_bool, 10, 0, t)
 static inline int DCAL_session_Globals_fips_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(10, t)
 
@@ -454,9 +458,9 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 12, 0, t)
 static inline int DCAL_session_Globals_probe_delay_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(12, t)
 
-static inline uint32_t DCAL_session_Globals_reg(DCAL_session_Globals_table_t t)
+static inline uint32_t DCAL_session_Globals_regdomain(DCAL_session_Globals_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 13, 0, t)
-static inline int DCAL_session_Globals_reg_is_present(DCAL_session_Globals_table_t t)
+static inline int DCAL_session_Globals_regdomain_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(13, t)
 
 static inline uint32_t DCAL_session_Globals_roam_period(DCAL_session_Globals_table_t t)
@@ -484,8 +488,8 @@ __flatbuffers_scalar_field(flatbuffers_uint32, 18, 0, t)
 static inline int DCAL_session_Globals_ttls_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(18, t)
 
-static inline uint32_t DCAL_session_Globals_uapsd(DCAL_session_Globals_table_t t)
-__flatbuffers_scalar_field(flatbuffers_uint32, 19, 0, t)
+static inline flatbuffers_bool_t DCAL_session_Globals_uapsd(DCAL_session_Globals_table_t t)
+__flatbuffers_scalar_field(flatbuffers_bool, 19, 0, t)
 static inline int DCAL_session_Globals_uapsd_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(19, t)
 
@@ -494,10 +498,15 @@ __flatbuffers_scalar_field(flatbuffers_bool, 20, 0, t)
 static inline int DCAL_session_Globals_wmm_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(20, t)
 
-static inline uint32_t DCAL_session_Globals_numprofiles(DCAL_session_Globals_table_t t)
-__flatbuffers_scalar_field(flatbuffers_uint32, 21, 0, t)
-static inline int DCAL_session_Globals_numprofiles_is_present(DCAL_session_Globals_table_t t)
+static inline flatbuffers_bool_t DCAL_session_Globals_ignore_null_ssid(DCAL_session_Globals_table_t t)
+__flatbuffers_scalar_field(flatbuffers_bool, 21, 0, t)
+static inline int DCAL_session_Globals_ignore_null_ssid_is_present(DCAL_session_Globals_table_t t)
 __flatbuffers_field_present(21, t)
+
+static inline uint32_t DCAL_session_Globals_dfs_channels(DCAL_session_Globals_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 22, 0, t)
+static inline int DCAL_session_Globals_dfs_channels_is_present(DCAL_session_Globals_table_t t)
+__flatbuffers_field_present(22, t)
 
 
 struct DCAL_session_Profile_table { uint8_t unused__; };
