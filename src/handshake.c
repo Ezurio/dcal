@@ -14,7 +14,7 @@ int build_hello(flatcc_builder_t *B)
 	ns(Handshake_magic_add(B, ns(Magic_HELLO)));
 //	TODO - do we want to identify our IP on outbound handshake?
 //	ns(Handshake_ip_create_str(B, "127.0.0.1"));
-	ns(Handshake_api_level_add(B, DCAL_API_VERSION));
+	ns(Handshake_api_level_add(B, DCAL_VERSION));
 	ns(Handshake_end_as_root(B));
 
 	return 0;
