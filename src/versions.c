@@ -185,7 +185,7 @@ int version_pull(internal_session_handle session)
 	session->versions.sys = ns(Version_sys(version));
 	session->versions.driver = ns(Version_driver(version));
 	session->versions.dcas = ns(Version_dcas(version));
-	session->versions.dcal = DCAL_API_VERSION;
+	session->versions.dcal = DCAL_VERSION;
 	strncpy(session->versions.firmware, ns(Version_firmware(version)), STR_SZ);
 	strncpy(session->versions.supplicant, ns(Version_supplicant(version)), STR_SZ);
 	strncpy(session->versions.release, ns(Version_release(version)), STR_SZ);
