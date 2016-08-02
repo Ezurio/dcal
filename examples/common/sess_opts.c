@@ -31,11 +31,7 @@ void usage(char * app_name)
 {
 	printf("usage: %s [OPTIONS]\n\n", app_name);
 	printf("Device Control API Library (DCAL) application: %s\n", application_name);
-	printf("dcal library version %d.%d.%d.%d\n\n",
-	        (DCAL_API_VERSION & 0xff000000) >> 24,
-	        (DCAL_API_VERSION & 0x00ff0000) >> 16,
-	        (DCAL_API_VERSION & 0x0000ff00) >> 8,
-	        (DCAL_API_VERSION & 0x000000ff));
+	printf("dcal library version %s\n\n", DCAL_VERSION_STR);
 
 	printf("  -h <value>      DCAS server address (default is localhost)\n"
 	       "  -p <value>      port for ssh connection\n"
