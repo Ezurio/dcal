@@ -21,6 +21,11 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 #include <stdint.h>
 #include <stdbool.h>
+
+//these three values define the API version between DCAL and DCAS
+#define LAIRD_SDK_MSB       3
+#define LAIRD_DCAL_MAJOR    1
+#define LAIRD_DCAL_MINOR    2
 #include "version.h"
 
 #ifdef __cplusplus
@@ -140,6 +145,212 @@ int dcal_device_status_get_cache_timeout( unsigned int *timeout);
 // WiFi Management
 int dcal_wifi_enable( laird_session_handle session);
 int dcal_wifi_disable( laird_session_handle session);
+
+// WiFi Global Management_
+// both the create and pull functions will allocate a laird_global_handle
+// that require the close_handle function to be called when done with the
+// handle
+int dcal_wifi_global_create( laird_global_handle * global);
+int dcal_wifi_global_pull( laird_session_handle session,
+                                 laird_global_handle * global);
+int dcal_wifi_global_close_handle( laird_global_handle global);
+
+// push sends the local global to the remote radio device.
+int dcal_wifi_global_push( laird_session_handle session,
+                                 laird_global_handle global);
+
+//Type 1 - server that uses PEAPv1 for PEAP with EAP-MSCHAPV2 (PEAP-MSCHAP).
+//Type 2 -uses PEAPv0 for PEAP-MSCHAP.
+typedef enum _server_auth{
+	TYPE1 = 1,
+	TYPE2 = 2
+} SERVER_AUTH;
+
+int dcal_wifi_global_set_auth_server( laird_global_handle global,
+                                      SERVER_AUTH auth);
+int dcal_wifi_global_get_auth_server( laird_global_handle global,
+                                      SERVER_AUTH *auth);
+
+typedef enum _bchannels_masks{
+	b_1 = 1>>0, //2412 GHz
+	b_2 = 1>>1, //2417 GHz
+	b_3 = 1>>2, //2422 GHz
+	b_4 = 1>>3, //2427 GHz
+	b_5 = 1>>4, //2432 GHz
+	b_6 = 1>>5, //2437 GHz
+	b_7 = 1>>6, //2442 GHz
+	b_8 = 1>>7, //2447 GHz
+	b_9 = 1>>8, //2452 GHz
+	b_10 = 1>>9, //2457 GHz
+	b_11 = 1>>10, //2462 GHz
+	b_12 = 1>>11, //2467 GHz
+	b_13 = 1>>12, //2472 GHz
+	b_14 = 1>>13, //2484 GHz
+} B_CHAN_MASKS;
+
+typedef enum _achannels_masks{
+	a_36 = 1>>0, //5180 GHz (U-NII-1)
+	a_40 = 1>>1, //5200 GHz
+	a_44 = 1>>2, //5220 GHz
+	a_48 = 1>>3, //5240 GHz
+	a_52 = 1>>4, //5260 GHz (U-NII-2/DFS)
+	a_56 = 1>>5, //5280 GHz
+	a_60 = 1>>6, //5300 GHz
+	a_64 = 1>>7, //5320 GHz
+	a_100 = 1>>8, //5500 GHz
+	a_104 = 1>>9, //5520 GHz
+	a_108 = 1>>10, //5540 GHz
+	a_112 = 1>>11, //5560 GHz
+	a_116 = 1>>12, //5580 GHz
+	a_120 = 1>>13, //5600 GHz
+	a_124 = 1>>14, //5620 GHz
+	a_128 = 1>>15, //5640 GHz
+	a_132 = 1>>16, //5660 GHz
+	a_136 = 1>>17, //5680 GHz
+	a_140 = 1>>18, //5700 GHz
+	a_149 = 1>>19, //5745 GHz (U-NII-3)
+	a_153 = 1>>20, //5765 GHz
+	a_157 = 1>>21, //5785 GHz
+	a_161 = 1>>22, //5805 GHz
+	a_165 = 1>>23, //5825 GHz
+} A_CHAN_MASKS;
+
+int dcal_wifi_global_set_channel_set_a( laird_global_handle global,
+                                        unsigned int channel_set_a);
+int dcal_wifi_global_get_channel_set_a( laird_global_handle global,
+                                        unsigned int *channel_set_a);
+
+int dcal_wifi_global_set_channel_set_b( laird_global_handle global,
+                                        unsigned int channel_set_b);
+int dcal_wifi_global_get_channel_set_b( laird_global_handle global,
+                                        unsigned int *channel_set_b);
+
+int dcal_wifi_global_set_auto_profile( laird_global_handle global,
+                                       bool auto_profile);
+int dcal_wifi_global_get_auto_profile( laird_global_handle global,
+                                       bool *auto_profile);
+
+int dcal_wifi_global_set_beacon_miss( laird_global_handle global,
+                                      unsigned int beacon_miss);
+int dcal_wifi_global_get_beacon_miss( laird_global_handle global,
+                                      unsigned int *beacon_miss);
+
+int dcal_wifi_global_set_bt_coex( laird_global_handle global,
+                                  bool bt_coex);
+int dcal_wifi_global_get_bt_coex( laird_global_handle global,
+                                  bool *bt_coex);
+
+int dcal_wifi_global_set_ccx( laird_global_handle global, bool ccx);
+int dcal_wifi_global_get_ccx( laird_global_handle global, bool *ccx);
+
+int dcal_wifi_global_set_cert_path( laird_global_handle global,
+                                    char *cert_path);
+int dcal_wifi_global_get_cert_path( laird_global_handle global,
+                                    char *cert_path, size_t buf_len);
+
+int dcal_wifi_global_set_date_check( laird_global_handle global,
+                                     bool date_check);
+int dcal_wifi_global_get_date_check( laird_global_handle global,
+                                     bool *date_check);
+
+int dcal_wifi_global_set_def_adhoc_channel( laird_global_handle global,
+                                            unsigned int def_adhoc_channel);
+int dcal_wifi_global_get_def_adhoc_channel( laird_global_handle global,
+                                            unsigned int *def_adhoc_channel);
+
+int dcal_wifi_global_set_fips( laird_global_handle global, bool fips);
+int dcal_wifi_global_get_fips( laird_global_handle global, bool *fips);
+
+typedef enum _pmk_caching {
+	STANDARD = 0,
+	OPMK = 1,
+} DCAL_PMK_CACHING;
+int dcal_wifi_global_set_pmk( laird_global_handle global, DCAL_PMK_CACHING pmk);
+int dcal_wifi_global_get_pmk( laird_global_handle global, DCAL_PMK_CACHING *pmk);
+
+int dcal_wifi_global_set_probe_delay( laird_global_handle global,
+                                      unsigned int probe_delay);
+int dcal_wifi_global_get_probe_delay( laird_global_handle global,
+                                      unsigned int *probe_delay);
+#ifndef _SDC_SDK_H_
+typedef enum _regulatory_domain{
+	REG_FCC   = 0,	// North America, South America, Central America, Australia, New Zealand, various parts of Asia
+	REG_ETSI  = 1,	// Europe, Middle East, Africa, various parts of Asia
+	REG_TELEC = 2,	// Japan
+	REG_WW    = 3,	// World Wide
+	REG_KCC   = 4,	// Korea
+	REG_CA    = 5,	// Canada
+	REG_FR    = 6,	// France
+	REG_GB    = 7,	// United Kingdom
+	REG_AU    = 8,	// Australia
+	REG_NZ    = 9,	// New Zealand
+	REG_CN    = 10,	// China
+	REG_BR    = 11,	// Brazil
+	REG_RU    = 12,	// Russia
+} REG_DOMAIN;
+#endif
+int dcal_wifi_global_get_regdomain( laird_global_handle global,
+                                    REG_DOMAIN *regdomain);
+
+int dcal_wifi_global_set_roam_period( laird_global_handle global,
+                                      unsigned int roam_period);
+int dcal_wifi_global_get_roam_period( laird_global_handle global,
+                                      unsigned int *roam_period);
+
+int dcal_wifi_global_set_roam_trigger( laird_global_handle global,
+                                       unsigned int roam_trigger);
+int dcal_wifi_global_get_roam_trigger( laird_global_handle global,
+                                       unsigned int *roam_trigger);
+
+int dcal_wifi_global_set_rts( laird_global_handle global,
+                              unsigned int rts);
+int dcal_wifi_global_get_rts( laird_global_handle global,
+                              unsigned int *rts);
+
+int dcal_wifi_global_set_scan_dfs_time( laird_global_handle global,
+                                        unsigned int scan_dfs);
+int dcal_wifi_global_get_scan_dfs_time( laird_global_handle global,
+                                        unsigned int *scan_dfs);
+
+#ifndef _SDC_SDK_H_
+typedef enum _ttls_internal_method {
+	TTLS_AUTO = 0,	// uses any available EAP method
+	TTLS_MSCHAPV2,
+	TTLS_MSCHAP,
+	TTLS_PAP,
+	TTLS_CHAP,
+	TTLS_EAP_MSCHAPV2,
+} TTLS_INNER_METHOD;
+#endif
+int dcal_wifi_global_set_ttls_inner_method( laird_global_handle global,
+                                TTLS_INNER_METHOD ttls_inner_method);
+int dcal_wifi_global_get_ttls_inner_method( laird_global_handle global,
+                                TTLS_INNER_METHOD *ttls_inner_method);
+
+int dcal_wifi_global_set_uapsd( laird_global_handle global, bool uapsd);
+int dcal_wifi_global_get_uapsd( laird_global_handle global, bool *uapsd);
+
+int dcal_wifi_global_set_wmm( laird_global_handle global, bool wmm);
+int dcal_wifi_global_get_wmm( laird_global_handle global, bool *wmm);
+
+int dcal_wifi_global_set_ignore_null_ssid( laird_global_handle global,
+                                           bool ignore_null_ssid);
+int dcal_wifi_global_get_ignore_null_ssid( laird_global_handle global,
+                                           bool *ignore_null_ssid);
+
+#ifndef _SDC_SDK_H_
+typedef enum _dfs_channels {
+	DFS_OFF = 0,
+	DFS_FULL,
+	DFS_OPTIMIZED
+} DFS_CHANNELS;
+#endif
+int dcal_wifi_global_set_dfs_channels( laird_global_handle global,
+                                       DFS_CHANNELS dfs_channels);
+int dcal_wifi_global_get_dfs_channels( laird_global_handle global,
+                                       DFS_CHANNELS *dfs_channels);
+
+void dcal_wifi_global_printf( laird_global_handle global);
 
 // WiFi Profile Management_
 // both the create and pull functions will allocate a laird_profile_handle
