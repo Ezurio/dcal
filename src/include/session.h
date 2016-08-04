@@ -93,4 +93,5 @@ int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes);
 // internal use only
 int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes);
 
+int validate_session(laird_session_handle s);
 #endif //__session_h__
