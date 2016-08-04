@@ -127,6 +127,9 @@ const char *dcal_err_to_string( int code)
 		case DCAL_NOT_IMPLEMENTED:   return "DCAL_NOT_IMPLEMENTED";
 		case DCAL_SSH_ERROR:         return "DCAL_SSH_ERROR";
 		case DCAL_FLATBUFF_ERROR:    return "DCAL_FLATBUFF_ERROR";
+		case DCAL_FILE_ACCESS_DENIED:      return "DCAL_FILE_ACCESS_DENIED";
+		case DCAL_REMOTE_FILE_ACCESS_DENIED:return "DCAL_REMOTE_FILE_ACCESS_DENIED";
+		case DCAL_FQDN_FAILURE:             return "DCAL_FQDN_FAILURE";
 		default:                     snprintf(debugbuf, BUFSIZE, "unknown DCAL_ERR:%d",code);
 		return debugbuf;
 	}

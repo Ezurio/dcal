@@ -425,3 +425,8 @@ int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes)
 	return REPORT_RETURN_DBG(ret);
 }
 
+int validate_session(laird_session_handle s)
+{
+	return validate_handle(sessions, s);
+}
+

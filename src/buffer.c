@@ -70,6 +70,12 @@ flatbuffers_thash_t verify_buffer(const void * buf, const size_t size)
 				ret = 0;
 				}
 			break;
+		case ns(Time_type_hash):
+			if(ns(Time_verify_as_root(buf,size))){
+				DBGERROR("%s: unable to verify buffer\n", __func__);
+				ret = 0;
+				}
+			break;
 		default:
 			DBGERROR("%s: buffer hash invalid: %lx\n", __func__, (unsigned long)ret);
 			ret = 0;
@@ -105,6 +111,9 @@ char * buftype_to_string(flatbuffers_thash_t buftype)
 			return "P_entry";
 		case ns(Profile_list_type_hash):
 			return "Profile_list";
+			break;
+		case ns(Time_type_hash):
+			return "Time";
 			break;
 
 		default:
