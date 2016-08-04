@@ -47,6 +47,8 @@ static const flatbuffers_voffset_t __DCAL_session_P_entry_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_P_entry, 3)
 static const flatbuffers_voffset_t __DCAL_session_Profile_list_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Profile_list, 1)
+static const flatbuffers_voffset_t __DCAL_session_Time_required[] = {0 };
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Time, 2)
 static const flatbuffers_voffset_t __DCAL_session_Command_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Command, 3)
 #define __DCAL_session_Handshake_formal_args ,\
@@ -113,6 +115,9 @@ static inline DCAL_session_P_entry_ref_t DCAL_session_P_entry_create(flatbuffers
 #define __DCAL_session_Profile_list_formal_args , DCAL_session_P_entry_vec_ref_t v0
 #define __DCAL_session_Profile_list_call_args , v0
 static inline DCAL_session_Profile_list_ref_t DCAL_session_Profile_list_create(flatbuffers_builder_t *B __DCAL_session_Profile_list_formal_args);
+#define __DCAL_session_Time_formal_args , int32_t v0, int32_t v1
+#define __DCAL_session_Time_call_args , v0, v1
+static inline DCAL_session_Time_ref_t DCAL_session_Time_create(flatbuffers_builder_t *B __DCAL_session_Time_formal_args);
 #define __DCAL_session_Command_formal_args , DCAL_session_Commands_enum_t v0, DCAL_session_Cmd_pl_union_ref_t v2
 #define __DCAL_session_Command_call_args , v0, v2
 static inline DCAL_session_Command_ref_t DCAL_session_Command_create(flatbuffers_builder_t *B __DCAL_session_Command_formal_args);
@@ -126,6 +131,7 @@ struct DCAL_session_Cmd_pl_union_ref {
         DCAL_session_Profile_ref_t Profile;
         DCAL_session_U32_ref_t U32;
         DCAL_session_String_ref_t String;
+        DCAL_session_Time_ref_t Time;
     };
 };
 
@@ -139,6 +145,8 @@ static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_U32(DCAL_se
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_U32; uref.U32 = ref; return uref; }
 static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_String(DCAL_session_String_ref_t ref)
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_String; uref.String = ref; return uref; }
+static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_Time(DCAL_session_Time_ref_t ref)
+{ DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_Time; uref.Time = ref; return uref; }
 
 __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Handshake_server, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
 __flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Handshake_magic, DCAL_session_Magic, DCAL_session_Magic_enum_t, 4, 4, 0)
@@ -402,12 +410,27 @@ static inline DCAL_session_Profile_list_ref_t DCAL_session_Profile_list_create(f
 }
 __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Profile_list, DCAL_session_Profile_list_identifier, DCAL_session_Profile_list_type_identifier)
 
+__flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Time_tv_sec, flatbuffers_int32, int32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Time_tv_usec, flatbuffers_int32, int32_t, 4, 4, 0)
+
+static inline DCAL_session_Time_ref_t DCAL_session_Time_create(flatbuffers_builder_t *B __DCAL_session_Time_formal_args)
+{
+    if (DCAL_session_Time_start(B)
+        || DCAL_session_Time_tv_sec_add(B, v0)
+        || DCAL_session_Time_tv_usec_add(B, v1)) {
+        return 0;
+    }
+    return DCAL_session_Time_end(B);
+}
+__flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Time, DCAL_session_Time_identifier, DCAL_session_Time_type_identifier)
+
 __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Command_command, DCAL_session_Commands, DCAL_session_Commands_enum_t, 4, 4, 0)
 __flatbuffers_build_union_field(2, flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Globals, DCAL_session_Globals)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Profile, DCAL_session_Profile)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, U32, DCAL_session_U32)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, String, DCAL_session_String)
+__flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Time, DCAL_session_Time)
 
 static inline DCAL_session_Command_ref_t DCAL_session_Command_create(flatbuffers_builder_t *B __DCAL_session_Command_formal_args)
 {
