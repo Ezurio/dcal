@@ -31,9 +31,8 @@ int dcal_device_status_get_settings( laird_session_handle s,
 
 	REPORT_ENTRY_DEBUG;
 
-	if (s==NULL) {
-		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
-	}
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
 
 	session = s;
 	if (!session->builder_init)
@@ -71,9 +70,8 @@ int dcal_device_status_get_ccx( laird_session_handle s,
 
 	REPORT_ENTRY_DEBUG;
 
-	if (s==NULL) {
-		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
-	}
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
 
 	session = s;
 	if (!session->builder_init)
@@ -107,9 +105,8 @@ int dcal_device_status_get_tcp( laird_session_handle s,
 
 	REPORT_ENTRY_DEBUG;
 
-	if (s==NULL) {
-		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
-	}
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
 
 	session = s;
 	if (!session->builder_init)
@@ -142,9 +139,8 @@ int dcal_device_status_get_connection( laird_session_handle s,
 
 	REPORT_ENTRY_DEBUG;
 
-	if (s==NULL) {
-		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
-	}
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
 
 	session = s;
 	if (!session->builder_init)
@@ -183,9 +179,8 @@ int dcal_device_status_get_connection_extended( laird_session_handle s,
 
 	REPORT_ENTRY_DEBUG;
 
-	if (s==NULL) {
-		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
-	}
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
 
 	session = s;
 	if (!session->builder_init)
@@ -232,9 +227,8 @@ int dcal_device_status_pull( laird_session_handle s)
 
 	REPORT_ENTRY_DEBUG;
 
-	if (s==NULL) {
-		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
-	}
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
 
 	session = s;
 	if (!session->builder_init)

@@ -33,9 +33,8 @@ int do_wifiable( laird_session_handle s, bool enable)
 
 	REPORT_ENTRY_DEBUG;
 
-	if (s==NULL){
-		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
-	}
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG(DCAL_INVALID_HANDLE);
 
 	session = s;
 	if (!session->builder_init)
