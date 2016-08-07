@@ -52,6 +52,9 @@ typedef flatbuffers_uoffset_t *DCAL_session_Profile_list_mutable_vec_t;
 typedef const struct DCAL_session_Time_table *DCAL_session_Time_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Time_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Time_mutable_vec_t;
+typedef const struct DCAL_session_Filexfer_table *DCAL_session_Filexfer_table_t;
+typedef const flatbuffers_uoffset_t *DCAL_session_Filexfer_vec_t;
+typedef flatbuffers_uoffset_t *DCAL_session_Filexfer_mutable_vec_t;
 typedef const struct DCAL_session_Command_table *DCAL_session_Command_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Command_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Command_mutable_vec_t;
@@ -93,6 +96,11 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_SETTIME ((DCAL_session_Commands_enum_t)14UL)
 #define DCAL_session_Commands_GETTIME ((DCAL_session_Commands_enum_t)15UL)
 #define DCAL_session_Commands_NTPDATE ((DCAL_session_Commands_enum_t)16UL)
+#define DCAL_session_Commands_FILEPUSH ((DCAL_session_Commands_enum_t)17UL)
+#define DCAL_session_Commands_FILEPULL ((DCAL_session_Commands_enum_t)18UL)
+#define DCAL_session_Commands_FWUPDATE ((DCAL_session_Commands_enum_t)19UL)
+#define DCAL_session_Commands_CLIFILE ((DCAL_session_Commands_enum_t)20UL)
+#define DCAL_session_Commands_GETLOGS ((DCAL_session_Commands_enum_t)21UL)
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -114,6 +122,11 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_SETTIME: return "SETTIME";
     case DCAL_session_Commands_GETTIME: return "GETTIME";
     case DCAL_session_Commands_NTPDATE: return "NTPDATE";
+    case DCAL_session_Commands_FILEPUSH: return "FILEPUSH";
+    case DCAL_session_Commands_FILEPULL: return "FILEPULL";
+    case DCAL_session_Commands_FWUPDATE: return "FWUPDATE";
+    case DCAL_session_Commands_CLIFILE: return "CLIFILE";
+    case DCAL_session_Commands_GETLOGS: return "GETLOGS";
     default: return "";
     }
 }
@@ -693,6 +706,35 @@ __flatbuffers_scalar_field(flatbuffers_int32, 1, 0, t)
 static inline int DCAL_session_Time_tv_usec_is_present(DCAL_session_Time_table_t t)
 __flatbuffers_field_present(1, t)
 
+
+struct DCAL_session_Filexfer_table { uint8_t unused__; };
+
+#ifndef DCAL_session_Filexfer_identifier
+#define DCAL_session_Filexfer_identifier flatbuffers_identifier
+#endif
+#define DCAL_session_Filexfer_type_hash ((flatbuffers_thash_t)0xd295470c)
+#define DCAL_session_Filexfer_type_identifier "\x0c\x47\x95\xd2"
+static inline size_t DCAL_session_Filexfer_vec_len(DCAL_session_Filexfer_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline DCAL_session_Filexfer_table_t DCAL_session_Filexfer_vec_at(DCAL_session_Filexfer_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(DCAL_session_Filexfer_table_t, vec, i, 0)
+__flatbuffers_table_as_root(DCAL_session_Filexfer)
+
+static inline flatbuffers_string_t DCAL_session_Filexfer_file_path(DCAL_session_Filexfer_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 0, t, 0)
+static inline int DCAL_session_Filexfer_file_path_is_present(DCAL_session_Filexfer_table_t t)
+__flatbuffers_field_present(0, t)
+
+static inline int32_t DCAL_session_Filexfer_size(DCAL_session_Filexfer_table_t t)
+__flatbuffers_scalar_field(flatbuffers_int32, 1, 0, t)
+static inline int DCAL_session_Filexfer_size_is_present(DCAL_session_Filexfer_table_t t)
+__flatbuffers_field_present(1, t)
+
+static inline int32_t DCAL_session_Filexfer_mode(DCAL_session_Filexfer_table_t t)
+__flatbuffers_scalar_field(flatbuffers_int32, 2, 0, t)
+static inline int DCAL_session_Filexfer_mode_is_present(DCAL_session_Filexfer_table_t t)
+__flatbuffers_field_present(2, t)
+
 typedef uint8_t DCAL_session_Cmd_pl_union_type_t;
 __flatbuffers_define_integer_type(DCAL_session_Cmd_pl, DCAL_session_Cmd_pl_union_type_t, 8)
 #define DCAL_session_Cmd_pl_NONE ((DCAL_session_Cmd_pl_union_type_t)0U)
@@ -701,6 +743,7 @@ __flatbuffers_define_integer_type(DCAL_session_Cmd_pl, DCAL_session_Cmd_pl_union
 #define DCAL_session_Cmd_pl_U32 ((DCAL_session_Cmd_pl_union_type_t)3U)
 #define DCAL_session_Cmd_pl_String ((DCAL_session_Cmd_pl_union_type_t)4U)
 #define DCAL_session_Cmd_pl_Time ((DCAL_session_Cmd_pl_union_type_t)5U)
+#define DCAL_session_Cmd_pl_Filexfer ((DCAL_session_Cmd_pl_union_type_t)6U)
 
 static inline const char *DCAL_session_Cmd_pl_type_name(DCAL_session_Cmd_pl_union_type_t type)
 {
@@ -711,6 +754,7 @@ static inline const char *DCAL_session_Cmd_pl_type_name(DCAL_session_Cmd_pl_unio
     case DCAL_session_Cmd_pl_U32: return "U32";
     case DCAL_session_Cmd_pl_String: return "String";
     case DCAL_session_Cmd_pl_Time: return "Time";
+    case DCAL_session_Cmd_pl_Filexfer: return "Filexfer";
     default: return "";
     }
 }

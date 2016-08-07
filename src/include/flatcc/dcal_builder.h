@@ -49,6 +49,8 @@ static const flatbuffers_voffset_t __DCAL_session_Profile_list_required[] = {0 }
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Profile_list, 1)
 static const flatbuffers_voffset_t __DCAL_session_Time_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Time, 2)
+static const flatbuffers_voffset_t __DCAL_session_Filexfer_required[] = {0 };
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Filexfer, 3)
 static const flatbuffers_voffset_t __DCAL_session_Command_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Command, 3)
 #define __DCAL_session_Handshake_formal_args ,\
@@ -120,6 +122,9 @@ static inline DCAL_session_Profile_list_ref_t DCAL_session_Profile_list_create(f
 #define __DCAL_session_Time_formal_args , int32_t v0, int32_t v1
 #define __DCAL_session_Time_call_args , v0, v1
 static inline DCAL_session_Time_ref_t DCAL_session_Time_create(flatbuffers_builder_t *B __DCAL_session_Time_formal_args);
+#define __DCAL_session_Filexfer_formal_args , flatbuffers_string_ref_t v0, int32_t v1, int32_t v2
+#define __DCAL_session_Filexfer_call_args , v0, v1, v2
+static inline DCAL_session_Filexfer_ref_t DCAL_session_Filexfer_create(flatbuffers_builder_t *B __DCAL_session_Filexfer_formal_args);
 #define __DCAL_session_Command_formal_args , DCAL_session_Commands_enum_t v0, DCAL_session_Cmd_pl_union_ref_t v2
 #define __DCAL_session_Command_call_args , v0, v2
 static inline DCAL_session_Command_ref_t DCAL_session_Command_create(flatbuffers_builder_t *B __DCAL_session_Command_formal_args);
@@ -134,6 +139,7 @@ struct DCAL_session_Cmd_pl_union_ref {
         DCAL_session_U32_ref_t U32;
         DCAL_session_String_ref_t String;
         DCAL_session_Time_ref_t Time;
+        DCAL_session_Filexfer_ref_t Filexfer;
     };
 };
 
@@ -149,6 +155,8 @@ static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_String(DCAL
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_String; uref.String = ref; return uref; }
 static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_Time(DCAL_session_Time_ref_t ref)
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_Time; uref.Time = ref; return uref; }
+static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_Filexfer(DCAL_session_Filexfer_ref_t ref)
+{ DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_Filexfer; uref.Filexfer = ref; return uref; }
 
 __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Handshake_server, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
 __flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Handshake_magic, DCAL_session_Magic, DCAL_session_Magic_enum_t, 4, 4, 0)
@@ -428,6 +436,22 @@ static inline DCAL_session_Time_ref_t DCAL_session_Time_create(flatbuffers_build
 }
 __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Time, DCAL_session_Time_identifier, DCAL_session_Time_type_identifier)
 
+__flatbuffers_build_string_field(0, flatbuffers_, DCAL_session_Filexfer_file_path)
+__flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Filexfer_size, flatbuffers_int32, int32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(2, flatbuffers_, DCAL_session_Filexfer_mode, flatbuffers_int32, int32_t, 4, 4, 0)
+
+static inline DCAL_session_Filexfer_ref_t DCAL_session_Filexfer_create(flatbuffers_builder_t *B __DCAL_session_Filexfer_formal_args)
+{
+    if (DCAL_session_Filexfer_start(B)
+        || DCAL_session_Filexfer_file_path_add(B, v0)
+        || DCAL_session_Filexfer_size_add(B, v1)
+        || DCAL_session_Filexfer_mode_add(B, v2)) {
+        return 0;
+    }
+    return DCAL_session_Filexfer_end(B);
+}
+__flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Filexfer, DCAL_session_Filexfer_identifier, DCAL_session_Filexfer_type_identifier)
+
 __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Command_command, DCAL_session_Commands, DCAL_session_Commands_enum_t, 4, 4, 0)
 __flatbuffers_build_union_field(2, flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Globals, DCAL_session_Globals)
@@ -435,6 +459,7 @@ __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, U32, DCAL_session_U32)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, String, DCAL_session_String)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Time, DCAL_session_Time)
+__flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Filexfer, DCAL_session_Filexfer)
 
 static inline DCAL_session_Command_ref_t DCAL_session_Command_create(flatbuffers_builder_t *B __DCAL_session_Command_formal_args)
 {
