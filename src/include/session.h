@@ -5,6 +5,7 @@
 #include <libssh/server.h>
 #include <stdbool.h>
 #include <time.h>
+#include <pthread.h>
 #include "flatcc/dcal_builder.h"
 #include "dcal_api.h"
 
@@ -73,6 +74,7 @@ typedef struct _internal_session_handle {
 	flatcc_builder_t builder;
 	bool builder_init;
 	DCAL_STATUS_STRUCT status;
+	pthread_mutex_t *chan_lock;
 } internal_session_struct;
 typedef internal_session_struct * internal_session_handle;
 
@@ -94,4 +96,6 @@ int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes);
 int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes);
 
 int validate_session(laird_session_handle s);
+int lock_session_channel(laird_session_handle s);
+int unlock_session_channel(laird_session_handle s);
 #endif //__session_h__

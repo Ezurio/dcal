@@ -67,12 +67,18 @@ int handshake_init(internal_session_handle s)
 		}
 
 		//send hello
+		rc = lock_session_channel(s);
+		if(rc) goto exit;
 		rc = dcal_send_buffer( s, buffer, size );
-		if (rc) goto exit;
+		if(rc) {
+			unlock_session_channel(s);
+			goto exit;
+		}
 
 		//verify ack
 		size = BUF_SZ;
 		rc = dcal_read_buffer( s, buffer, &size );
+		unlock_session_channel(s);
 		if (rc) goto exit;
 
 		buftype = verify_buffer(buffer, size);
