@@ -251,11 +251,20 @@ int dcal_device_status_pull( laird_session_handle s)
 	assert(size <= BUF_SZ);
 	flatcc_builder_copy_buffer(B, buffer, size);
 
+	ret = lock_session_channel(session);
+	if(ret)
+		return REPORT_RETURN_DBG(ret);
 	ret = dcal_send_buffer( session, buffer, size);
+
+	if (ret != DCAL_SUCCESS) {
+		unlock_session_channel(session);
+		return REPORT_RETURN_DBG(ret);
+	}
 
 // get response
 	size = BUF_SZ;
 	ret = dcal_read_buffer( session, buffer, &size);
+	unlock_session_channel(session);
 
 	if (ret != DCAL_SUCCESS)
 		return REPORT_RETURN_DBG(ret);
