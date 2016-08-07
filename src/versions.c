@@ -20,7 +20,9 @@ int build_query_version( flatcc_builder_t *B)
 
 int dcal_get_sdk_version(laird_session_handle session, unsigned int *sdk)
 {
-	if ((session==NULL) || (sdk==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (sdk==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)
@@ -33,7 +35,9 @@ int dcal_get_sdk_version(laird_session_handle session, unsigned int *sdk)
 int dcal_get_chipset_version(laird_session_handle session,
                               RADIOCHIPSET *chipset)
 {
-	if ((session==NULL) || (chipset==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (chipset==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)
@@ -46,7 +50,9 @@ int dcal_get_chipset_version(laird_session_handle session,
 int dcal_get_system_version(laird_session_handle session,
                               LRD_SYSTEM *sys)
 {
-	if ((session==NULL) || (sys==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (sys==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)
@@ -59,7 +65,9 @@ int dcal_get_system_version(laird_session_handle session,
 int dcal_get_driver_version(laird_session_handle session,
                               unsigned int *driver)
 {
-	if ((session==NULL) || (driver==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (driver==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)
@@ -72,7 +80,9 @@ int dcal_get_driver_version(laird_session_handle session,
 int dcal_get_dcas_version(laird_session_handle session,
                               unsigned int *dcas)
 {
-	if ((session==NULL) || (dcas==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (dcas==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)
@@ -85,7 +95,9 @@ int dcal_get_dcas_version(laird_session_handle session,
 int dcal_get_dcal_version(laird_session_handle session,
                               unsigned int *dcal)
 {
-	if ((session==NULL) || (dcal==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (dcal==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)
@@ -98,7 +110,9 @@ int dcal_get_dcal_version(laird_session_handle session,
 int dcal_get_firmware_version(laird_session_handle session,
                               char *firmware)
 {
-	if ((session==NULL) || (firmware==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (firmware==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)
@@ -111,7 +125,9 @@ int dcal_get_firmware_version(laird_session_handle session,
 int dcal_get_supplicant_version(laird_session_handle session,
                               char *supplicant)
 {
-	if ((session==NULL) || (supplicant==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (supplicant==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)
@@ -124,7 +140,9 @@ int dcal_get_supplicant_version(laird_session_handle session,
 int dcal_get_release_version(laird_session_handle session,
                               char *release)
 {
-	if ((session==NULL) || (release==NULL))
+	if (!validate_session(session))
+		return(DCAL_INVALID_HANDLE);
+	if (release==NULL)
 		return(DCAL_INVALID_PARAMETER);
 
 	if (((internal_session_handle)session)->versions.valid==false)

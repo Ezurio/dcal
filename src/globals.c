@@ -94,6 +94,8 @@ int dcal_wifi_global_pull( laird_session_handle session,
 	#ifdef DEBUG
 	else if (validate_handle(globals, global))
 		ret = DCAL_HANDLE_IN_USE;
+	else if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
 	#endif
 	else {
 		internal_session_handle s = (internal_session_handle)session;
@@ -224,6 +226,8 @@ int dcal_wifi_global_push( laird_session_handle session,
 		ret = DCAL_INVALID_PARAMETER;
 	else if(!validate_handle(globals, global))
 		ret = DCAL_INVALID_HANDLE;
+	else if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
 	else {
 		flatcc_builder_t *B;
 		char buffer[BUF_SZ] = {0};

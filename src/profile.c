@@ -140,12 +140,13 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 
 // must have a session, a profile pointer to receive the value,
 // a string for the name, and the string cannot be a null string
-	if ((session==NULL) || (profile==NULL) ||
-	    (profilename==NULL) || (profilename[0]==0))
+	if ((profilename==NULL) || (profilename[0]==0))
 		ret = DCAL_INVALID_PARAMETER;
 	#ifdef DEBUG
 	else if (validate_handle(profiles, profile))
 		ret = DCAL_HANDLE_IN_USE;
+	else if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
 	#endif
 	else {
 		internal_session_handle s = (internal_session_handle)session;
@@ -315,8 +316,8 @@ int dcal_wifi_profile_push( laird_session_handle session,
 	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
-	if ((session==NULL) || (profile==NULL))
-		ret = DCAL_INVALID_PARAMETER;
+	if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
 	else if(!validate_handle(profiles, profile))
 		ret = DCAL_INVALID_HANDLE;
 	else {
@@ -401,8 +402,8 @@ int dcal_wifi_profile_activate( laird_session_handle session,
 	internal_session_handle s = (internal_session_handle)session;
 	REPORT_ENTRY_DEBUG;
 
-	if ((session==NULL) || (profile==NULL))
-		ret = DCAL_INVALID_PARAMETER;
+	if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
 	else if(!validate_handle(profiles, profile))
 		ret = DCAL_INVALID_HANDLE;
 	else {
@@ -423,8 +424,10 @@ int dcal_wifi_profile_activate_by_name( laird_session_handle session,
 	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
-	if ((session==NULL) || (profile_name==NULL) || (profile_name[0]==0))
+	if ((profile_name==NULL) || (profile_name[0]==0))
 		ret = DCAL_INVALID_PARAMETER;
+	else if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
 	else {
 		flatcc_builder_t *B;
 		char buffer[BUF_SZ] = {0};
@@ -490,8 +493,10 @@ int dcal_wifi_profile_delete_from_device( laird_session_handle session,
 	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
-	if ((session==NULL) || (profile_name==NULL) || (profile_name[0]==0))
+	if ((profile_name==NULL) || (profile_name[0]==0))
 		ret = DCAL_INVALID_PARAMETER;
+	else if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
 	else {
 		flatcc_builder_t *B;
 		char buffer[BUF_SZ] = {0};
