@@ -5,61 +5,18 @@
 
 // First have to "object-ize" our api, because we have handles, but we can't
 // easily send those back and forth to python
-class sdk_version
+
+class generic_int
 {
   public:
-	unsigned int sdk;
+	int gen_int;
 };
 
-class chipset_version
+class generic_char
 {
   public:
-	int chipset;
-};
-
-class system_version
-{
-  public:
-	int sys;
-};
-
-class driver_version
-{
-  public:
-	unsigned int driver;
-};
-
-class dcas_version
-{
-  public:
-	unsigned int dcas;
-};
-
-class dcal_version
-{
-  public:
-	unsigned int dcal;
-};
-
-class firmware_version
-{
-  public:
-	char _firmware[STR_SZ];
-	boost::python::object firmware() const { return boost::python::object(_firmware); }
-};
-
-class supplicant_version
-{
-  public:
-	char _supplicant[STR_SZ];
-	boost::python::object supplicant() const { return boost::python::object(_supplicant); }
-};
-
-class release_version
-{
-  public:
-	char _release[STR_SZ];
-	boost::python::object release() const { return boost::python::object(_release); }
+	char _gen_char[STR_SZ];
+	boost::python::object gen_char() const { return boost::python::object(_gen_char); }
 };
 
 class settings
@@ -113,13 +70,6 @@ class connection_extended
 	unsigned int beaconperiod;
 };
 
-class profile_profilename
-{
-  public:
-	char _profilename[CONFIG_NAME_SZ];
-	boost::python::object profilename() const { return boost::python::object(_profilename); }
-};
-
 class profile_SSID
 {
   public:
@@ -127,134 +77,6 @@ class profile_SSID
 	char _val[LRD_WF_MAX_SSID_LEN];
 	boost::python::object val() const { return boost::python::object(_val); }
 };
-
-class profile_encryption_std
-{
-  public:
-	int encryption_std;
-};
-
-class profile_encryption
-{
-  public:
-	int encryption;
-};
-
-class profile_auth
-{
-  public:
-	int auth;
-};
-
-class profile_eap
-{
-  public:
-	int eap;
-};
-
-class profile_psk
-{
-  public:
-	int psk;
-};
-
-class profile_user
-{
-  public:
-	int user;
-};
-
-class profile_password
-{
-  public:
-	int password;
-};
-
-class profile_cacert
-{
-  public:
-	int cacert;
-};
-
-class profile_pacfile
-{
-  public:
-	int pacfile;
-};
-
-class profile_pacpassword
-{
-  public:
-	int pacpassword;
-};
-
-class profile_usercert
-{
-  public:
-	int usercert;
-};
-
-class profile_usercert_password
-{
-  public:
-	int usercert_password;
-};
-
-class profile_wep_key
-{
-  public:
-	int wep_key;
-};
-
-class profile_wep_txkey
-{
-  public:
-	unsigned int txkey;
-};
-
-class profile_clientname
-{
-  public:
-	char _clientname_buffer[CLIENT_NAME_SZ];
-	boost::python::object clientname_buffer() const { return boost::python::object(_clientname_buffer); }
-};
-
-class profile_radiomode
-{
-  public:
-	int mode;
-};
-
-class profile_powersave
-{
-  public:
-	int powersave;
-};
-
-class profile_pspdelay
-{
-  public:
-	unsigned int pspdelay;
-};
-
-class profile_txpower
-{
-  public:
-	int txpower;
-};
-
-class profile_bitrate
-{
-  public:
-	int bitrate;
-};
-
-class profile_autoprofile
-{
-  public:
-	int autoprofile;
-};
-
 
 class dcal
 {
@@ -269,7 +91,7 @@ class dcal
 	int session_close() { return dcal_session_close(session); };
 
 	// Device Status
-	int get_sdk_version( class sdk_version & v ){
+	int get_sdk_version( class generic_int & g ){
 		int ret;
 		unsigned int sdk;
 
@@ -277,12 +99,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			v.sdk = sdk;
+			g.gen_int = sdk;
 		}
 		return ret;
 	};
 
-	int get_chipset_version( class chipset_version & v ){
+	int get_chipset_version( class generic_int & g ){
 		int ret;
 		RADIOCHIPSET chipset;
 
@@ -290,12 +112,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			v.chipset = chipset;
+			g.gen_int = chipset;
 		}
 		return ret;
 	};
 
-	int get_system_version( class system_version & v ){
+	int get_system_version( class generic_int & g ){
 		int ret;
 		LRD_SYSTEM sys;
 
@@ -303,12 +125,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			v.sys = sys;
+			g.gen_int = sys;
 		}
 		return ret;
 	};
 
-	int get_driver_version( class driver_version & v ){
+	int get_driver_version( class generic_int & g ){
 		int ret;
 		unsigned int driver;
 
@@ -316,12 +138,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			v.driver = driver;
+			g.gen_int = driver;
 		}
 		return ret;
 	};
 
-	int get_dcas_version( class dcas_version & v ){
+	int get_dcas_version( class generic_int & g ){
 		int ret;
 		unsigned int dcas;
 
@@ -329,12 +151,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			v.dcas = dcas;
+			g.gen_int = dcas;
 		}
 		return ret;
 	};
 
-	int get_dcal_version( class dcal_version & v ){
+	int get_dcal_version( class generic_int & g ){
 		int ret;
 		unsigned int dcal;
 
@@ -342,12 +164,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			v.dcal = dcal;
+			g.gen_int = dcal;
 		}
 		return ret;
 	};
 
-	int get_firmware_version( class firmware_version & v ){
+	int get_firmware_version( class generic_char & g ){
 		int ret;
 		char firmware[STR_SZ];
 
@@ -355,12 +177,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			strncpy(v._firmware, firmware, STR_SZ);
+			strncpy(g._gen_char, firmware, STR_SZ);
 		}
 		return ret;
 	};
 
-	int get_supplicant_version( class supplicant_version & v ){
+	int get_supplicant_version( class generic_char & g ){
 		int ret;
 		char supplicant[STR_SZ];
 
@@ -368,12 +190,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			strncpy(v._supplicant, supplicant, STR_SZ);
+			strncpy(g._gen_char, supplicant, STR_SZ);
 		}
 		return ret;
 	};
 
-	int get_release_version( class release_version & v ){
+	int get_release_version( class generic_char & g ){
 		int ret;
 		char release[STR_SZ];
 
@@ -381,7 +203,7 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			strncpy(v._release, release, STR_SZ);
+			strncpy(g._gen_char, release, STR_SZ);
 		}
 		return ret;
 	};
@@ -511,13 +333,13 @@ class dcal
 	int wifi_profile_activate_by_name( char * profilename ) { return dcal_wifi_profile_activate_by_name(session, profilename); }
 	int wifi_profile_delete_from_device( char * profilename ) { return dcal_wifi_profile_delete_from_device(session, profilename); }
 	int wifi_profile_set_profilename( char * profilename ) { return dcal_wifi_profile_set_profilename(profile, profilename); }
-	int wifi_profile_get_profilename( class profile_profilename & p ) {
+	int wifi_profile_get_profilename( class generic_char & g ) {
 		int ret;
 		char profilename[CONFIG_NAME_SZ];
 		ret = dcal_wifi_profile_get_profilename(profile, profilename);
 		if (ret == DCAL_SUCCESS)
 		{
-			memcpy(p._profilename, profilename, CONFIG_NAME_SZ);
+			memcpy(g._gen_char, profilename, CONFIG_NAME_SZ);
 		}
 		return ret;
 	}
@@ -546,13 +368,13 @@ class dcal
 		return dcal_wifi_profile_set_encrypt_std(profile, estd);
 	}
 
-	int wifi_profile_get_encrypt_std( class profile_encryption_std & e ) {
+	int wifi_profile_get_encrypt_std( class generic_int & g ) {
 		int ret;
 		ENCRYPT_STD encryption_std;
 		ret = dcal_wifi_profile_get_encrypt_std(profile, &encryption_std);
 		if (ret == DCAL_SUCCESS)
 		{
-			e.encryption_std = (int) encryption_std;
+			g.gen_int = (int) encryption_std;
 		}
 		return ret;
 	}
@@ -563,13 +385,13 @@ class dcal
 		return dcal_wifi_profile_set_encryption(profile, encryption);
 	}
 
-	int wifi_profile_get_encryption( class profile_encryption & e ) {
+	int wifi_profile_get_encryption( class generic_int & g ) {
 		int ret;
 		ENCRYPTION encryption;
 		ret = dcal_wifi_profile_get_encryption(profile, &encryption);
 		if (ret == DCAL_SUCCESS)
 		{
-			e.encryption = (int) encryption;
+			g.gen_int = (int) encryption;
 		}
 		return ret;
 	}
@@ -580,13 +402,13 @@ class dcal
 		return dcal_wifi_profile_set_auth(profile, auth);
 	}
 
-	int wifi_profile_get_auth( class profile_auth & a ) {
+	int wifi_profile_get_auth( class generic_int & g ) {
 		int ret;
 		AUTH auth;
 		ret = dcal_wifi_profile_get_auth(profile, &auth);
 		if (ret == DCAL_SUCCESS)
 		{
-			a.auth = (int) auth;
+			g.gen_int = (int) auth;
 		}
 		return ret;
 	}
@@ -597,146 +419,146 @@ class dcal
 		return dcal_wifi_profile_set_eap(profile, eap);
 	}
 
-	int wifi_profile_get_eap( class profile_eap & e ) {
+	int wifi_profile_get_eap( class generic_int & g ) {
 		int ret;
 		EAPTYPE eap;
 		ret = dcal_wifi_profile_get_eap(profile, &eap);
 		if (ret == DCAL_SUCCESS)
 		{
-			e.eap = (int) eap;
+			g.gen_int = (int) eap;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_psk( char * psk ) { return dcal_wifi_profile_set_psk(profile, psk); }
-	int wifi_profile_psk_is_set( class profile_psk & p ) {
+	int wifi_profile_psk_is_set( class generic_int & g ) {
 		int ret;
 		bool psk;
 		ret = dcal_wifi_profile_psk_is_set(profile, &psk);
 		if (ret == DCAL_SUCCESS)
 		{
-			p.psk = (int) psk;
+			g.gen_int = (int) psk;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_user( char * user ) { return dcal_wifi_profile_set_user(profile, user); }
-	int wifi_profile_user_is_set( class profile_user & u ) {
+	int wifi_profile_user_is_set( class generic_int & g ) {
 		int ret;
 		bool user;
 		ret = dcal_wifi_profile_user_is_set(profile, &user);
 		if (ret == DCAL_SUCCESS)
 		{
-			u.user = (int) user;
+			g.gen_int = (int) user;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_password( char * password ) { return dcal_wifi_profile_set_password(profile, password); }
-	int wifi_profile_password_is_set( class profile_password & p ) {
+	int wifi_profile_password_is_set( class generic_int & g ) {
 		int ret;
 		bool password;
 		ret = dcal_wifi_profile_user_is_set(profile, &password);
 		if (ret == DCAL_SUCCESS)
 		{
-			p.password = (int) password;
+			g.gen_int = (int) password;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_cacert( char * cacert ) { return dcal_wifi_profile_set_cacert(profile, cacert); }
-	int wifi_profile_cacert_is_set( class profile_cacert & c ) {
+	int wifi_profile_cacert_is_set( class generic_int & g ) {
 		int ret;
 		bool cacert;
 		ret = dcal_wifi_profile_cacert_is_set(profile, &cacert);
 		if (ret == DCAL_SUCCESS)
 		{
-			c.cacert = (int) cacert;
+			g.gen_int = (int) cacert;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_pacfile( char * pacfilename ) { return dcal_wifi_profile_set_pacfile(profile, pacfilename); }
-	int wifi_profile_pacfile_is_set( class profile_pacfile & p ) {
+	int wifi_profile_pacfile_is_set( class generic_int & g ) {
 		int ret;
 		bool pacfile;
 		ret = dcal_wifi_profile_pacfile_is_set(profile, &pacfile);
 		if (ret == DCAL_SUCCESS)
 		{
-			p.pacfile = (int) pacfile;
+			g.gen_int = (int) pacfile;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_pacpassword( char * pacpassword ) { return dcal_wifi_profile_set_pacpassword(profile, pacpassword); }
-	int wifi_profile_pacpassword_is_set( class profile_pacpassword & p ) {
+	int wifi_profile_pacpassword_is_set( class generic_int & g ) {
 		int ret;
 		bool pacpassword;
 		ret = dcal_wifi_profile_pacpassword_is_set(profile, &pacpassword);
 		if (ret == DCAL_SUCCESS)
 		{
-			p.pacpassword = (int) pacpassword;
+			g.gen_int = (int) pacpassword;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_usercert( char * usercert ) { return dcal_wifi_profile_set_usercert(profile, usercert); }
-	int wifi_profile_usercert_is_set( class profile_usercert & u ) {
+	int wifi_profile_usercert_is_set( class generic_int & g ) {
 		int ret;
 		bool usercert;
 		ret = dcal_wifi_profile_usercert_is_set(profile, &usercert);
 		if (ret == DCAL_SUCCESS)
 		{
-			u.usercert = (int) usercert;
+			g.gen_int = (int) usercert;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_usercert_password( char * usercert_password ) { return dcal_wifi_profile_set_usercert_password(profile, usercert_password); }
-	int wifi_profile_usercert_password_is_set( class profile_usercert_password & u ) {
+	int wifi_profile_usercert_password_is_set( class generic_int & g ) {
 		int ret;
 		bool usercert_password;
 		ret = dcal_wifi_profile_usercert_password_is_set(profile, &usercert_password);
 		if (ret == DCAL_SUCCESS)
 		{
-			u.usercert_password = (int) usercert_password;
+			g.gen_int = (int) usercert_password;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_wep_key( char * wepkey, int index ) { return dcal_wifi_profile_set_wep_key(profile, wepkey, index); }
-	int wifi_profile_wep_key_is_set( class profile_wep_key & w, int wep_index ) {
+	int wifi_profile_wep_key_is_set( class generic_int & g, int wep_index ) {
 		int ret;
 		bool wep_key;
 		int index = (int) wep_index;
 		ret = dcal_wifi_profile_wep_key_is_set(profile, &wep_key, index);
 		if (ret == DCAL_SUCCESS)
 		{
-			w.wep_key = (int) wep_key;
+			g.gen_int = (int) wep_key;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_wep_txkey( unsigned int txkey) { return dcal_wifi_profile_set_wep_txkey(profile, txkey); }
-	int wifi_profile_get_wep_txkey( class profile_wep_txkey & w ) {
+	int wifi_profile_get_wep_txkey( class generic_int & g ) {
 		int ret;
 		unsigned int txkey;
 		ret = dcal_wifi_profile_get_wep_txkey(profile, &txkey);
 		if (ret == DCAL_SUCCESS)
 		{
-			w.txkey = (int) txkey;
+			g.gen_int = (int) txkey;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_clientname( char * clientname ) { return dcal_wifi_profile_set_clientname(profile, clientname); }
-	int wifi_profile_get_clientname( class profile_clientname & c ) {
+	int wifi_profile_get_clientname( class generic_char & g ) {
 		int ret;
 		char clientname_buffer[CLIENT_NAME_SZ];
 		ret = dcal_wifi_profile_get_clientname(profile, clientname_buffer);
 		if (ret == DCAL_SUCCESS)
 		{
-			memcpy(c._clientname_buffer, clientname_buffer, CLIENT_NAME_SZ);
+			memcpy(g._gen_char, clientname_buffer, CLIENT_NAME_SZ);
 		}
 		return ret;
 	}
@@ -747,13 +569,13 @@ class dcal
 		return dcal_wifi_profile_set_radiomode(profile, mode);
 	}
 
-	int wifi_profile_get_radiomode( class profile_radiomode & r ) {
+	int wifi_profile_get_radiomode( class generic_int & g ) {
 		int ret;
 		RADIOMODE mode;
 		ret = dcal_wifi_profile_get_radiomode(profile, &mode);
 		if (ret == DCAL_SUCCESS)
 		{
-			r.mode = (int) mode;
+			g.gen_int = (int) mode;
 		}
 		return ret;
 	}
@@ -764,37 +586,37 @@ class dcal
 		return dcal_wifi_profile_set_powersave(profile, powersave);
 	}
 
-	int wifi_profile_get_powersave( class profile_powersave & p ) {
+	int wifi_profile_get_powersave( class generic_int & g ) {
 		int ret;
 		POWERSAVE powersave;
 		ret = dcal_wifi_profile_get_powersave(profile, &powersave);
 		if (ret == DCAL_SUCCESS)
 		{
-			p.powersave = (int) powersave;
+			g.gen_int = (int) powersave;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_psp_delay( unsigned int pspdelay) { return dcal_wifi_profile_set_psp_delay(profile, pspdelay); }
-	int wifi_profile_get_psp_delay( class profile_pspdelay & p ) {
+	int wifi_profile_get_psp_delay( class generic_int & g ) {
 		int ret;
 		unsigned int pspdelay;
 		ret = dcal_wifi_profile_get_psp_delay(profile, &pspdelay);
 		if (ret == DCAL_SUCCESS)
 		{
-			p.pspdelay = pspdelay;
+			g.gen_int = pspdelay;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_txpower( int txpower) { return dcal_wifi_profile_set_txpower(profile, txpower); }
-	int wifi_profile_get_txpower( class profile_txpower & t ) {
+	int wifi_profile_get_txpower( class generic_int & g ) {
 		int ret;
 		int txpower;
 		ret = dcal_wifi_profile_get_txpower(profile, &txpower);
 		if (ret == DCAL_SUCCESS)
 		{
-			t.txpower = txpower;
+			g.gen_int = txpower;
 		}
 		return ret;
 	}
@@ -805,25 +627,25 @@ class dcal
 		return dcal_wifi_profile_set_bitrate(profile, bitrate);
 	}
 
-	int wifi_profile_get_bitrate( class profile_bitrate & b ) {
+	int wifi_profile_get_bitrate( class generic_int & g ) {
 		int ret;
 		BITRATE bitrate;
 		ret = dcal_wifi_profile_get_bitrate(profile, &bitrate);
 		if (ret == DCAL_SUCCESS)
 		{
-			b.bitrate = (int) bitrate;
+			g.gen_int = (int) bitrate;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_autoprofile( bool autoprofile) { return dcal_wifi_profile_set_autoprofile(profile, autoprofile); }
-	int wifi_profile_get_autoprofile( class profile_autoprofile & a ) {
+	int wifi_profile_get_autoprofile( class generic_int & g ) {
 		int ret;
 		bool autoprofile;
 		ret = dcal_wifi_profile_get_autoprofile(profile, &autoprofile);
 		if (ret == DCAL_SUCCESS)
 		{
-			a.autoprofile = (int) autoprofile;
+			g.gen_int = (int) autoprofile;
 		}
 		return ret;
 	}
@@ -844,40 +666,12 @@ using namespace boost::python;
 
 BOOST_PYTHON_MODULE(dcal_py)
 {
-	class_<sdk_version>("sdk_version")
-		.def_readwrite("sdk", &sdk_version::sdk)
+	class_<generic_int>("generic_int")
+		.def_readwrite("gen_int", &generic_int::gen_int)
 	;
 
-	class_<chipset_version>("chipset_version")
-		.def_readwrite("chipset", &chipset_version::chipset)
-	;
-
-	class_<system_version>("system_version")
-		.def_readwrite("sys", &system_version::sys)
-	;
-
-	class_<driver_version>("driver_version")
-		.def_readwrite("driver", &driver_version::driver)
-	;
-
-	class_<dcas_version>("dcas_version")
-		.def_readwrite("dcas", &dcas_version::dcas)
-	;
-
-	class_<dcal_version>("dcal_version")
-		.def_readwrite("dcal", &dcal_version::dcal)
-	;
-
-	class_<firmware_version>("firmware_version")
-		.def("firmware", &firmware_version::firmware)
-	;
-
-	class_<supplicant_version>("supplicant_version")
-		.def("supplicant", &supplicant_version::supplicant)
-	;
-
-	class_<release_version>("release_version")
-		.def("release", &release_version::release)
+	class_<generic_char>("generic_char")
+		.def("gen_char", &generic_char::gen_char)
 	;
 
 	class_<settings>("settings")
@@ -912,97 +706,9 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def_readwrite("beaconperiod", &connection_extended::beaconperiod)
 	;
 
-	class_<profile_profilename>("profile_profilename")
-		.def("profilename", &profile_profilename::profilename)
-	;
-
 	class_<profile_SSID>("profile_SSID")
 		.def_readwrite("len", &profile_SSID::len)
 		.def("val", &profile_SSID::val)
-	;
-
-	class_<profile_encryption_std>("profile_encryption_std")
-		.def_readwrite("encryption_std", &profile_encryption_std::encryption_std)
-	;
-
-	class_<profile_encryption>("profile_encryption")
-		.def_readwrite("encryption", &profile_encryption::encryption)
-	;
-
-	class_<profile_auth>("profile_auth")
-		.def_readwrite("auth", &profile_auth::auth)
-	;
-
-	class_<profile_eap>("profile_eap")
-		.def_readwrite("eap", &profile_eap::eap)
-	;
-
-	class_<profile_psk>("profile_psk")
-		.def_readwrite("psk", &profile_psk::psk)
-	;
-
-	class_<profile_user>("profile_user")
-		.def_readwrite("user", &profile_user::user)
-	;
-
-	class_<profile_password>("profile_password")
-		.def_readwrite("password", &profile_password::password)
-	;
-
-	class_<profile_cacert>("profile_cacert")
-		.def_readwrite("cacert", &profile_cacert::cacert)
-	;
-
-	class_<profile_pacfile>("profile_pacfile")
-		.def_readwrite("pacfile", &profile_pacfile::pacfile)
-	;
-
-	class_<profile_pacpassword>("profile_pacpassword")
-		.def_readwrite("pacpassword", &profile_pacpassword::pacpassword)
-	;
-
-	class_<profile_usercert>("profile_usercert")
-		.def_readwrite("usercert", &profile_usercert::usercert)
-	;
-
-	class_<profile_usercert_password>("profile_usercert_password")
-		.def_readwrite("usercert_password", &profile_usercert_password::usercert_password)
-	;
-
-	class_<profile_wep_key>("profile_wep_key")
-		.def_readwrite("wep_key", &profile_wep_key::wep_key)
-	;
-
-	class_<profile_wep_txkey>("profile_wep_txkey")
-		.def_readwrite("txkey", &profile_wep_txkey::txkey)
-	;
-
-	class_<profile_clientname>("profile_clientname")
-		.def("clientname_buffer", &profile_clientname::clientname_buffer)
-	;
-
-	class_<profile_radiomode>("profile_radiomode")
-		.def_readwrite("mode", &profile_radiomode::mode)
-	;
-
-	class_<profile_powersave>("profile_powersave")
-		.def_readwrite("powersave", &profile_powersave::powersave)
-	;
-
-	class_<profile_pspdelay>("profile_pspdelay")
-		.def_readwrite("pspdelay", &profile_pspdelay::pspdelay)
-	;
-
-	class_<profile_txpower>("profile_txpower")
-		.def_readwrite("txpower", &profile_txpower::txpower)
-	;
-
-	class_<profile_bitrate>("profile_bitrate")
-		.def_readwrite("bitrate", &profile_bitrate::bitrate)
-	;
-
-	class_<profile_autoprofile>("profile_autoprofile")
-		.def_readwrite("autoprofile", &profile_autoprofile::autoprofile)
 	;
 
 	class_<dcal>("dcal")
