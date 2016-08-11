@@ -173,6 +173,7 @@ int dcal_wifi_global_pull( laird_session_handle session,
 		g->probe_delay=ns(Globals_probe_delay(gt));
 		g->regdomain=ns(Globals_regdomain(gt));
 		g->roam_period=ns(Globals_roam_period(gt));
+		g->roam_periodms=ns(Globals_roam_periodms(gt));
 		g->roam_trigger=ns(Globals_roam_trigger(gt));
 		g->rts=ns(Globals_rts(gt));
 		g->scan_dfs=ns(Globals_scan_dfs(gt));
@@ -254,6 +255,7 @@ int dcal_wifi_global_push( laird_session_handle session,
 		ns(Globals_probe_delay_add(B, g->probe_delay));
 		ns(Globals_regdomain_add(B, g->regdomain));
 		ns(Globals_roam_period_add(B, g->roam_period));
+		ns(Globals_roam_periodms_add(B, g->roam_periodms));
 		ns(Globals_roam_trigger_add(B, g->roam_trigger));
 		ns(Globals_rts_add(B, g->rts));
 		ns(Globals_scan_dfs_add(B, g->scan_dfs));
@@ -801,6 +803,40 @@ int dcal_wifi_global_get_roam_period( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
+int dcal_wifi_global_set_roam_periodms( laird_global_handle global,
+                                      unsigned int roam_periodms)
+{
+	int ret = DCAL_SUCCESS;
+	internal_global_handle g = (internal_global_handle)global;
+	REPORT_ENTRY_DEBUG;
+
+	if(!validate_handle(globals, global))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		g->roam_periodms = roam_periodms;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_global_get_roam_periodms( laird_global_handle global,
+                                      unsigned int *roam_periodms)
+{
+	int ret = DCAL_SUCCESS;
+	internal_global_handle g = (internal_global_handle)global;
+	REPORT_ENTRY_DEBUG;
+
+	if (roam_periodms==NULL)
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(globals, global))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		*roam_periodms = g->roam_periodms;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
 int dcal_wifi_global_set_roam_trigger( laird_global_handle global,
                                        unsigned int roam_trigger)
 {
@@ -1177,7 +1213,8 @@ void dcal_wifi_global_printf( laird_global_handle global)
 		case REG_RU: printf("Russia\n");break;
 		default: printf("invalid\n");
 	}
-	printf("Roam Period ms: %d ms\n",g->roam_period);
+	printf("Roam Period: %d\n",g->roam_period);
+	printf("Roam Period ms: %d ms\n",g->roam_periodms);
 	printf("Roam Trigger: -%d dBm\n",g->roam_trigger);
 	printf("RTS Threshold: %d bytes\n",g->rts);
 	printf("Scan DFS Time: %d ms\n",g->scan_dfs);
