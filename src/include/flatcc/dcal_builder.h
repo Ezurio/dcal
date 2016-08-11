@@ -40,7 +40,7 @@ __flatbuffers_build_table(flatbuffers_, DCAL_session_Status, 17)
 static const flatbuffers_voffset_t __DCAL_session_Version_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Version, 8)
 static const flatbuffers_voffset_t __DCAL_session_Globals_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Globals, 22)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Globals, 24)
 static const flatbuffers_voffset_t __DCAL_session_Profile_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Profile, 18)
 static const flatbuffers_voffset_t __DCAL_session_P_entry_required[] = {0 };
@@ -88,17 +88,19 @@ static inline DCAL_session_Status_ref_t DCAL_session_Status_create(flatbuffers_b
   v4, v5, v6, v7
 static inline DCAL_session_Version_ref_t DCAL_session_Version_create(flatbuffers_builder_t *B __DCAL_session_Version_formal_args);
 #define __DCAL_session_Globals_formal_args ,\
-  uint32_t v0, uint32_t v1, uint32_t v2, uint32_t v3,\
-  uint32_t v4, uint32_t v5, flatbuffers_bool_t v6, flatbuffers_string_ref_t v7,\
-  flatbuffers_bool_t v8, uint32_t v9, uint32_t v10, uint32_t v11,\
+  uint32_t v0, uint32_t v1, uint32_t v2, flatbuffers_bool_t v3,\
+  uint32_t v4, flatbuffers_bool_t v5, flatbuffers_bool_t v6, flatbuffers_string_ref_t v7,\
+  flatbuffers_bool_t v8, uint32_t v9, flatbuffers_bool_t v10, uint32_t v11,\
   uint32_t v12, uint32_t v13, uint32_t v14, uint32_t v15,\
-  uint32_t v16, uint32_t v17, uint32_t v18, uint32_t v19, flatbuffers_bool_t v20, uint32_t v21
+  uint32_t v16, uint32_t v17, uint32_t v18, uint32_t v19,\
+  flatbuffers_bool_t v20, flatbuffers_bool_t v21, flatbuffers_bool_t v22, uint32_t v23
 #define __DCAL_session_Globals_call_args ,\
   v0, v1, v2, v3,\
   v4, v5, v6, v7,\
   v8, v9, v10, v11,\
   v12, v13, v14, v15,\
-  v16, v17, v18, v19, v20, v21
+  v16, v17, v18, v19,\
+  v20, v21, v22, v23
 static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers_builder_t *B __DCAL_session_Globals_formal_args);
 #define __DCAL_session_Profile_formal_args ,\
   flatbuffers_string_ref_t v0, flatbuffers_uint8_vec_ref_t v1, flatbuffers_string_ref_t v2, uint32_t v3,\
@@ -303,15 +305,17 @@ __flatbuffers_build_scalar_field(9, flatbuffers_, DCAL_session_Globals_def_adhoc
 __flatbuffers_build_scalar_field(10, flatbuffers_, DCAL_session_Globals_fips, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(11, flatbuffers_, DCAL_session_Globals_pmk, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(12, flatbuffers_, DCAL_session_Globals_probe_delay, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(13, flatbuffers_, DCAL_session_Globals_reg, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(13, flatbuffers_, DCAL_session_Globals_regdomain, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(14, flatbuffers_, DCAL_session_Globals_roam_period, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(15, flatbuffers_, DCAL_session_Globals_roam_trigger, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(16, flatbuffers_, DCAL_session_Globals_rts, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(17, flatbuffers_, DCAL_session_Globals_scan_dfs, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(18, flatbuffers_, DCAL_session_Globals_ttls, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(19, flatbuffers_, DCAL_session_Globals_uapsd, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_scalar_field(20, flatbuffers_, DCAL_session_Globals_wmm, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
-__flatbuffers_build_scalar_field(21, flatbuffers_, DCAL_session_Globals_numprofiles, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(15, flatbuffers_, DCAL_session_Globals_roam_periodms, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(16, flatbuffers_, DCAL_session_Globals_roam_trigger, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(17, flatbuffers_, DCAL_session_Globals_rts, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(18, flatbuffers_, DCAL_session_Globals_scan_dfs, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(19, flatbuffers_, DCAL_session_Globals_ttls, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(20, flatbuffers_, DCAL_session_Globals_uapsd, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
+__flatbuffers_build_scalar_field(21, flatbuffers_, DCAL_session_Globals_wmm, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
+__flatbuffers_build_scalar_field(22, flatbuffers_, DCAL_session_Globals_ignore_null_ssid, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
+__flatbuffers_build_scalar_field(23, flatbuffers_, DCAL_session_Globals_dfs_channels, flatbuffers_uint32, uint32_t, 4, 4, 0)
 
 static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers_builder_t *B __DCAL_session_Globals_formal_args)
 {
@@ -327,17 +331,22 @@ static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers
         || DCAL_session_Globals_fips_add(B, v10)
         || DCAL_session_Globals_pmk_add(B, v11)
         || DCAL_session_Globals_probe_delay_add(B, v12)
-        || DCAL_session_Globals_reg_add(B, v13)
+        || DCAL_session_Globals_regdomain_add(B, v13)
         || DCAL_session_Globals_roam_period_add(B, v14)
-        || DCAL_session_Globals_roam_trigger_add(B, v15)
-        || DCAL_session_Globals_rts_add(B, v16)
-        || DCAL_session_Globals_scan_dfs_add(B, v17)
-        || DCAL_session_Globals_ttls_add(B, v18)
-        || DCAL_session_Globals_uapsd_add(B, v19)
-        || DCAL_session_Globals_numprofiles_add(B, v21)
+        || DCAL_session_Globals_roam_periodms_add(B, v15)
+        || DCAL_session_Globals_roam_trigger_add(B, v16)
+        || DCAL_session_Globals_rts_add(B, v17)
+        || DCAL_session_Globals_scan_dfs_add(B, v18)
+        || DCAL_session_Globals_ttls_add(B, v19)
+        || DCAL_session_Globals_dfs_channels_add(B, v23)
+        || DCAL_session_Globals_auto_profile_add(B, v3)
+        || DCAL_session_Globals_bt_coex_add(B, v5)
         || DCAL_session_Globals_ccx_add(B, v6)
         || DCAL_session_Globals_date_check_add(B, v8)
-        || DCAL_session_Globals_wmm_add(B, v20)) {
+        || DCAL_session_Globals_fips_add(B, v10)
+        || DCAL_session_Globals_uapsd_add(B, v20)
+        || DCAL_session_Globals_wmm_add(B, v21)
+        || DCAL_session_Globals_ignore_null_ssid_add(B, v22)) {
         return 0;
     }
     return DCAL_session_Globals_end(B);
