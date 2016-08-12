@@ -325,6 +325,322 @@ class dcal
 	int wifi_enable() { return dcal_wifi_enable( session ); }
 	int wifi_disable() { return dcal_wifi_disable( session ); }
 
+	// WiFi Global Management
+	int wifi_global_create() { return dcal_wifi_global_create( &global ); }
+	int wifi_global_pull() { return dcal_wifi_global_pull(session, &global); }
+	int wifi_global_close_handle() { return dcal_wifi_global_close_handle( global ); }
+	int wifi_global_push() { return dcal_wifi_global_push( session, global ); }
+
+	int wifi_global_set_auth_server( int server_auth ) {
+		SERVER_AUTH auth;
+		auth = (SERVER_AUTH) server_auth;
+		return dcal_wifi_global_set_auth_server(global, auth);
+	}
+
+	int wifi_global_get_auth_server( class generic_int & g ) {
+		int ret;
+		SERVER_AUTH auth;
+		ret = dcal_wifi_global_get_auth_server(global, &auth);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) auth;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_achannel_mask( unsigned int channel_set_a ) { return dcal_wifi_global_set_achannel_mask(global, channel_set_a); }
+	int wifi_global_get_achannel_mask( class generic_int & g ) {
+		int ret;
+		unsigned int channel_set_a;
+		ret = dcal_wifi_global_get_achannel_mask(global, &channel_set_a);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) channel_set_a;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_bchannel_mask( unsigned int channel_set_b ) { return dcal_wifi_global_set_bchannel_mask(global, channel_set_b); }
+	int wifi_global_get_bchannel_mask( class generic_int & g ) {
+		int ret;
+		unsigned int channel_set_b;
+		ret = dcal_wifi_global_get_bchannel_mask(global, &channel_set_b);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) channel_set_b;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_auto_profile( bool auto_profile ) { return dcal_wifi_global_set_auto_profile(global, auto_profile); }
+	int wifi_global_get_auto_profile( class generic_int & g ) {
+		int ret;
+		bool auto_profile;
+		ret = dcal_wifi_global_get_auto_profile(global, &auto_profile);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) auto_profile;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_beacon_miss( unsigned int beacon_miss ) { return dcal_wifi_global_set_beacon_miss(global, beacon_miss); }
+	int wifi_global_get_beacon_miss( class generic_int & g ) {
+		int ret;
+		unsigned int beacon_miss;
+		ret = dcal_wifi_global_get_beacon_miss(global, &beacon_miss);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) beacon_miss;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_bt_coex( bool bt_coex ) { return dcal_wifi_global_set_bt_coex(global, bt_coex); }
+	int wifi_global_get_bt_coex( class generic_int & g ) {
+		int ret;
+		bool bt_coex;
+		ret = dcal_wifi_global_get_bt_coex(global, &bt_coex);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) bt_coex;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_ccx( bool ccx ) { return dcal_wifi_global_set_ccx(global, ccx); }
+	int wifi_global_get_ccx( class generic_int & g ) {
+		int ret;
+		bool ccx;
+		ret = dcal_wifi_global_get_ccx(global, &ccx);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) ccx;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_cert_path( char * cert_path ) { return dcal_wifi_global_set_cert_path(global, cert_path); }
+	int wifi_global_get_cert_path( class generic_char & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char cert_path[buf_len];
+		ret = dcal_wifi_global_get_cert_path(global, cert_path, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			memcpy(g._gen_char, cert_path, buf_len);
+		}
+		return ret;
+	}
+
+	int wifi_global_set_date_check( bool date_check ) { return dcal_wifi_global_set_date_check(global, date_check); }
+	int wifi_global_get_date_check( class generic_int & g ) {
+		int ret;
+		bool date_check;
+		ret = dcal_wifi_global_get_date_check(global, &date_check);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) date_check;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_def_adhoc_channel( unsigned int def_adhoc_channel ) { return dcal_wifi_global_set_def_adhoc_channel(global, def_adhoc_channel); }
+	int wifi_global_get_def_adhoc_channel( class generic_int & g ) {
+		int ret;
+		unsigned int def_adhoc_channel;
+		ret = dcal_wifi_global_get_def_adhoc_channel(global, &def_adhoc_channel);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) def_adhoc_channel;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_fips( bool fips ) { return dcal_wifi_global_set_fips(global, fips); }
+	int wifi_global_get_fips( class generic_int & g ) {
+		int ret;
+		bool fips;
+		ret = dcal_wifi_global_get_fips(global, &fips);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) fips;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_pmk( int pmk_cache ) {
+		DCAL_PMK_CACHING pmk;
+		pmk = (DCAL_PMK_CACHING) pmk_cache;
+		return dcal_wifi_global_set_pmk(global, pmk);
+	}
+
+	int wifi_global_get_pmk( class generic_int & g ) {
+		int ret;
+		DCAL_PMK_CACHING pmk;
+		ret = dcal_wifi_global_get_pmk(global, &pmk);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) pmk;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_probe_delay( unsigned int probe_delay ) { return dcal_wifi_global_set_probe_delay(global, probe_delay); }
+	int wifi_global_get_probe_delay( class generic_int & g ) {
+		int ret;
+		unsigned int probe_delay;
+		ret = dcal_wifi_global_get_probe_delay(global, &probe_delay);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) probe_delay;
+		}
+		return ret;
+	}
+
+	int wifi_global_get_regdomain( class generic_int & g ) {
+		int ret;
+		REG_DOMAIN regdomain;
+		ret = dcal_wifi_global_get_regdomain(global, &regdomain);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) regdomain;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_roam_period( unsigned int roam_period ) { return dcal_wifi_global_set_roam_period(global, roam_period); }
+	int wifi_global_get_roam_period( class generic_int & g ) {
+		int ret;
+		unsigned int roam_period;
+		ret = dcal_wifi_global_get_roam_period(global, &roam_period);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) roam_period;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_roam_periodms( unsigned int roam_periodms ) { return dcal_wifi_global_set_roam_periodms(global, roam_periodms); }
+	int wifi_global_get_roam_periodms( class generic_int & g ) {
+		int ret;
+		unsigned int roam_periodms;
+		ret = dcal_wifi_global_get_roam_periodms(global, &roam_periodms);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) roam_periodms;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_roam_trigger( unsigned int roam_trigger ) { return dcal_wifi_global_set_roam_trigger(global, roam_trigger); }
+	int wifi_global_get_roam_trigger( class generic_int & g ) {
+		int ret;
+		unsigned int roam_trigger;
+		ret = dcal_wifi_global_get_roam_trigger(global, &roam_trigger);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) roam_trigger;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_rts( unsigned int rts ) { return dcal_wifi_global_set_rts(global, rts); }
+	int wifi_global_get_rts( class generic_int & g ) {
+		int ret;
+		unsigned int rts;
+		ret = dcal_wifi_global_get_rts(global, &rts);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) rts;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_scan_dfs_time( unsigned int scan_dfs ) { return dcal_wifi_global_set_scan_dfs_time(global, scan_dfs); }
+	int wifi_global_get_scan_dfs_time( class generic_int & g ) {
+		int ret;
+		unsigned int scan_dfs;
+		ret = dcal_wifi_global_get_scan_dfs_time(global, &scan_dfs);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) scan_dfs;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_ttls_inner_method( int ttls_inner ) {
+		TTLS_INNER_METHOD ttls_inner_method;
+		ttls_inner_method = (TTLS_INNER_METHOD) ttls_inner;
+		return dcal_wifi_global_set_ttls_inner_method(global, ttls_inner_method);
+	}
+
+	int wifi_global_get_ttls_inner_method( class generic_int & g ) {
+		int ret;
+		TTLS_INNER_METHOD ttls_inner_method;
+		ret = dcal_wifi_global_get_ttls_inner_method(global, &ttls_inner_method);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) ttls_inner_method;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_uapsd( bool uapsd ) { return dcal_wifi_global_set_uapsd(global, uapsd); }
+	int wifi_global_get_uapsd( class generic_int & g ) {
+		int ret;
+		bool uapsd;
+		ret = dcal_wifi_global_get_uapsd(global, &uapsd);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) uapsd;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_wmm( bool wmm ) { return dcal_wifi_global_set_wmm(global, wmm); }
+	int wifi_global_get_wmm( class generic_int & g ) {
+		int ret;
+		bool wmm;
+		ret = dcal_wifi_global_get_wmm(global, &wmm);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) wmm;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_ignore_null_ssid( bool ignore_null_ssid ) { return dcal_wifi_global_set_ignore_null_ssid(global, ignore_null_ssid); }
+	int wifi_global_get_ignore_null_ssid( class generic_int & g ) {
+		int ret;
+		bool ignore_null_ssid;
+		ret = dcal_wifi_global_get_ignore_null_ssid(global, &ignore_null_ssid);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) ignore_null_ssid;
+		}
+		return ret;
+	}
+
+	int wifi_global_set_dfs_channels( int dfs ) {
+		DFS_CHANNELS dfs_channels;
+		dfs_channels = (DFS_CHANNELS) dfs;
+		return dcal_wifi_global_set_dfs_channels(global, dfs_channels);
+	}
+
+	int wifi_global_get_dfs_channels( class generic_int & g ) {
+		int ret;
+		DFS_CHANNELS dfs_channels;
+		ret = dcal_wifi_global_get_dfs_channels(global, &dfs_channels);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) dfs_channels;
+		}
+		return ret;
+	}
+
+	void wifi_global_printf() { return dcal_wifi_global_printf(global); }
+
 	// WiFi Profile Management
 	int wifi_profile_create() { return dcal_wifi_profile_create( &profile ); }
 	int wifi_profile_pull( char * profilename ) { return dcal_wifi_profile_pull(session, &profile, profilename); }
@@ -659,6 +975,7 @@ class dcal
   private:
 	laird_session_handle session;
 	laird_profile_handle profile;
+	laird_global_handle global;
 };
 
 using namespace boost::python;
@@ -739,6 +1056,59 @@ BOOST_PYTHON_MODULE(dcal_py)
 		// WiFi Management
 		.def("wifi_enable", &dcal::wifi_enable)
 		.def("wifi_disable", &dcal::wifi_disable)
+		// WiFi Global Management
+		.def("wifi_global_create", &dcal::wifi_global_create)
+		.def("wifi_global_pull", &dcal::wifi_global_pull)
+		.def("wifi_global_close_handle", &dcal::wifi_global_close_handle)
+		.def("wifi_global_push", &dcal::wifi_global_push)
+		.def("wifi_global_set_auth_server", &dcal::wifi_global_set_auth_server)
+		.def("wifi_global_get_auth_server", &dcal::wifi_global_get_auth_server)
+		.def("wifi_global_set_achannel_mask", &dcal::wifi_global_set_achannel_mask)
+		.def("wifi_global_get_achannel_mask", &dcal::wifi_global_get_achannel_mask)
+		.def("wifi_global_set_bchannel_mask", &dcal::wifi_global_set_bchannel_mask)
+		.def("wifi_global_get_bchannel_mask", &dcal::wifi_global_get_bchannel_mask)
+		.def("wifi_global_set_auto_profile", &dcal::wifi_global_set_auto_profile)
+		.def("wifi_global_get_auto_profile", &dcal::wifi_global_get_auto_profile)
+		.def("wifi_global_set_beacon_miss", &dcal::wifi_global_set_beacon_miss)
+		.def("wifi_global_get_beacon_miss", &dcal::wifi_global_get_beacon_miss)
+		.def("wifi_global_set_bt_coex", &dcal::wifi_global_set_bt_coex)
+		.def("wifi_global_get_bt_coex", &dcal::wifi_global_get_bt_coex)
+		.def("wifi_global_set_ccx", &dcal::wifi_global_set_ccx)
+		.def("wifi_global_get_ccx", &dcal::wifi_global_get_ccx)
+		.def("wifi_global_set_cert_path", &dcal::wifi_global_set_cert_path)
+		.def("wifi_global_get_cert_path", &dcal::wifi_global_get_cert_path)
+		.def("wifi_global_set_date_check", &dcal::wifi_global_set_date_check)
+		.def("wifi_global_get_date_check", &dcal::wifi_global_get_date_check)
+		.def("wifi_global_set_def_adhoc_channel", &dcal::wifi_global_set_def_adhoc_channel)
+		.def("wifi_global_get_def_adhoc_channel", &dcal::wifi_global_get_def_adhoc_channel)
+		.def("wifi_global_set_fips", &dcal::wifi_global_set_fips)
+		.def("wifi_global_get_fips", &dcal::wifi_global_get_fips)
+		.def("wifi_global_set_pmk", &dcal::wifi_global_set_pmk)
+		.def("wifi_global_get_pmk", &dcal::wifi_global_get_pmk)
+		.def("wifi_global_set_probe_delay", &dcal::wifi_global_set_probe_delay)
+		.def("wifi_global_get_probe_delay", &dcal::wifi_global_get_probe_delay)
+		.def("wifi_global_get_regdomain", &dcal::wifi_global_get_regdomain)
+		.def("wifi_global_set_roam_period", &dcal::wifi_global_set_roam_period)
+		.def("wifi_global_get_roam_period", &dcal::wifi_global_get_roam_period)
+		.def("wifi_global_set_roam_periodms", &dcal::wifi_global_set_roam_periodms)
+		.def("wifi_global_get_roam_periodms", &dcal::wifi_global_get_roam_periodms)
+		.def("wifi_global_set_roam_trigger", &dcal::wifi_global_set_roam_trigger)
+		.def("wifi_global_get_roam_trigger", &dcal::wifi_global_get_roam_trigger)
+		.def("wifi_global_set_rts", &dcal::wifi_global_set_rts)
+		.def("wifi_global_get_rts", &dcal::wifi_global_get_rts)
+		.def("wifi_global_set_scan_dfs_time", &dcal::wifi_global_set_scan_dfs_time)
+		.def("wifi_global_get_scan_dfs_time", &dcal::wifi_global_get_scan_dfs_time)
+		.def("wifi_global_set_ttls_inner_method", &dcal::wifi_global_set_ttls_inner_method)
+		.def("wifi_global_get_ttls_inner_method", &dcal::wifi_global_get_ttls_inner_method)
+		.def("wifi_global_set_uapsd", &dcal::wifi_global_set_uapsd)
+		.def("wifi_global_get_uapsd", &dcal::wifi_global_get_uapsd)
+		.def("wifi_global_set_wmm", &dcal::wifi_global_set_wmm)
+		.def("wifi_global_get_wmm", &dcal::wifi_global_get_wmm)
+		.def("wifi_global_set_ignore_null_ssid", &dcal::wifi_global_set_ignore_null_ssid)
+		.def("wifi_global_get_ignore_null_ssid", &dcal::wifi_global_get_ignore_null_ssid)
+		.def("wifi_global_set_dfs_channels", &dcal::wifi_global_set_dfs_channels)
+		.def("wifi_global_get_dfs_channels", &dcal::wifi_global_get_dfs_channels)
+		.def("wifi_global_printf", &dcal::wifi_global_printf)
 		// Wifi Profile Management
 		.def("wifi_profile_create", &dcal::wifi_profile_create)
 		.def("wifi_profile_pull", &dcal::wifi_profile_pull)
