@@ -58,6 +58,24 @@ typedef struct _versions{
 	char release[STR_SZ];
 } dcal_versions;
 
+typedef struct _scan_item {
+	LRD_WF_SSID ssid;
+	unsigned char bssid[LRD_WF_MAC_ADDR_LEN];
+	int channel;
+	int rssi;
+	int securityMask;
+	LRD_WF_BSSTYPE bssType;
+} dcal_scan_item;
+
+#ifndef CONFIG_NAME_SZ
+#define CONFIG_NAME_SZ 33
+#endif
+typedef struct _profile_list_item{
+	char profile_name[CONFIG_NAME_SZ];
+	bool autoprofile;
+	bool active;
+} profile_list_item;
+
 typedef struct _internal_session_handle {
 	#ifdef STATIC_MEM
 	bool valid;
@@ -75,6 +93,13 @@ typedef struct _internal_session_handle {
 	bool builder_init;
 	DCAL_STATUS_STRUCT status;
 	pthread_mutex_t *chan_lock;
+	size_t num_profiles;
+	profile_list_item *profiles;
+	time_t profile_list_timestamp;
+	size_t num_scan_items;
+	dcal_scan_item * scan_items;
+	time_t scan_list_timestamp;
+	pthread_mutex_t *list_lock;
 } internal_session_struct;
 typedef internal_session_struct * internal_session_handle;
 

@@ -200,8 +200,15 @@ int version_pull(internal_session_handle session)
 	buftype = verify_buffer(buffer, size);
 
 	if(buftype != ns(Version_type_hash)){
-		DBGERROR("could not verify version buffer.  Validated as: %s\n", buftype_to_string(buftype));
-		return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
+		if(buftype != ns(Handshake_type_hash)){
+			DBGERROR("could not verify version buffer.  Validated as: %s\n", buftype_to_string(buftype));
+			return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
+		}
+		ret = handshake_error_code(ns(Handshake_as_root(buffer)));
+
+		DBGERROR("Expecting Version table.  Received handshake with: %s\n" ,
+		          dcal_err_to_string(ret));
+		return REPORT_RETURN_DBG (ret);
 	}
 
 	version = ns(Version_as_root(buffer));

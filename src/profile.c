@@ -1723,3 +1723,329 @@ void dcal_wifi_profile_printf( laird_profile_handle profile)
 	printf("\tsecurity4: %s\n", p->security4);
 	printf("\tsecurity5: %s\n", p->security5);
 }
+
+#define LOCK(x) pthread_mutex_lock(x)
+#define UNLOCK(x) pthread_mutex_unlock(x)
+
+int dcal_wifi_pull_scan_list(laird_session_handle session, size_t *count)
+{
+	int i, ret = DCAL_SUCCESS;
+	internal_session_handle s = (internal_session_handle)session;
+	REPORT_ENTRY_DEBUG;
+
+	if (count==NULL)
+		return DCAL_INVALID_PARAMETER;
+	else if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
+	else {
+		flatcc_builder_t *B;
+		char buffer[BUF_SZ] = {0};
+		size_t size = BUF_SZ;
+		flatbuffers_thash_t buftype;
+
+		B = &s->builder;
+		flatcc_builder_reset(B);
+
+		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+		ns(Command_start(B));
+		ns(Command_command_add(B, ns(Commands_GETSCANLIST)));
+		ns(Command_end_as_root(B));
+
+		size=flatcc_builder_get_buffer_size(B);
+		assert(size<=BUF_SZ);
+		flatcc_builder_copy_buffer(B, buffer, size);
+		ret = lock_session_channel(session);
+		if(ret)
+			return REPORT_RETURN_DBG(ret);
+		ret = dcal_send_buffer(session, buffer, size);
+
+		if (ret != DCAL_SUCCESS) {
+			unlock_session_channel(session);
+			return REPORT_RETURN_DBG(ret);
+		}
+
+		//get response
+		size=BUF_SZ;
+		ret = dcal_read_buffer(session, buffer, &size);
+		unlock_session_channel(session);
+
+		if (ret != DCAL_SUCCESS)
+			return REPORT_RETURN_DBG(ret);
+
+		//is return buffer an ack buffer?
+		buftype = verify_buffer(buffer, size);
+
+		if(buftype != ns(Scan_list_type_hash)){
+			if(buftype != ns(Handshake_type_hash)){
+				DBGERROR("could not verify handshake buffer.  Validated as: %s\n", buftype_to_string(buftype));
+				return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
+			}
+
+			ret =handshake_error_code(ns(Handshake_as_root(buffer)));
+		}else{
+
+			ns(Scan_list_table_t) sl = ns(Scan_list_as_root(buffer));
+
+			size = ns(Scan_item_vec_len(ns(Scan_list_items(sl))));
+
+			ns(Scan_item_table_t) si;
+
+			void * list = malloc(size*sizeof(dcal_scan_item));
+			if (list==NULL) {
+				return DCAL_NO_MEMORY;
+			}
+			memset(list, 0, size*sizeof(dcal_scan_item));
+
+			LOCK(s->list_lock);
+			if (s->scan_items)
+				free(s->scan_items);
+
+			s->scan_items = list;
+			s->num_scan_items = size;
+			*count=size;
+			for (i=0;i<size;i++){
+				si = ns(Scan_item_vec_at(ns(Scan_list_items(sl)),i));
+				s->scan_items[i].ssid.len = flatbuffers_uint8_vec_len(ns(Scan_item_ssid(si)));
+				assert(s->scan_items[i].ssid.len <= SSID_SZ);
+				memcpy(s->scan_items[i].ssid.val, ns(Scan_item_ssid(si)), s->scan_items[i].ssid.len);
+				memcpy(s->scan_items[i].bssid, ns(Scan_item_mac(si)), LRD_WF_MAC_ADDR_LEN);
+				s->scan_items[i].channel = ns(Scan_item_channel(si));
+				s->scan_items[i].rssi = ns(Scan_item_rssi(si))/100;
+				s->scan_items[i].securityMask = ns(Scan_item_securityMask(si));
+				s->scan_items[i].bssType = ns(Scan_item_bss(si))?ADHOC:INFRASTRUCTURE;
+
+			}
+
+			time(&s->scan_list_timestamp);
+
+			UNLOCK(s->list_lock);
+		}
+	}
+	return ret;
+}
+
+#define SCAN_LIST_TIMEOUT 10
+static int get_scan_list_entry_element(laird_session_handle session,
+                                       int index,
+                                       LRD_WF_SSID *ssid,
+                                       unsigned char *bssid, int bssidbuflen,
+                                       int *channel,
+                                       int *rssi,
+                                       int *securityMask,
+                                       LRD_WF_BSSTYPE *bssType)
+{
+	int ret = DCAL_SUCCESS;
+	internal_session_handle s = (internal_session_handle) session;
+	time_t now;
+
+	if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
+
+	time(&now);
+
+	if (now- s->scan_list_timestamp > SCAN_LIST_TIMEOUT)
+		return DCAL_DATA_STALE;
+
+	LOCK(s->list_lock);
+
+	if (index > s-> num_scan_items) {
+		ret = DCAL_INDEX_OUT_OF_BOUNDS;
+		goto cleanup;
+	}
+
+	if (ssid)
+		memcpy(ssid, &s->scan_items[index].ssid, sizeof(LRD_WF_SSID));
+
+	else if (bssid) {
+		if (bssidbuflen < LRD_WF_MAC_ADDR_LEN){
+			ret = DCAL_BUFFER_TOO_SMALL;
+			goto cleanup;
+		}
+		memcpy(bssid, s->scan_items[index].bssid, LRD_WF_MAC_ADDR_LEN);
+	}
+
+	else if (channel) *channel = s->scan_items[index].channel;
+	else if (rssi) *rssi = s->scan_items[index].rssi;
+	else if (securityMask) *securityMask = s->scan_items[index].securityMask;
+	else if (bssType) *bssType = s->scan_items[index].bssType;
+	else
+		ret = DCAL_INVALID_PARAMETER;
+
+cleanup:
+	UNLOCK(s->list_lock);
+
+	return ret;
+}
+
+int dcal_wifi_get_scan_list_entry_ssid(laird_session_handle session,
+                                  int index, LRD_WF_SSID *ssid)
+{
+	return get_scan_list_entry_element(session, index, ssid, NULL, 0, NULL, NULL, NULL, NULL);
+}
+
+int dcal_wifi_get_scan_list_entry_bssid(laird_session_handle session,
+                                  int index, unsigned char * bssid, int bssidbuflen)
+{
+	return get_scan_list_entry_element(session, index, NULL, bssid, bssidbuflen, NULL, NULL, NULL, NULL);
+}
+
+int dcal_wifi_get_scan_list_entry_channel(laird_session_handle session,
+                                  int index, int * channel)
+{
+	return get_scan_list_entry_element(session, index, NULL, NULL, 0, channel, NULL, NULL, NULL);
+}
+
+int dcal_wifi_get_scan_list_entry_rssi(laird_session_handle session,
+                                  int index, int * rssi)
+{
+	return get_scan_list_entry_element(session, index, NULL, NULL, 0, NULL, rssi, NULL, NULL);
+}
+
+int dcal_wifi_get_scan_list_entry_securityMask(laird_session_handle session,
+                                  int index, int * securityMask)
+{
+	return get_scan_list_entry_element(session, index, NULL, NULL, 0, NULL, NULL, securityMask, NULL);
+}
+
+int dcal_wifi_get_scan_list_entry_type(laird_session_handle session,
+                                  int index, LRD_WF_BSSTYPE * bssType)
+{
+	return get_scan_list_entry_element(session, index, NULL, NULL, 0, NULL, NULL, NULL, bssType);
+}
+
+// WiFi Profile Management_
+// both the create and pull functions will allocate a laird_profile_handle
+// that require the close_handle function to be called when done with then
+// handle
+int dcal_wifi_pull_profile_list(laird_session_handle session, size_t *count)
+{
+	int i, ret = DCAL_SUCCESS;
+	internal_session_handle s = (internal_session_handle)session;
+	REPORT_ENTRY_DEBUG;
+
+	if  (count==NULL)
+		return DCAL_INVALID_PARAMETER;
+	else if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
+	else {
+		flatcc_builder_t *B;
+		char buffer[BUF_SZ] = {0};
+		size_t size = BUF_SZ;
+		flatbuffers_thash_t buftype;
+
+		B = &s->builder;
+		flatcc_builder_reset(B);
+
+		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+		ns(Command_start(B));
+		ns(Command_command_add(B, ns(Commands_GETPROFILELIST)));
+		ns(Command_end_as_root(B));
+
+		size=flatcc_builder_get_buffer_size(B);
+		assert(size<=BUF_SZ);
+		flatcc_builder_copy_buffer(B, buffer, size);
+		ret = lock_session_channel(session);
+		if(ret)
+			return REPORT_RETURN_DBG(ret);
+		ret = dcal_send_buffer(session, buffer, size);
+
+		if (ret != DCAL_SUCCESS) {
+			unlock_session_channel(session);
+			return REPORT_RETURN_DBG(ret);
+		}
+
+		//get response
+		size=BUF_SZ;
+		ret = dcal_read_buffer(session, buffer, &size);
+		unlock_session_channel(session);
+
+		if (ret != DCAL_SUCCESS)
+			return REPORT_RETURN_DBG(ret);
+
+		//is return buffer an ack buffer?
+		buftype = verify_buffer(buffer, size);
+
+		if(buftype != ns(Profile_list_type_hash)){
+			if(buftype != ns(Handshake_type_hash)){
+				DBGERROR("could not verify handshake buffer.  Validated as: %s\n", buftype_to_string(buftype));
+				return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
+			}
+
+			ret =handshake_error_code(ns(Handshake_as_root(buffer)));
+		}else{
+
+			ns(Profile_list_table_t) pl = ns(Profile_list_as_root(buffer));
+
+			size = ns(P_entry_vec_len(ns(Profile_list_profiles(pl))));
+
+			ns(P_entry_table_t) pe;
+
+			void * list = malloc(size*sizeof(profile_list_item));
+			if (list==NULL) {
+				return DCAL_NO_MEMORY;
+			}
+			memset(list, 0, size*sizeof(profile_list_item));
+
+			LOCK(s->list_lock);
+			if (s->profiles)
+				free(s->profiles);
+
+			s->profiles = list;
+			s->num_profiles = size;
+			*count=size;
+			for (i=0;i<size;i++){
+				pe = ns(P_entry_vec_at(ns(Profile_list_profiles(pl)),i));
+				strncpy(s->profiles[i].profile_name, ns(P_entry_name(pe)), CONFIG_NAME_SZ);
+				s->profiles[i].autoprofile = (ns(P_entry_autoprof(pe)));
+				s->profiles[i].active = (ns(P_entry_active(pe)));
+			}
+
+			time(&s->profile_list_timestamp);
+
+			UNLOCK(s->list_lock);
+		}
+	}
+	return ret;
+}
+
+#define PROFILE_LIST_TIMEOUT 60
+
+int dcal_wifi_get_profile_list_entry(laird_session_handle session, int index, char * profilename, size_t buflen, bool *autoprofile, bool * active)
+{
+	int ret = DCAL_SUCCESS;
+	internal_session_handle s = (internal_session_handle) session;
+	time_t now;
+
+	if (!validate_session(session))
+		return DCAL_INVALID_HANDLE;
+	if (profilename==NULL)
+		return DCAL_INVALID_PARAMETER;
+
+	time(&now);
+
+	if (now- s->profile_list_timestamp > PROFILE_LIST_TIMEOUT)
+		return DCAL_DATA_STALE;
+
+	LOCK(s->list_lock);
+
+	if (index > s-> num_profiles) {
+		ret = DCAL_INDEX_OUT_OF_BOUNDS;
+		goto cleanup;
+	}
+
+	if (buflen <= strlen(s->profiles[index].profile_name)){
+		ret = DCAL_INVALID_PARAMETER;
+		goto cleanup;
+	}
+
+	strncpy(profilename, s->profiles[index].profile_name, buflen);
+	*autoprofile = s->profiles[index].autoprofile;
+	*active = s->profiles[index].active;
+
+
+cleanup:
+	UNLOCK(s->list_lock);
+
+	return ret;
+}
+
