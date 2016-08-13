@@ -20,6 +20,8 @@ static int __DCAL_session_Globals_table_verifier(flatcc_table_verifier_descripto
 static int __DCAL_session_Profile_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_P_entry_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_Profile_list_table_verifier(flatcc_table_verifier_descriptor_t *td);
+static int __DCAL_session_Scan_item_table_verifier(flatcc_table_verifier_descriptor_t *td);
+static int __DCAL_session_Scan_list_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_Time_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_Filexfer_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_Command_table_verifier(flatcc_table_verifier_descriptor_t *td);
@@ -378,6 +380,65 @@ static inline int DCAL_session_Profile_list_verify_as_root_with_identifier(const
 static inline int DCAL_session_Profile_list_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
 { __flatbuffers_thash_write_to_pe(&thash, thash);
   return flatcc_verify_table_as_root(buf, bufsiz, thash ? (const char *)&thash : 0, &__DCAL_session_Profile_list_table_verifier);
+}
+
+static int __DCAL_session_Scan_item_table_verifier(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_field(td, 0, 1, 1) /* channel */)) return ret;
+    if ((ret = flatcc_verify_field(td, 1, 4, 4) /* rssi */)) return ret;
+    if ((ret = flatcc_verify_field(td, 2, 4, 4) /* securityMask */)) return ret;
+    if ((ret = flatcc_verify_field(td, 3, 1, 1) /* bss */)) return ret;
+    if ((ret = flatcc_verify_vector_field(td, 4, 0, 1, 1, 4294967295) /* mac */)) return ret;
+    if ((ret = flatcc_verify_vector_field(td, 5, 0, 1, 1, 4294967295) /* ssid */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int DCAL_session_Scan_item_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, DCAL_session_Scan_item_identifier, &__DCAL_session_Scan_item_table_verifier);
+}
+
+static inline int DCAL_session_Scan_item_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, DCAL_session_Scan_item_type_identifier, &__DCAL_session_Scan_item_table_verifier);
+}
+
+static inline int DCAL_session_Scan_item_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &__DCAL_session_Scan_item_table_verifier);
+}
+
+static inline int DCAL_session_Scan_item_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{ __flatbuffers_thash_write_to_pe(&thash, thash);
+  return flatcc_verify_table_as_root(buf, bufsiz, thash ? (const char *)&thash : 0, &__DCAL_session_Scan_item_table_verifier);
+}
+
+static int __DCAL_session_Scan_list_table_verifier(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_table_vector_field(td, 0, 0, &__DCAL_session_Scan_item_table_verifier) /* items */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int DCAL_session_Scan_list_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, DCAL_session_Scan_list_identifier, &__DCAL_session_Scan_list_table_verifier);
+}
+
+static inline int DCAL_session_Scan_list_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, DCAL_session_Scan_list_type_identifier, &__DCAL_session_Scan_list_table_verifier);
+}
+
+static inline int DCAL_session_Scan_list_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &__DCAL_session_Scan_list_table_verifier);
+}
+
+static inline int DCAL_session_Scan_list_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{ __flatbuffers_thash_write_to_pe(&thash, thash);
+  return flatcc_verify_table_as_root(buf, bufsiz, thash ? (const char *)&thash : 0, &__DCAL_session_Scan_list_table_verifier);
 }
 
 static int __DCAL_session_Time_table_verifier(flatcc_table_verifier_descriptor_t *td)

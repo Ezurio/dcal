@@ -49,6 +49,12 @@ typedef flatbuffers_uoffset_t *DCAL_session_P_entry_mutable_vec_t;
 typedef const struct DCAL_session_Profile_list_table *DCAL_session_Profile_list_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Profile_list_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Profile_list_mutable_vec_t;
+typedef const struct DCAL_session_Scan_item_table *DCAL_session_Scan_item_table_t;
+typedef const flatbuffers_uoffset_t *DCAL_session_Scan_item_vec_t;
+typedef flatbuffers_uoffset_t *DCAL_session_Scan_item_mutable_vec_t;
+typedef const struct DCAL_session_Scan_list_table *DCAL_session_Scan_list_table_t;
+typedef const flatbuffers_uoffset_t *DCAL_session_Scan_list_vec_t;
+typedef flatbuffers_uoffset_t *DCAL_session_Scan_list_mutable_vec_t;
 typedef const struct DCAL_session_Time_table *DCAL_session_Time_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Time_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Time_mutable_vec_t;
@@ -88,19 +94,20 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_SETPROFILE ((DCAL_session_Commands_enum_t)6UL)
 #define DCAL_session_Commands_DELPROFILE ((DCAL_session_Commands_enum_t)7UL)
 #define DCAL_session_Commands_GETPROFILELIST ((DCAL_session_Commands_enum_t)8UL)
-#define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)9UL)
-#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)10UL)
-#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)11UL)
-#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)12UL)
-#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)13UL)
-#define DCAL_session_Commands_SETTIME ((DCAL_session_Commands_enum_t)14UL)
-#define DCAL_session_Commands_GETTIME ((DCAL_session_Commands_enum_t)15UL)
-#define DCAL_session_Commands_NTPDATE ((DCAL_session_Commands_enum_t)16UL)
-#define DCAL_session_Commands_FILEPUSH ((DCAL_session_Commands_enum_t)17UL)
-#define DCAL_session_Commands_FILEPULL ((DCAL_session_Commands_enum_t)18UL)
-#define DCAL_session_Commands_FWUPDATE ((DCAL_session_Commands_enum_t)19UL)
-#define DCAL_session_Commands_CLIFILE ((DCAL_session_Commands_enum_t)20UL)
-#define DCAL_session_Commands_GETLOGS ((DCAL_session_Commands_enum_t)21UL)
+#define DCAL_session_Commands_GETSCANLIST ((DCAL_session_Commands_enum_t)9UL)
+#define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)10UL)
+#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)11UL)
+#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)12UL)
+#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)13UL)
+#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)14UL)
+#define DCAL_session_Commands_SETTIME ((DCAL_session_Commands_enum_t)15UL)
+#define DCAL_session_Commands_GETTIME ((DCAL_session_Commands_enum_t)16UL)
+#define DCAL_session_Commands_NTPDATE ((DCAL_session_Commands_enum_t)17UL)
+#define DCAL_session_Commands_FILEPUSH ((DCAL_session_Commands_enum_t)18UL)
+#define DCAL_session_Commands_FILEPULL ((DCAL_session_Commands_enum_t)19UL)
+#define DCAL_session_Commands_FWUPDATE ((DCAL_session_Commands_enum_t)20UL)
+#define DCAL_session_Commands_CLIFILE ((DCAL_session_Commands_enum_t)21UL)
+#define DCAL_session_Commands_GETLOGS ((DCAL_session_Commands_enum_t)22UL)
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -114,6 +121,7 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_SETPROFILE: return "SETPROFILE";
     case DCAL_session_Commands_DELPROFILE: return "DELPROFILE";
     case DCAL_session_Commands_GETPROFILELIST: return "GETPROFILELIST";
+    case DCAL_session_Commands_GETSCANLIST: return "GETSCANLIST";
     case DCAL_session_Commands_ACTIVATEPROFILE: return "ACTIVATEPROFILE";
     case DCAL_session_Commands_WIFIENABLE: return "WIFIENABLE";
     case DCAL_session_Commands_WIFIDISABLE: return "WIFIDISABLE";
@@ -685,6 +693,69 @@ __flatbuffers_table_as_root(DCAL_session_Profile_list)
 static inline DCAL_session_P_entry_vec_t DCAL_session_Profile_list_profiles(DCAL_session_Profile_list_table_t t)
 __flatbuffers_vector_field(DCAL_session_P_entry_vec_t, 0, t, 0)
 static inline int DCAL_session_Profile_list_profiles_is_present(DCAL_session_Profile_list_table_t t)
+__flatbuffers_field_present(0, t)
+
+
+struct DCAL_session_Scan_item_table { uint8_t unused__; };
+
+#ifndef DCAL_session_Scan_item_identifier
+#define DCAL_session_Scan_item_identifier flatbuffers_identifier
+#endif
+#define DCAL_session_Scan_item_type_hash ((flatbuffers_thash_t)0xeae08c5c)
+#define DCAL_session_Scan_item_type_identifier "\x5c\x8c\xe0\xea"
+static inline size_t DCAL_session_Scan_item_vec_len(DCAL_session_Scan_item_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline DCAL_session_Scan_item_table_t DCAL_session_Scan_item_vec_at(DCAL_session_Scan_item_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(DCAL_session_Scan_item_table_t, vec, i, 0)
+__flatbuffers_table_as_root(DCAL_session_Scan_item)
+
+static inline uint8_t DCAL_session_Scan_item_channel(DCAL_session_Scan_item_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint8, 0, 0, t)
+static inline int DCAL_session_Scan_item_channel_is_present(DCAL_session_Scan_item_table_t t)
+__flatbuffers_field_present(0, t)
+
+static inline int32_t DCAL_session_Scan_item_rssi(DCAL_session_Scan_item_table_t t)
+__flatbuffers_scalar_field(flatbuffers_int32, 1, 0, t)
+static inline int DCAL_session_Scan_item_rssi_is_present(DCAL_session_Scan_item_table_t t)
+__flatbuffers_field_present(1, t)
+
+static inline uint32_t DCAL_session_Scan_item_securityMask(DCAL_session_Scan_item_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 2, 0, t)
+static inline int DCAL_session_Scan_item_securityMask_is_present(DCAL_session_Scan_item_table_t t)
+__flatbuffers_field_present(2, t)
+
+static inline flatbuffers_bool_t DCAL_session_Scan_item_bss(DCAL_session_Scan_item_table_t t)
+__flatbuffers_scalar_field(flatbuffers_bool, 3, 0, t)
+static inline int DCAL_session_Scan_item_bss_is_present(DCAL_session_Scan_item_table_t t)
+__flatbuffers_field_present(3, t)
+
+static inline flatbuffers_uint8_vec_t DCAL_session_Scan_item_mac(DCAL_session_Scan_item_table_t t)
+__flatbuffers_vector_field(flatbuffers_uint8_vec_t, 4, t, 0)
+static inline int DCAL_session_Scan_item_mac_is_present(DCAL_session_Scan_item_table_t t)
+__flatbuffers_field_present(4, t)
+
+static inline flatbuffers_uint8_vec_t DCAL_session_Scan_item_ssid(DCAL_session_Scan_item_table_t t)
+__flatbuffers_vector_field(flatbuffers_uint8_vec_t, 5, t, 0)
+static inline int DCAL_session_Scan_item_ssid_is_present(DCAL_session_Scan_item_table_t t)
+__flatbuffers_field_present(5, t)
+
+
+struct DCAL_session_Scan_list_table { uint8_t unused__; };
+
+#ifndef DCAL_session_Scan_list_identifier
+#define DCAL_session_Scan_list_identifier flatbuffers_identifier
+#endif
+#define DCAL_session_Scan_list_type_hash ((flatbuffers_thash_t)0x2b693cc3)
+#define DCAL_session_Scan_list_type_identifier "\xc3\x3c\x69\x2b"
+static inline size_t DCAL_session_Scan_list_vec_len(DCAL_session_Scan_list_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline DCAL_session_Scan_list_table_t DCAL_session_Scan_list_vec_at(DCAL_session_Scan_list_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(DCAL_session_Scan_list_table_t, vec, i, 0)
+__flatbuffers_table_as_root(DCAL_session_Scan_list)
+
+static inline DCAL_session_Scan_item_vec_t DCAL_session_Scan_list_items(DCAL_session_Scan_list_table_t t)
+__flatbuffers_vector_field(DCAL_session_Scan_item_vec_t, 0, t, 0)
+static inline int DCAL_session_Scan_list_items_is_present(DCAL_session_Scan_list_table_t t)
 __flatbuffers_field_present(0, t)
 
 

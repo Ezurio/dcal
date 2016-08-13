@@ -47,6 +47,10 @@ static const flatbuffers_voffset_t __DCAL_session_P_entry_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_P_entry, 3)
 static const flatbuffers_voffset_t __DCAL_session_Profile_list_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Profile_list, 1)
+static const flatbuffers_voffset_t __DCAL_session_Scan_item_required[] = {0 };
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Scan_item, 6)
+static const flatbuffers_voffset_t __DCAL_session_Scan_list_required[] = {0 };
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Scan_list, 1)
 static const flatbuffers_voffset_t __DCAL_session_Time_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Time, 2)
 static const flatbuffers_voffset_t __DCAL_session_Filexfer_required[] = {0 };
@@ -119,6 +123,14 @@ static inline DCAL_session_P_entry_ref_t DCAL_session_P_entry_create(flatbuffers
 #define __DCAL_session_Profile_list_formal_args , DCAL_session_P_entry_vec_ref_t v0
 #define __DCAL_session_Profile_list_call_args , v0
 static inline DCAL_session_Profile_list_ref_t DCAL_session_Profile_list_create(flatbuffers_builder_t *B __DCAL_session_Profile_list_formal_args);
+#define __DCAL_session_Scan_item_formal_args ,\
+  uint8_t v0, int32_t v1, uint32_t v2, flatbuffers_bool_t v3, flatbuffers_uint8_vec_ref_t v4, flatbuffers_uint8_vec_ref_t v5
+#define __DCAL_session_Scan_item_call_args ,\
+  v0, v1, v2, v3, v4, v5
+static inline DCAL_session_Scan_item_ref_t DCAL_session_Scan_item_create(flatbuffers_builder_t *B __DCAL_session_Scan_item_formal_args);
+#define __DCAL_session_Scan_list_formal_args , DCAL_session_Scan_item_vec_ref_t v0
+#define __DCAL_session_Scan_list_call_args , v0
+static inline DCAL_session_Scan_list_ref_t DCAL_session_Scan_list_create(flatbuffers_builder_t *B __DCAL_session_Scan_list_formal_args);
 #define __DCAL_session_Time_formal_args , int32_t v0, int32_t v1
 #define __DCAL_session_Time_call_args , v0, v1
 static inline DCAL_session_Time_ref_t DCAL_session_Time_create(flatbuffers_builder_t *B __DCAL_session_Time_formal_args);
@@ -423,6 +435,40 @@ static inline DCAL_session_Profile_list_ref_t DCAL_session_Profile_list_create(f
     return DCAL_session_Profile_list_end(B);
 }
 __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Profile_list, DCAL_session_Profile_list_identifier, DCAL_session_Profile_list_type_identifier)
+
+__flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Scan_item_channel, flatbuffers_uint8, uint8_t, 1, 1, 0)
+__flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Scan_item_rssi, flatbuffers_int32, int32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(2, flatbuffers_, DCAL_session_Scan_item_securityMask, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(3, flatbuffers_, DCAL_session_Scan_item_bss, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
+__flatbuffers_build_vector_field(4, flatbuffers_, DCAL_session_Scan_item_mac, flatbuffers_uint8, uint8_t)
+__flatbuffers_build_vector_field(5, flatbuffers_, DCAL_session_Scan_item_ssid, flatbuffers_uint8, uint8_t)
+
+static inline DCAL_session_Scan_item_ref_t DCAL_session_Scan_item_create(flatbuffers_builder_t *B __DCAL_session_Scan_item_formal_args)
+{
+    if (DCAL_session_Scan_item_start(B)
+        || DCAL_session_Scan_item_rssi_add(B, v1)
+        || DCAL_session_Scan_item_securityMask_add(B, v2)
+        || DCAL_session_Scan_item_mac_add(B, v4)
+        || DCAL_session_Scan_item_ssid_add(B, v5)
+        || DCAL_session_Scan_item_channel_add(B, v0)
+        || DCAL_session_Scan_item_bss_add(B, v3)) {
+        return 0;
+    }
+    return DCAL_session_Scan_item_end(B);
+}
+__flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Scan_item, DCAL_session_Scan_item_identifier, DCAL_session_Scan_item_type_identifier)
+
+__flatbuffers_build_table_vector_field(0, flatbuffers_, DCAL_session_Scan_list_items, DCAL_session_Scan_item)
+
+static inline DCAL_session_Scan_list_ref_t DCAL_session_Scan_list_create(flatbuffers_builder_t *B __DCAL_session_Scan_list_formal_args)
+{
+    if (DCAL_session_Scan_list_start(B)
+        || DCAL_session_Scan_list_items_add(B, v0)) {
+        return 0;
+    }
+    return DCAL_session_Scan_list_end(B);
+}
+__flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Scan_list, DCAL_session_Scan_list_identifier, DCAL_session_Scan_list_type_identifier)
 
 __flatbuffers_build_scalar_field(0, flatbuffers_, DCAL_session_Time_tv_sec, flatbuffers_int32, int32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Time_tv_usec, flatbuffers_int32, int32_t, 4, 4, 0)
