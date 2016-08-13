@@ -25,6 +25,10 @@ void __attribute__ ((constructor)) initsessions(void)
 	rc = initlist(&sessions);
 	if (rc)
 		DBGERROR("initlist() failed for sessions list with:%d\n", rc);
+
+	if (ssh_init())
+//		DBGERROR("ssh_init() failed\n");
+		printf("ssh_init() failed\n");
 }
 
 void __attribute__ ((destructor)) sessions_fini(void)
@@ -34,6 +38,9 @@ void __attribute__ ((destructor)) sessions_fini(void)
 	sessions = NULL;
 	if(rc)
 		DBGERROR("freelist() failed for sessions list with: %d\n", rc);
+	if (ssh_finalize())
+//		DBGERROR("ssh_finalize() failed\n");
+		printf("ssh_finalize() failed\n");
 }
 
 static int get_session_handle( laird_session_handle * session )
@@ -174,6 +181,8 @@ int dcal_session_create( laird_session_handle * s)
 		(*session)->port = DEF_PORT;
 		(*session)->chan_lock = malloc(sizeof(pthread_mutex_t));
 		pthread_mutex_init((*session)->chan_lock, NULL);
+		(*session)->list_lock = malloc(sizeof(pthread_mutex_t));
+		pthread_mutex_init((*session)->list_lock, NULL);
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -316,7 +325,6 @@ int dcal_session_open ( laird_session_handle s )
 		rc = handshake_init( session );
 
 		if (rc) {
-			flatcc_builder_clear(&session->builder);
 			DBGERROR("Error in handshake_init\n");
 			goto bad_exit;
 		}
@@ -351,6 +359,12 @@ int dcal_session_close( laird_session_handle s)
 
 		pthread_mutex_destroy(session->chan_lock);
 		free(session->chan_lock);
+		pthread_mutex_destroy(session->list_lock);
+		free(session->list_lock);
+		if (session->scan_items)
+			free(session->scan_items);
+		if (session->profiles)
+			free(session->profiles);
 #ifdef STATIC_MEM
 
 		((internal_session_handle)session)->valid = 0;
