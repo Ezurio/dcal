@@ -14,7 +14,9 @@ int handshake_error_code(ns(Handshake_table_t) handshake);
 
 #define safe_free(x) do{if(x){free(x); x=NULL;}}while (0)
 char *strdup(const char *src);
-#define BUF16K 16384
+#define SZ_1K 1024
+#define FILEBUFSZ (SZ_1K * 128)
+
 
 
 #endif // __buffer_h__

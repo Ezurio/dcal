@@ -39,10 +39,10 @@ int dcal_file_push_to_wb(laird_session_handle session,
 	if (!validate_session(session))
 		return REPORT_RETURN_DBG(DCAL_INVALID_HANDLE);
 
-	buf = malloc(BUF16K);
+	buf = malloc(FILEBUFSZ);
 	if (!buf)
 		return REPORT_RETURN_DBG(DCAL_NO_MEMORY);
-	memset(buf, 0, BUF16K);
+	memset(buf, 0, FILEBUFSZ);
 
 	file = fopen(local_file_name, "r");
 	if (!file)
@@ -84,7 +84,7 @@ int dcal_file_push_to_wb(laird_session_handle session,
 	ns(Command_end_as_root(B));
 
 	size=flatcc_builder_get_buffer_size(B);
-	assert(size<=BUF16K);
+	assert(size<=FILEBUFSZ);
 	flatcc_builder_copy_buffer(B, buf, size);
 
 	ret = lock_session_channel(session);
@@ -98,7 +98,7 @@ int dcal_file_push_to_wb(laird_session_handle session,
 		goto closefile;
 	}
 
-	size = BUF16K;
+	size = FILEBUFSZ;
 	ret = dcal_read_buffer(session, buf, &size);
 
 	if(ret != DCAL_SUCCESS) {
@@ -122,7 +122,7 @@ int dcal_file_push_to_wb(laird_session_handle session,
 
 	total = 0;
 	do {
-		r = fread(buf, 1, BUF16K, file);
+		r = fread(buf, 1, FILEBUFSZ, file);
 		if (r==0) break;
 		else if (r<0){
 			DBGERROR("Error reading file: %s\n", strerror(errno));
@@ -145,7 +145,7 @@ int dcal_file_push_to_wb(laird_session_handle session,
 
 	DBGINFO("Wrote %d bytes total\n", total);
 
-	size = BUF16K;
+	size = FILEBUFSZ;
 	ret = dcal_read_buffer(session, buf, &size);
 
 	unlock_session_channel(session);
@@ -199,10 +199,10 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 	}else
 		local_file_name = strdup(local_file);
 
-	buf = malloc(BUF16K);
+	buf = malloc(FILEBUFSZ);
 	if (!buf)
 		return REPORT_RETURN_DBG(DCAL_NO_MEMORY);
-	memset(buf, 0, BUF16K);
+	memset(buf, 0, FILEBUFSZ);
 
 	file = fopen(local_file_name, "wb");
 	if (!file){
@@ -230,7 +230,7 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 	ns(Command_end_as_root(B));
 
 	size=flatcc_builder_get_buffer_size(B);
-	assert(size<=BUF16K);
+	assert(size<=FILEBUFSZ);
 	flatcc_builder_copy_buffer(B, buf, size);
 
 	ret = lock_session_channel(session);
@@ -243,7 +243,7 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 		goto unlock_chan;
 	}
 
-	size = BUF16K;
+	size = FILEBUFSZ;
 	ret = dcal_read_buffer(session, buf, &size);
 
 	if(ret != DCAL_SUCCESS) {
@@ -251,7 +251,15 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 	}
 
 	flatbuffers_thash_t buftype = verify_buffer(buf, size);
-	if(buftype != ns(Command_type_hash)){
+
+	if(buftype == ns(Handshake_type_hash)){
+		ret = handshake_error_code(ns(Handshake_as_root(buf)));
+		if (ret == DCAL_SUCCESS) {
+			DBGERROR("expecting a FileXfer buffer but received an ACK\n");
+			ret = DCAL_FLATBUFF_ERROR;
+		}
+		goto unlock_chan;
+	} else if(buftype != ns(Command_type_hash)){
 		DBGERROR("could not verify incoming Filexfer buffer.  Validated as: %s\n", buftype_to_string(buftype));
 		ret = DCAL_FLATBUFF_ERROR;
 		goto unlock_chan;
@@ -268,7 +276,7 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 
 	remaining = size;
 	do {
-		r = BUF16K;
+		r = FILEBUFSZ;
 		if (r > remaining)
 			r=remaining;
 		ret = dcal_read_buffer(session, buf, &r);
@@ -413,9 +421,9 @@ int dcal_pull_logs(laird_session_handle session, char * dest_file)
 
 	size = BUFSIZE;
 	ret = dcal_read_buffer(session, buf, &size);
+	unlock_session_channel(session);
 
 	if(ret != DCAL_SUCCESS) {
-		unlock_session_channel(session);
 		return ret;
 	}
 
@@ -429,13 +437,13 @@ int dcal_pull_logs(laird_session_handle session, char * dest_file)
 	ret = handshake_error_code(ns(Handshake_as_root(buf)));
 
 	if (ret==DCAL_SUCCESS)
-		ret = dcal_file_pull_from_wb(session, dest_file, "/tmp/log_dump.txt");
+		ret = dcal_file_pull_from_wb(session,  "/tmp/log_dump.txt", dest_file);
 
 	return ret;
 }
 
 // src_file is full location and file name where command file resides.
-int dcal_process_cli_command_list(laird_session_handle session, char * src_file)
+int dcal_process_cli_command_file(laird_session_handle session, char * src_file)
 {
 	char buf[BUFSIZE];
 	size_t size=BUFSIZE;
@@ -447,12 +455,21 @@ int dcal_process_cli_command_list(laird_session_handle session, char * src_file)
 
 	ret = dcal_file_push_to_wb(session, src_file, src_file);
 
+	ns(Cmd_pl_union_ref_t) cmd_pl;
 	flatcc_builder_t *B;
 	B=&s->builder;
 	flatcc_builder_reset(B);
 
+	ns(String_start(B));
+
+	ns(String_value_create_str(B, src_file));
+
+	cmd_pl.String = ns(String_end(B));
+	cmd_pl.type = ns(Cmd_pl_String);
+
 	flatbuffers_buffer_start(B, ns(Command_type_identifier));
 	ns(Command_start(B));
+	ns(Command_cmd_pl_add(B, cmd_pl));
 	ns(Command_command_add(B, ns(Commands_CLIFILE)));
 	ns(Command_end_as_root(B));
 

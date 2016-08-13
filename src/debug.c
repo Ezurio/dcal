@@ -131,9 +131,11 @@ const char *dcal_err_to_string( int code)
 		case DCAL_FLATCC_NOT_INITIALIZED:  return "DCAL_FLATCC_NOT_INITIALIZED";
 		case DCAL_FLATBUFF_VALIDATION_FAIL:return "DCAL_FLATBUFF_VALIDATION_FAIL";
 		case DCAL_DATA_STALE:              return "DCAL_DATA_STALE";
-		case DCAL_FILE_ACCESS_DENIED:      return "DCAL_FILE_ACCESS_DENIED";
+		case DCAL_LOCAL_FILE_ACCESS_DENIED:return "DCAL_LOCAL_FILE_ACCESS_DENIED";
 		case DCAL_REMOTE_FILE_ACCESS_DENIED:return "DCAL_REMOTE_FILE_ACCESS_DENIED";
 		case DCAL_FQDN_FAILURE:             return "DCAL_FQDN_FAILURE";
+		case DCAL_REMOTE_SHELL_CMD_FAILURE: return "DCAL_REMOTE_SHELL_CMD_FAILURE";
+
 		default:                     snprintf(debugbuf, BUFSIZE, "unknown DCAL_ERR:%d",code);
 		return debugbuf;
 	}
