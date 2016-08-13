@@ -27,7 +27,7 @@ void printmsg( int lvl, char * format, ...)
 	}
 }
 
-static void usage(char * app_name)
+void common_usage(char * app_name)
 {
 	printf("usage: %s [OPTIONS]\n\n", app_name);
 	printf("Device Control API Library (DCAL) application: %s\n", application_name);
@@ -96,7 +96,7 @@ int session_connect_with_opts( laird_session_handle session, int argc, char *arg
 			verbose_lvl++;
 			break;
 		case '?':
-			usage(argv[0]);
+			common_usage(argv[0]);
 			exit(0);
 			break;
 		}
@@ -139,7 +139,6 @@ int session_connect_with_opts( laird_session_handle session, int argc, char *arg
 	DBGINFO("SSH connection!\n");
 
 exit:
-
 	return ret;
 }
 
