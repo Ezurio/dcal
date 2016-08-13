@@ -53,7 +53,7 @@ int main (int argc, char *argv[])
 		if (ret)  printf("error in set bchannel_mask: %d\n", ret);
 
 		ret = dcal_wifi_global_set_roam_periodms(global, 4000);
-		if (ret)  printf("error in set roam_period: %d\n", ret);
+		if (ret)  printf("error in set roam_periodms: %d\n", ret);
 
 		ret = dcal_wifi_global_set_fips(global, 1);
 		if (ret)  printf("error in set fips: %d\n", ret);
