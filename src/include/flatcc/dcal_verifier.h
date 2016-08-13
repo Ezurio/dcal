@@ -236,14 +236,14 @@ static int __DCAL_session_Globals_table_verifier(flatcc_table_verifier_descripto
     if ((ret = flatcc_verify_field(td, 0, 4, 4) /* auth */)) return ret;
     if ((ret = flatcc_verify_field(td, 1, 4, 4) /* channel_set_a */)) return ret;
     if ((ret = flatcc_verify_field(td, 2, 4, 4) /* channel_set_b */)) return ret;
-    if ((ret = flatcc_verify_field(td, 3, 4, 4) /* auto_profile */)) return ret;
+    if ((ret = flatcc_verify_field(td, 3, 1, 1) /* auto_profile */)) return ret;
     if ((ret = flatcc_verify_field(td, 4, 4, 4) /* beacon_miss */)) return ret;
-    if ((ret = flatcc_verify_field(td, 5, 4, 4) /* bt_coex */)) return ret;
+    if ((ret = flatcc_verify_field(td, 5, 1, 1) /* bt_coex */)) return ret;
     if ((ret = flatcc_verify_field(td, 6, 1, 1) /* ccx */)) return ret;
     if ((ret = flatcc_verify_string_field(td, 7, 0) /* cert_path */)) return ret;
     if ((ret = flatcc_verify_field(td, 8, 1, 1) /* date_check */)) return ret;
     if ((ret = flatcc_verify_field(td, 9, 4, 4) /* def_adhoc */)) return ret;
-    if ((ret = flatcc_verify_field(td, 10, 4, 4) /* fips */)) return ret;
+    if ((ret = flatcc_verify_field(td, 10, 1, 1) /* fips */)) return ret;
     if ((ret = flatcc_verify_field(td, 11, 4, 4) /* pmk */)) return ret;
     if ((ret = flatcc_verify_field(td, 12, 4, 4) /* probe_delay */)) return ret;
     if ((ret = flatcc_verify_field(td, 13, 4, 4) /* regdomain */)) return ret;
