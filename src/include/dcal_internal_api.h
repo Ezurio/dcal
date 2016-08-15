@@ -23,8 +23,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #include "dcal_api.h"
 #include "debug.h"
 
-#define BUF_SZ 2048
-#define TBD 1024  //size to be determined
+#define BUF_SZ (16*1024)
 
 typedef void * pvoid;
 
