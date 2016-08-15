@@ -573,7 +573,7 @@ int dcal_wifi_profile_set_profilename(laird_profile_handle profile,
 }
 
 int dcal_wifi_profile_get_profilename(laird_profile_handle profile,
-                                           char * profilename )
+                                      char * profilename, size_t buflen )
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
@@ -583,9 +583,10 @@ int dcal_wifi_profile_get_profilename(laird_profile_handle profile,
 		ret = DCAL_INVALID_PARAMETER;
 	else if(!validate_handle(profiles, profile))
 		ret = DCAL_INVALID_HANDLE;
-	else {
-		clear_and_strncpy(profilename, p->profilename, CONFIG_NAME_SZ);
-	}
+	else if(strlen(p->profilename)+1 > buflen)
+		ret = DCAL_BUFFER_TOO_SMALL;
+	else
+		clear_and_strncpy(profilename, p->profilename, buflen);
 
 	return REPORT_RETURN_DBG(ret);
 }
@@ -1381,7 +1382,7 @@ int dcal_wifi_profile_set_clientname( laird_profile_handle profile,
 }
 
 int dcal_wifi_profile_get_clientname( laird_profile_handle profile,
-                                char * clientname_buffer)
+                                char * clientname_buffer, size_t buflen)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
@@ -1391,9 +1392,10 @@ int dcal_wifi_profile_get_clientname( laird_profile_handle profile,
 		ret = DCAL_INVALID_PARAMETER;
 	else if(!validate_handle(profiles, profile))
 		ret = DCAL_INVALID_HANDLE;
-	else {
-		memcpy(clientname_buffer, p->clientname, CLIENT_NAME_SZ);
-	}
+	else if(strlen(p->clientname)+1 > buflen)
+		ret = DCAL_BUFFER_TOO_SMALL;
+	else
+		memcpy(clientname_buffer, p->clientname, buflen);
 
 	return REPORT_RETURN_DBG(ret);
 }

@@ -108,7 +108,7 @@ int dcal_get_dcal_version(laird_session_handle session,
 }
 
 int dcal_get_firmware_version(laird_session_handle session,
-                              char *firmware)
+                              char *firmware, size_t buflen)
 {
 	if (!validate_session(session))
 		return(DCAL_INVALID_HANDLE);
@@ -118,12 +118,16 @@ int dcal_get_firmware_version(laird_session_handle session,
 	if (((internal_session_handle)session)->versions.valid==false)
 		return DCAL_DATA_STALE;
 
-	strncpy(firmware, ((internal_session_handle)session)->versions.firmware, STR_SZ);
+	if(buflen <
+	     strlen(((internal_session_handle)session)->versions.firmware)+1)
+		return DCAL_BUFFER_TOO_SMALL;
+
+	strncpy(firmware, ((internal_session_handle)session)->versions.firmware, buflen);
 	return DCAL_SUCCESS;
 }
 
 int dcal_get_supplicant_version(laird_session_handle session,
-                              char *supplicant)
+                              char *supplicant, size_t buflen)
 {
 	if (!validate_session(session))
 		return(DCAL_INVALID_HANDLE);
@@ -133,12 +137,16 @@ int dcal_get_supplicant_version(laird_session_handle session,
 	if (((internal_session_handle)session)->versions.valid==false)
 		return DCAL_DATA_STALE;
 
-	strncpy(supplicant, ((internal_session_handle)session)->versions.supplicant, STR_SZ);
+	if(buflen <
+	     strlen(((internal_session_handle)session)->versions.supplicant)+1)
+		return DCAL_BUFFER_TOO_SMALL;
+
+	strncpy(supplicant, ((internal_session_handle)session)->versions.supplicant, buflen);
 	return DCAL_SUCCESS;
 }
 
 int dcal_get_release_version(laird_session_handle session,
-                              char *release)
+                              char *release, size_t buflen)
 {
 	if (!validate_session(session))
 		return(DCAL_INVALID_HANDLE);
@@ -148,7 +156,11 @@ int dcal_get_release_version(laird_session_handle session,
 	if (((internal_session_handle)session)->versions.valid==false)
 		return DCAL_DATA_STALE;
 
-	strncpy(release, ((internal_session_handle)session)->versions.release, STR_SZ);
+	if(buflen <
+	     strlen(((internal_session_handle)session)->versions.release)+1)
+		return DCAL_BUFFER_TOO_SMALL;
+
+	strncpy(release, ((internal_session_handle)session)->versions.release, buflen);
 	return DCAL_SUCCESS;
 }
 

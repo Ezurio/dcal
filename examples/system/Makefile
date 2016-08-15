@@ -1,4 +1,4 @@
-TARGET = system
+TARGET = system_test
 CC := $(CROSS_COMPILE)gcc
 LD := $(CROSS_COMPILE)ld
 IDIR=../../api
