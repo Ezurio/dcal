@@ -1,5 +1,6 @@
 #include <boost/python.hpp>
 #include <iostream>
+#include <time.h>
 
 #include "dcal_api.h"
 
@@ -82,6 +83,13 @@ class profile_SSID
 	int len;
 	char _val[LRD_WF_MAX_SSID_LEN];
 	boost::python::object val() const { return boost::python::object(_val); }
+};
+
+class dcal_time
+{
+  public:
+	time_t tv_sec;
+	suseconds_t tv_usec;
 };
 
 class dcal
@@ -978,6 +986,23 @@ class dcal
 	int wifi_restart() { return dcal_wifi_restart(session); }
 	int system_restart() { return dcal_system_restart(session); }
 
+	int time_set( time_t tv_sec, suseconds_t tv_usec ){ return dcal_time_set(session, tv_sec, tv_usec); }
+	int time_get( class dcal_time & t ){
+		int ret;
+		struct timeval tv;
+
+		ret =  dcal_time_get(session, &tv.tv_sec, &tv.tv_usec);
+		if (ret == DCAL_SUCCESS)
+		{
+			t.tv_sec = tv.tv_sec;
+			t.tv_usec = tv.tv_usec;
+		}
+
+		return ret;
+	}
+
+	int ntpdate( char * server_name ){ return dcal_ntpdate(session, server_name); }
+
   private:
 	laird_session_handle session;
 	laird_profile_handle profile;
@@ -1036,6 +1061,11 @@ BOOST_PYTHON_MODULE(dcal_py)
 	class_<profile_SSID>("profile_SSID")
 		.def_readwrite("len", &profile_SSID::len)
 		.def("val", &profile_SSID::val)
+	;
+
+	class_<dcal_time>("dcal_time")
+		.def_readwrite("tv_sec", &dcal_time::tv_sec)
+		.def_readwrite("tv_usec", &dcal_time::tv_usec)
 	;
 
 	class_<dcal>("dcal")
@@ -1175,5 +1205,9 @@ BOOST_PYTHON_MODULE(dcal_py)
 		// System controls
 		.def("wifi_restart", &dcal::wifi_restart)
 		.def("system_restart", &dcal::system_restart)
+		// Time functions
+		.def("time_set", &dcal::time_set)
+		.def("time_get", &dcal::time_get)
+		.def("ntpdate", &dcal::ntpdate)
 	;
 }
