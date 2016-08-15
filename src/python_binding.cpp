@@ -12,11 +12,17 @@ class generic_int
 	int gen_int;
 };
 
-class generic_char
+class generic_uint
 {
   public:
-	char _gen_char[STR_SZ];
-	boost::python::object gen_char() const { return boost::python::object(_gen_char); }
+	int gen_uint;
+};
+
+class generic_string
+{
+  public:
+	char _gen_string[STR_SZ];
+	boost::python::object gen_string() const { return boost::python::object(_gen_string); }
 };
 
 class settings
@@ -91,7 +97,7 @@ class dcal
 	int session_close() { return dcal_session_close(session); };
 
 	// Device Status
-	int get_sdk_version( class generic_int & g ){
+	int get_sdk_version( class generic_uint & g ){
 		int ret;
 		unsigned int sdk;
 
@@ -99,7 +105,7 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = sdk;
+			g.gen_uint = sdk;
 		}
 		return ret;
 	};
@@ -130,7 +136,7 @@ class dcal
 		return ret;
 	};
 
-	int get_driver_version( class generic_int & g ){
+	int get_driver_version( class generic_uint & g ){
 		int ret;
 		unsigned int driver;
 
@@ -138,12 +144,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = driver;
+			g.gen_uint = driver;
 		}
 		return ret;
 	};
 
-	int get_dcas_version( class generic_int & g ){
+	int get_dcas_version( class generic_uint & g ){
 		int ret;
 		unsigned int dcas;
 
@@ -151,12 +157,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = dcas;
+			g.gen_uint = dcas;
 		}
 		return ret;
 	};
 
-	int get_dcal_version( class generic_int & g ){
+	int get_dcal_version( class generic_uint & g ){
 		int ret;
 		unsigned int dcal;
 
@@ -164,12 +170,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = dcal;
+			g.gen_uint = dcal;
 		}
 		return ret;
 	};
 
-	int get_firmware_version( class generic_char & g ){
+	int get_firmware_version( class generic_string & g ){
 		int ret;
 		char firmware[STR_SZ];
 
@@ -177,12 +183,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			strncpy(g._gen_char, firmware, STR_SZ);
+			strncpy(g._gen_string, firmware, STR_SZ);
 		}
 		return ret;
 	};
 
-	int get_supplicant_version( class generic_char & g ){
+	int get_supplicant_version( class generic_string & g ){
 		int ret;
 		char supplicant[STR_SZ];
 
@@ -190,12 +196,12 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			strncpy(g._gen_char, supplicant, STR_SZ);
+			strncpy(g._gen_string, supplicant, STR_SZ);
 		}
 		return ret;
 	};
 
-	int get_release_version( class generic_char & g ){
+	int get_release_version( class generic_string & g ){
 		int ret;
 		char release[STR_SZ];
 
@@ -203,7 +209,7 @@ class dcal
 
 		if (ret == DCAL_SUCCESS)
 		{
-			strncpy(g._gen_char, release, STR_SZ);
+			strncpy(g._gen_string, release, STR_SZ);
 		}
 		return ret;
 	};
@@ -349,25 +355,25 @@ class dcal
 	}
 
 	int wifi_global_set_achannel_mask( unsigned int channel_set_a ) { return dcal_wifi_global_set_achannel_mask(global, channel_set_a); }
-	int wifi_global_get_achannel_mask( class generic_int & g ) {
+	int wifi_global_get_achannel_mask( class generic_uint & g ) {
 		int ret;
 		unsigned int channel_set_a;
 		ret = dcal_wifi_global_get_achannel_mask(global, &channel_set_a);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) channel_set_a;
+			g.gen_uint = channel_set_a;
 		}
 		return ret;
 	}
 
 	int wifi_global_set_bchannel_mask( unsigned int channel_set_b ) { return dcal_wifi_global_set_bchannel_mask(global, channel_set_b); }
-	int wifi_global_get_bchannel_mask( class generic_int & g ) {
+	int wifi_global_get_bchannel_mask( class generic_uint & g ) {
 		int ret;
 		unsigned int channel_set_b;
 		ret = dcal_wifi_global_get_bchannel_mask(global, &channel_set_b);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) channel_set_b;
+			g.gen_uint = channel_set_b;
 		}
 		return ret;
 	}
@@ -385,13 +391,13 @@ class dcal
 	}
 
 	int wifi_global_set_beacon_miss( unsigned int beacon_miss ) { return dcal_wifi_global_set_beacon_miss(global, beacon_miss); }
-	int wifi_global_get_beacon_miss( class generic_int & g ) {
+	int wifi_global_get_beacon_miss( class generic_uint & g ) {
 		int ret;
 		unsigned int beacon_miss;
 		ret = dcal_wifi_global_get_beacon_miss(global, &beacon_miss);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) beacon_miss;
+			g.gen_uint = beacon_miss;
 		}
 		return ret;
 	}
@@ -421,14 +427,14 @@ class dcal
 	}
 
 	int wifi_global_set_cert_path( char * cert_path ) { return dcal_wifi_global_set_cert_path(global, cert_path); }
-	int wifi_global_get_cert_path( class generic_char & g ) {
+	int wifi_global_get_cert_path( class generic_string & g ) {
 		int ret;
 		size_t buf_len = STR_SZ;
 		char cert_path[buf_len];
 		ret = dcal_wifi_global_get_cert_path(global, cert_path, buf_len);
 		if (ret == DCAL_SUCCESS)
 		{
-			memcpy(g._gen_char, cert_path, buf_len);
+			memcpy(g._gen_string, cert_path, buf_len);
 		}
 		return ret;
 	}
@@ -446,13 +452,13 @@ class dcal
 	}
 
 	int wifi_global_set_def_adhoc_channel( unsigned int def_adhoc_channel ) { return dcal_wifi_global_set_def_adhoc_channel(global, def_adhoc_channel); }
-	int wifi_global_get_def_adhoc_channel( class generic_int & g ) {
+	int wifi_global_get_def_adhoc_channel( class generic_uint & g ) {
 		int ret;
 		unsigned int def_adhoc_channel;
 		ret = dcal_wifi_global_get_def_adhoc_channel(global, &def_adhoc_channel);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) def_adhoc_channel;
+			g.gen_uint = def_adhoc_channel;
 		}
 		return ret;
 	}
@@ -487,13 +493,13 @@ class dcal
 	}
 
 	int wifi_global_set_probe_delay( unsigned int probe_delay ) { return dcal_wifi_global_set_probe_delay(global, probe_delay); }
-	int wifi_global_get_probe_delay( class generic_int & g ) {
+	int wifi_global_get_probe_delay( class generic_uint & g ) {
 		int ret;
 		unsigned int probe_delay;
 		ret = dcal_wifi_global_get_probe_delay(global, &probe_delay);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) probe_delay;
+			g.gen_uint = probe_delay;
 		}
 		return ret;
 	}
@@ -510,61 +516,61 @@ class dcal
 	}
 
 	int wifi_global_set_roam_period( unsigned int roam_period ) { return dcal_wifi_global_set_roam_period(global, roam_period); }
-	int wifi_global_get_roam_period( class generic_int & g ) {
+	int wifi_global_get_roam_period( class generic_uint & g ) {
 		int ret;
 		unsigned int roam_period;
 		ret = dcal_wifi_global_get_roam_period(global, &roam_period);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) roam_period;
+			g.gen_uint = roam_period;
 		}
 		return ret;
 	}
 
 	int wifi_global_set_roam_periodms( unsigned int roam_periodms ) { return dcal_wifi_global_set_roam_periodms(global, roam_periodms); }
-	int wifi_global_get_roam_periodms( class generic_int & g ) {
+	int wifi_global_get_roam_periodms( class generic_uint & g ) {
 		int ret;
 		unsigned int roam_periodms;
 		ret = dcal_wifi_global_get_roam_periodms(global, &roam_periodms);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) roam_periodms;
+			g.gen_uint = roam_periodms;
 		}
 		return ret;
 	}
 
 	int wifi_global_set_roam_trigger( unsigned int roam_trigger ) { return dcal_wifi_global_set_roam_trigger(global, roam_trigger); }
-	int wifi_global_get_roam_trigger( class generic_int & g ) {
+	int wifi_global_get_roam_trigger( class generic_uint & g ) {
 		int ret;
 		unsigned int roam_trigger;
 		ret = dcal_wifi_global_get_roam_trigger(global, &roam_trigger);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) roam_trigger;
+			g.gen_uint = roam_trigger;
 		}
 		return ret;
 	}
 
 	int wifi_global_set_rts( unsigned int rts ) { return dcal_wifi_global_set_rts(global, rts); }
-	int wifi_global_get_rts( class generic_int & g ) {
+	int wifi_global_get_rts( class generic_uint & g ) {
 		int ret;
 		unsigned int rts;
 		ret = dcal_wifi_global_get_rts(global, &rts);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) rts;
+			g.gen_uint = rts;
 		}
 		return ret;
 	}
 
 	int wifi_global_set_scan_dfs_time( unsigned int scan_dfs ) { return dcal_wifi_global_set_scan_dfs_time(global, scan_dfs); }
-	int wifi_global_get_scan_dfs_time( class generic_int & g ) {
+	int wifi_global_get_scan_dfs_time( class generic_uint & g ) {
 		int ret;
 		unsigned int scan_dfs;
 		ret = dcal_wifi_global_get_scan_dfs_time(global, &scan_dfs);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) scan_dfs;
+			g.gen_uint = scan_dfs;
 		}
 		return ret;
 	}
@@ -649,13 +655,13 @@ class dcal
 	int wifi_profile_activate_by_name( char * profilename ) { return dcal_wifi_profile_activate_by_name(session, profilename); }
 	int wifi_profile_delete_from_device( char * profilename ) { return dcal_wifi_profile_delete_from_device(session, profilename); }
 	int wifi_profile_set_profilename( char * profilename ) { return dcal_wifi_profile_set_profilename(profile, profilename); }
-	int wifi_profile_get_profilename( class generic_char & g ) {
+	int wifi_profile_get_profilename( class generic_string & g ) {
 		int ret;
 		char profilename[CONFIG_NAME_SZ];
 		ret = dcal_wifi_profile_get_profilename(profile, profilename);
 		if (ret == DCAL_SUCCESS)
 		{
-			memcpy(g._gen_char, profilename, CONFIG_NAME_SZ);
+			memcpy(g._gen_string, profilename, CONFIG_NAME_SZ);
 		}
 		return ret;
 	}
@@ -856,25 +862,25 @@ class dcal
 	}
 
 	int wifi_profile_set_wep_txkey( unsigned int txkey) { return dcal_wifi_profile_set_wep_txkey(profile, txkey); }
-	int wifi_profile_get_wep_txkey( class generic_int & g ) {
+	int wifi_profile_get_wep_txkey( class generic_uint & g ) {
 		int ret;
 		unsigned int txkey;
 		ret = dcal_wifi_profile_get_wep_txkey(profile, &txkey);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = (int) txkey;
+			g.gen_uint = txkey;
 		}
 		return ret;
 	}
 
 	int wifi_profile_set_clientname( char * clientname ) { return dcal_wifi_profile_set_clientname(profile, clientname); }
-	int wifi_profile_get_clientname( class generic_char & g ) {
+	int wifi_profile_get_clientname( class generic_string & g ) {
 		int ret;
 		char clientname_buffer[CLIENT_NAME_SZ];
 		ret = dcal_wifi_profile_get_clientname(profile, clientname_buffer);
 		if (ret == DCAL_SUCCESS)
 		{
-			memcpy(g._gen_char, clientname_buffer, CLIENT_NAME_SZ);
+			memcpy(g._gen_string, clientname_buffer, CLIENT_NAME_SZ);
 		}
 		return ret;
 	}
@@ -914,13 +920,13 @@ class dcal
 	}
 
 	int wifi_profile_set_psp_delay( unsigned int pspdelay) { return dcal_wifi_profile_set_psp_delay(profile, pspdelay); }
-	int wifi_profile_get_psp_delay( class generic_int & g ) {
+	int wifi_profile_get_psp_delay( class generic_uint & g ) {
 		int ret;
 		unsigned int pspdelay;
 		ret = dcal_wifi_profile_get_psp_delay(profile, &pspdelay);
 		if (ret == DCAL_SUCCESS)
 		{
-			g.gen_int = pspdelay;
+			g.gen_uint = pspdelay;
 		}
 		return ret;
 	}
@@ -987,8 +993,12 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def_readwrite("gen_int", &generic_int::gen_int)
 	;
 
-	class_<generic_char>("generic_char")
-		.def("gen_char", &generic_char::gen_char)
+	class_<generic_uint>("generic_uint")
+		.def_readwrite("gen_uint", &generic_uint::gen_uint)
+	;
+
+	class_<generic_string>("generic_string")
+		.def("gen_string", &generic_string::gen_string)
 	;
 
 	class_<settings>("settings")
