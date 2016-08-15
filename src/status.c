@@ -20,8 +20,8 @@ int build_query_status( flatcc_builder_t *B)
 
 int dcal_device_status_get_settings( laird_session_handle s,
                                      char * profilename,
-                                     char * ssid,
-                                     unsigned int * ssid_len,
+                                     size_t buflen,
+                                     LRD_WF_SSID *ssid,
                                      unsigned char *mac)
 {
 	int ret = DCAL_SUCCESS;
@@ -32,25 +32,27 @@ int dcal_device_status_get_settings( laird_session_handle s,
 	REPORT_ENTRY_DEBUG;
 
 	if (!validate_session(s))
-		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
+		return REPORT_RETURN_DBG(DCAL_INVALID_HANDLE);
 
 	session = s;
 	if (!session->builder_init)
 		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
 	s_struct = &session->status;
 
+	if (strlen(s_struct->ProfileName)+1 > buflen)
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
 	time (&now);
 	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
 		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
 
 	if (profilename)
-		strncpy(profilename, s_struct->ProfileName, NAME_SZ);
+		strncpy(profilename, s_struct->ProfileName, buflen);
 
-	if (ssid)
-		memcpy(ssid, s_struct->ssid, SSID_SZ);
-
-	if (ssid_len)
-		*ssid_len = s_struct->ssid_len;
+	if (ssid){
+		memcpy(ssid->val, s_struct->ssid, SSID_SZ);
+		ssid->len = s_struct->ssid_len;
+	}
 
 	if (mac)
 		memcpy(mac, s_struct->mac, MAC_SZ);
@@ -60,8 +62,11 @@ int dcal_device_status_get_settings( laird_session_handle s,
 
 int dcal_device_status_get_ccx( laird_session_handle s,
                                        unsigned char *ap_ip,
+                                       size_t ap_ip_buflen,
                                        char *ap_name,
-                                       char * clientname)
+                                       size_t ap_name_buflen,
+                                       char * clientname,
+                                       size_t clientname_buflen)
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
@@ -82,21 +87,32 @@ int dcal_device_status_get_ccx( laird_session_handle s,
 	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
 		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
 
+	if (ap_ip_buflen < IP4_SZ)
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
+	if (ap_name_buflen < strlen(s_struct->ap_name)+1)
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
+	if (clientname_buflen < strlen(s_struct->clientName)+1)
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
 	if (ap_ip)
-		memcpy(ap_ip, s_struct->ap_ip, IP4_SZ);
+		memcpy(ap_ip, s_struct->ap_ip, ap_ip_buflen);
 
 	if (ap_name)
-		strncpy(ap_name, s_struct->ap_name, NAME_SZ);
+		strncpy(ap_name, s_struct->ap_name, ap_name_buflen);
 
 	if (clientname)
-		strncpy(clientname, s_struct->clientName, NAME_SZ);
+		strncpy(clientname, s_struct->clientName, clientname_buflen);
 
 	return REPORT_RETURN_DBG(0);
 }
 
 int dcal_device_status_get_tcp( laird_session_handle s,
                                        unsigned char *ipv4,
-                                       char *ipv6)
+                                       size_t ipv4_buflen,
+                                       char *ipv6,
+                                       size_t ipv6_buflen)
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
@@ -117,11 +133,17 @@ int dcal_device_status_get_tcp( laird_session_handle s,
 	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
 		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
 
+	if (ipv4_buflen < IP4_SZ)
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
+	if (ipv6_buflen < IP6_STR_SZ)
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
 	if (ipv4)
-		memcpy(ipv4, s_struct->ipv4, IP4_SZ);
+		memcpy(ipv4, s_struct->ipv4, ipv4_buflen);
 
 	if (ipv6)
-		strncpy(ipv6, s_struct->ipv6, IP6_STR_SZ);
+		strncpy(ipv6, s_struct->ipv6, ipv6_buflen);
 
 	return REPORT_RETURN_DBG(0);
 }
@@ -130,7 +152,8 @@ int dcal_device_status_get_connection( laird_session_handle s,
                                        unsigned int * cardstate,
                                        unsigned int * channel,
                                        int * rssi,
-                                       unsigned char *ap_mac)
+                                       unsigned char *ap_mac,
+                                       size_t ap_mac_buflen)
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
@@ -147,8 +170,11 @@ int dcal_device_status_get_connection( laird_session_handle s,
 		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
 	s_struct = &session->status;
 
+	if(ap_mac_buflen < MAC_SZ)
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
 	time (&now);
-	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
+if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
 		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
 
 	if (cardstate)
