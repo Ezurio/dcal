@@ -127,9 +127,10 @@ int dcal_device_status_pull( laird_session_handle session);
 // things that are fairly static
 int dcal_device_status_get_settings( laird_session_handle session,
                                      char * profilename,
-                                     size_t buflen,
+                                     size_t profilename_buflen,
                                      LRD_WF_SSID *ssid,
-                                     unsigned char *mac);
+                                     unsigned char *mac,
+                                     size_t mac_buflen);
 // things that are ccx related
 int dcal_device_status_get_ccx( laird_session_handle session,
                                        unsigned char *ap_ip,

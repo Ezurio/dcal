@@ -76,11 +76,11 @@ int main (int argc, char *argv[])
 	if (!ret)
 		ret = dcal_get_dcal_version(session, &dcal);
 	if (!ret)
-		ret = dcal_get_firmware_version(session, firmware);
+		ret = dcal_get_firmware_version(session, firmware, STR_SZ);
 	if (!ret)
-		ret = dcal_get_supplicant_version(session, supplicant);
+		ret = dcal_get_supplicant_version(session, supplicant, STR_SZ);
 	if (!ret)
-		ret = dcal_get_release_version(session, release);
+		ret = dcal_get_release_version(session, release, STR_SZ);
 
 	if (ret != DCAL_SUCCESS)
 		printf("unable to read versions\n");
