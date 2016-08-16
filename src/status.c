@@ -20,9 +20,10 @@ int build_query_status( flatcc_builder_t *B)
 
 int dcal_device_status_get_settings( laird_session_handle s,
                                      char * profilename,
-                                     size_t buflen,
+                                     size_t profilename_buflen,
                                      LRD_WF_SSID *ssid,
-                                     unsigned char *mac)
+                                     unsigned char *mac,
+                                     size_t mac_buflen)
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
@@ -39,7 +40,10 @@ int dcal_device_status_get_settings( laird_session_handle s,
 		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
 	s_struct = &session->status;
 
-	if (strlen(s_struct->ProfileName)+1 > buflen)
+	if (((profilename) && (profilename_buflen < strlen(s_struct->ProfileName)+1)))
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
+	if ((mac) && (mac_buflen < MAC_SZ))
 		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
 
 	time (&now);
@@ -47,7 +51,7 @@ int dcal_device_status_get_settings( laird_session_handle s,
 		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
 
 	if (profilename)
-		strncpy(profilename, s_struct->ProfileName, buflen);
+		strncpy(profilename, s_struct->ProfileName, profilename_buflen);
 
 	if (ssid){
 		memcpy(ssid->val, s_struct->ssid, SSID_SZ);
@@ -87,13 +91,13 @@ int dcal_device_status_get_ccx( laird_session_handle s,
 	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
 		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
 
-	if (ap_ip_buflen < IP4_SZ)
+	if ((ap_ip) && (ap_ip_buflen < IP4_SZ))
 		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
 
-	if (ap_name_buflen < strlen(s_struct->ap_name)+1)
+	if ((ap_name) &&(ap_name_buflen < strlen(s_struct->ap_name)+1))
 		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
 
-	if (clientname_buflen < strlen(s_struct->clientName)+1)
+	if ((clientname) && (clientname_buflen < strlen(s_struct->clientName)+1))
 		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
 
 	if (ap_ip)
@@ -133,10 +137,10 @@ int dcal_device_status_get_tcp( laird_session_handle s,
 	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
 		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
 
-	if (ipv4_buflen < IP4_SZ)
+	if ((ipv4) && (ipv4_buflen < IP4_SZ))
 		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
 
-	if (ipv6_buflen < IP6_STR_SZ)
+	if ((ipv6) && (ipv6_buflen < IP6_STR_SZ))
 		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
 
 	if (ipv4)
@@ -170,7 +174,7 @@ int dcal_device_status_get_connection( laird_session_handle s,
 		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
 	s_struct = &session->status;
 
-	if(ap_mac_buflen < MAC_SZ)
+	if((ap_mac) && (ap_mac_buflen < MAC_SZ))
 		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
 
 	time (&now);

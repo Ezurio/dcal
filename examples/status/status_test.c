@@ -53,7 +53,7 @@ int main (int argc, char *argv[])
 	dcal_device_status_pull( session );
 	printf("status pulled from device\n");
 	char profilename[NAME_SZ];
-	ret = dcal_device_status_get_settings( session, profilename, NULL, NULL, NULL);
+	ret = dcal_device_status_get_settings( session, profilename, NAME_SZ, NULL, NULL, 0);
 	if (ret != DCAL_SUCCESS)
 		printf("unable to get status: %d\n", ret);
 	else 
@@ -66,7 +66,7 @@ int main (int argc, char *argv[])
 		sleep(1);
 		}
 
-	if ((ret=dcal_device_status_get_settings( session, NULL, NULL, NULL, NULL)==DCAL_DATA_STALE))
+	if ((ret=dcal_device_status_get_settings( session, NULL, 0, NULL, NULL, 0)==DCAL_DATA_STALE))
 		printf("\ncorrectly received stale error return\n");
 	else
 		printf("\nincorrect return code: %d\n", ret);
@@ -74,10 +74,9 @@ int main (int argc, char *argv[])
 	dcal_device_status_pull( session );
 	printf("status pulled from device again\n");
 
-	char ssid[SSID_SZ];
-	unsigned int ssid_len;
+	LRD_WF_SSID ssid;
 	unsigned char mac[MAC_SZ];
-	ret = dcal_device_status_get_settings( session, profilename, ssid, &ssid_len, mac);
+	ret = dcal_device_status_get_settings( session, profilename, NAME_SZ, &ssid, mac, MAC_SZ);
 
 	printf("Status:\n");
 	if (ret != DCAL_SUCCESS)
@@ -85,7 +84,7 @@ int main (int argc, char *argv[])
 	else {
 		printf("\tProfile Name: %s\n", profilename);
 		// TODO - check id SSID is all ascii and print as hex if not
-		printf("\tSSID: %s\n", ssid);
+		printf("\tSSID: %s\n", ssid.val);
 		printf("\tMAC: %02x:%02x:%02x:%02x:%02x:%02x\n",
 		              mac[0],mac[1],mac[2],
 		              mac[3],mac[4],mac[5]);
@@ -94,7 +93,7 @@ int main (int argc, char *argv[])
 	unsigned char ap_ip[IP4_SZ];
 	char ap_name[NAME_SZ];
 	char clientname[NAME_SZ];
-	ret = dcal_device_status_get_ccx( session, ap_ip, ap_name, clientname);
+	ret = dcal_device_status_get_ccx( session, ap_ip, IP4_SZ, ap_name, NAME_SZ, clientname, NAME_SZ);
 	printf("CCX status:\n");
 	if (ret != DCAL_SUCCESS)
 		printf("unable to get CCX status: %d\n", ret);
@@ -107,7 +106,7 @@ int main (int argc, char *argv[])
 
 	unsigned char ipv4[IP4_SZ];
 	char ipv6[IP6_STR_SZ];
-	ret = dcal_device_status_get_tcp(session, ipv4, ipv6);
+	ret = dcal_device_status_get_tcp(session, ipv4, IP4_SZ, ipv6, IP6_STR_SZ);
 	printf("TCP status:\n");
 	if (ret != DCAL_SUCCESS)
 		printf("unable to get TCP status: %d\n", ret);
@@ -121,7 +120,7 @@ int main (int argc, char *argv[])
 	unsigned int channel;
 	int rssi;
 	unsigned char ap_mac[MAC_SZ];
-	ret = dcal_device_status_get_connection(session, &cardstate, &channel, &rssi, ap_mac);
+	ret = dcal_device_status_get_connection(session, &cardstate, &channel, &rssi, ap_mac, MAC_SZ);
 	printf("Connection status:\n");
 	if (ret != DCAL_SUCCESS)
 		printf("unable to get connection status: %d\n", ret);

@@ -44,9 +44,13 @@ int main (int argc, char *argv[])
 	bool active;
 	bool autoprofile;
 	for (i=0; i< elements; i++) {
-		ret = dcal_wifi_get_profile_list_entry( session, i, profilename,
-		buflen, &autoprofile, &active);
-		printf("%d: %32s\tautoprofile: %s\t%s\n", i+1, profilename, (autoprofile?"on":"off"), (active?"active profile":""));
+		ret = dcal_wifi_get_profile_list_entry_profilename( session, i, profilename, buflen);
+		if(!ret) ret = dcal_wifi_get_profile_list_entry_autoprofile( session, i,  &autoprofile);
+		if(!ret) ret = dcal_wifi_get_profile_list_entry_active( session, i, &active);
+		if(ret)
+			printf("error getting list entry: %s\n", dcal_err_to_string(ret));
+		else
+			printf("%d: %32s\tautoprofile: %s\t%s\n", i+1, profilename, (autoprofile?"on":"off"), (active?"active profile":""));
 	}
 
 	dcal_session_close(session);

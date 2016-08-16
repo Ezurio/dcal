@@ -2012,7 +2012,7 @@ int dcal_wifi_pull_profile_list(laird_session_handle session, size_t *count)
 
 #define PROFILE_LIST_TIMEOUT 60
 
-int dcal_wifi_get_profile_list_entry(laird_session_handle session, int index, char * profilename, size_t buflen, bool *autoprofile, bool * active)
+static int dcal_wifi_get_profile_list_entry(laird_session_handle session, int index, char * profilename, size_t buflen, bool *autoprofile, bool * active)
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle) session;
@@ -2020,8 +2020,6 @@ int dcal_wifi_get_profile_list_entry(laird_session_handle session, int index, ch
 
 	if (!validate_session(session))
 		return DCAL_INVALID_HANDLE;
-	if (profilename==NULL)
-		return DCAL_INVALID_PARAMETER;
 
 	time(&now);
 
@@ -2035,15 +2033,13 @@ int dcal_wifi_get_profile_list_entry(laird_session_handle session, int index, ch
 		goto cleanup;
 	}
 
-	if (buflen <= strlen(s->profiles[index].profile_name)){
+	if ((profilename) && (buflen <= strlen(s->profiles[index].profile_name))){
 		ret = DCAL_INVALID_PARAMETER;
 		goto cleanup;
-	}
-
-	strncpy(profilename, s->profiles[index].profile_name, buflen);
-	*autoprofile = s->profiles[index].autoprofile;
-	*active = s->profiles[index].active;
-
+	} else
+		strncpy(profilename, s->profiles[index].profile_name, buflen);
+	if(autoprofile) *autoprofile = s->profiles[index].autoprofile;
+	if(active) *active = s->profiles[index].active;
 
 cleanup:
 	UNLOCK(s->list_lock);
@@ -2051,3 +2047,17 @@ cleanup:
 	return ret;
 }
 
+int dcal_wifi_get_profile_list_entry_profilename(laird_session_handle session, int index, char * profilename, size_t buflen)
+{
+	return dcal_wifi_get_profile_list_entry(session, index, profilename, buflen, NULL, NULL);
+}
+
+int dcal_wifi_get_profile_list_entry_autoprofile(laird_session_handle session, int index, bool *autoprofile)
+{
+	return dcal_wifi_get_profile_list_entry(session, index, NULL, 0, autoprofile, NULL);
+}
+
+int dcal_wifi_get_profile_list_entry_active(laird_session_handle session, int index, bool * active)
+{
+	return dcal_wifi_get_profile_list_entry(session, index, NULL, 0, NULL, active);
+}
