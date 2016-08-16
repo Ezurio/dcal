@@ -187,7 +187,7 @@ class dcal
 		int ret;
 		char firmware[STR_SZ];
 
-		ret = dcal_get_firmware_version( session, firmware );
+		ret = dcal_get_firmware_version( session, firmware, STR_SZ );
 
 		if (ret == DCAL_SUCCESS)
 		{
@@ -200,7 +200,7 @@ class dcal
 		int ret;
 		char supplicant[STR_SZ];
 
-		ret = dcal_get_supplicant_version( session, supplicant );
+		ret = dcal_get_supplicant_version( session, supplicant, STR_SZ );
 
 		if (ret == DCAL_SUCCESS)
 		{
@@ -213,7 +213,7 @@ class dcal
 		int ret;
 		char release[STR_SZ];
 
-		ret = dcal_get_supplicant_version( session, release );
+		ret = dcal_get_release_version( session, release, STR_SZ );
 
 		if (ret == DCAL_SUCCESS)
 		{
@@ -227,12 +227,10 @@ class dcal
 	int device_status_get_settings(class settings & s) {
 		int ret;
 		char profilename[NAME_SZ];
-		char ssid[SSID_SZ];
-		unsigned int ssid_len;
+		LRD_WF_SSID ssid={0};
 		unsigned char mac[MAC_SZ];
-		ret = dcal_device_status_get_settings( session, profilename,
-							ssid, &ssid_len,
-							mac);
+		ret = dcal_device_status_get_settings( session, profilename, NAME_SZ,
+							&ssid, mac, MAC_SZ);
 
 		if (ret == DCAL_SUCCESS)
 		{
@@ -240,8 +238,8 @@ class dcal
 			sprintf(string_mac, "%x:%x:%x:%x:%x:%x", mac[0],mac[1],mac[2],mac[3],mac[4],mac[5]);
 
 			strncpy(s._profilename, profilename, NAME_SZ);
-			memcpy(s._ssid, ssid, SSID_SZ);
-			s.ssid_len = ssid_len;
+			memcpy(s._ssid, ssid.val, LRD_WF_MAX_SSID_LEN);
+			s.ssid_len = ssid.len;
 			strncpy(s._mac, string_mac, STR_SZ);
 		}
 		return ret;
@@ -253,11 +251,11 @@ class dcal
 		char ap_name[NAME_SZ];
 		char clientname[NAME_SZ];
 
-		ret = dcal_device_status_get_ccx( session, ap_ip, ap_name, clientname);
+		ret = dcal_device_status_get_ccx( session, ap_ip, IP4_SZ, ap_name, NAME_SZ, clientname, NAME_SZ);
 
 		if (ret == DCAL_SUCCESS)
 		{
-			char string_ap_ip[IP4_SZ];
+			char string_ap_ip[STR_SZ];
 
 			sprintf(string_ap_ip, "%i.%i.%i.%i", ap_ip[0],ap_ip[1],ap_ip[2],ap_ip[3]);
 
@@ -273,7 +271,7 @@ class dcal
 		unsigned char ipv4[IP4_SZ];
 		char ipv6[IP6_STR_SZ];
 
-		ret = dcal_device_status_get_tcp( session, ipv4, ipv6);
+		ret = dcal_device_status_get_tcp( session, ipv4, IP4_SZ, ipv6, IP6_STR_SZ);
 
 		if (ret == DCAL_SUCCESS)
 		{
@@ -297,7 +295,8 @@ class dcal
 							&cardstate,
 							&channel,
 							&rssi,
-							ap_mac
+							ap_mac,
+							MAC_SZ
 							);
 
 		if (ret == DCAL_SUCCESS)
@@ -666,7 +665,7 @@ class dcal
 	int wifi_profile_get_profilename( class generic_string & g ) {
 		int ret;
 		char profilename[CONFIG_NAME_SZ];
-		ret = dcal_wifi_profile_get_profilename(profile, profilename);
+		ret = dcal_wifi_profile_get_profilename(profile, profilename, CONFIG_NAME_SZ);
 		if (ret == DCAL_SUCCESS)
 		{
 			memcpy(g._gen_string, profilename, CONFIG_NAME_SZ);
@@ -885,7 +884,7 @@ class dcal
 	int wifi_profile_get_clientname( class generic_string & g ) {
 		int ret;
 		char clientname_buffer[CLIENT_NAME_SZ];
-		ret = dcal_wifi_profile_get_clientname(profile, clientname_buffer);
+		ret = dcal_wifi_profile_get_clientname(profile, clientname_buffer, CLIENT_NAME_SZ);
 		if (ret == DCAL_SUCCESS)
 		{
 			memcpy(g._gen_string, clientname_buffer, CLIENT_NAME_SZ);
