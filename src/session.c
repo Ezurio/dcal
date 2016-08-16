@@ -27,8 +27,7 @@ void __attribute__ ((constructor)) initsessions(void)
 		DBGERROR("initlist() failed for sessions list with:%d\n", rc);
 
 	if (ssh_init())
-//		DBGERROR("ssh_init() failed\n");
-		printf("ssh_init() failed\n");
+		DBGERROR("ssh_init() failed\n");
 }
 
 void __attribute__ ((destructor)) sessions_fini(void)
@@ -39,8 +38,7 @@ void __attribute__ ((destructor)) sessions_fini(void)
 	if(rc)
 		DBGERROR("freelist() failed for sessions list with: %d\n", rc);
 	if (ssh_finalize())
-//		DBGERROR("ssh_finalize() failed\n");
-		printf("ssh_finalize() failed\n");
+		DBGERROR("ssh_finalize() failed\n");
 }
 
 static int get_session_handle( laird_session_handle * session )
