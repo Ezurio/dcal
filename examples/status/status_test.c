@@ -125,7 +125,7 @@ int main (int argc, char *argv[])
 		ipv6_str_type * ipv6addr = malloc(count*sizeof(ipv6_str_type));
 		if (ipv6addr == NULL)
 			printf("unable to allocate memory for IPv6 addresses\n");
-		else { 
+		else {
 			for (i=0; i<count; i++){
 				ret = dcal_device_status_get_ipv6_string_at_index(session, i, ipv6addr[i], sizeof(ipv6_str_type));
 				if (ret)
