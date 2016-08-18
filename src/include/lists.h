@@ -17,7 +17,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #define __lists_h__
 
 #ifndef STATIC_MEM
-#include <pthread.h>
+#include "platform.h"
 
 typedef struct _list_element{
 	struct _list_element *next;
@@ -26,7 +26,7 @@ typedef struct _list_element{
 
 typedef struct _pointer_list{
 	list_element *head;
-	pthread_mutex_t *lock;
+	MUTEX *lock;
 } pointer_list;
 
 DCAL_ERR add_to_list( pointer_list **list, pvoid handle);

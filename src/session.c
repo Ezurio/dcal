@@ -179,10 +179,8 @@ int dcal_session_create( laird_session_handle * s)
 	if (ret==DCAL_SUCCESS){
 		(*session)->state = SESSION_ALLOCATED;
 		(*session)->port = DEF_PORT;
-		(*session)->chan_lock = malloc(sizeof(pthread_mutex_t));
-		pthread_mutex_init((*session)->chan_lock, NULL);
-		(*session)->list_lock = malloc(sizeof(pthread_mutex_t));
-		pthread_mutex_init((*session)->list_lock, NULL);
+		INIT_LOCK((*session)->chan_lock);
+		INIT_LOCK((*session)->list_lock);
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -357,10 +355,8 @@ int dcal_session_close( laird_session_handle s)
 			session->builder_init = false;
 		}
 
-		pthread_mutex_destroy(session->chan_lock);
-		free(session->chan_lock);
-		pthread_mutex_destroy(session->list_lock);
-		free(session->list_lock);
+		DESTROY_LOCK(session->chan_lock);
+		DESTROY_LOCK(session->list_lock);
 		if (session->scan_items)
 			free(session->scan_items);
 		if (session->profiles)
@@ -455,7 +451,7 @@ int lock_session_channel(laird_session_handle s)
 	if(!validate_session(s))
 		return DCAL_INVALID_HANDLE;
 
-	pthread_mutex_lock(((internal_session_handle)s)->chan_lock);
+	LOCK(((internal_session_handle)s)->chan_lock);
 	return DCAL_SUCCESS;
 }
 
@@ -464,6 +460,6 @@ int unlock_session_channel(laird_session_handle s)
 	if(!validate_session(s))
 		return DCAL_INVALID_HANDLE;
 
-	pthread_mutex_unlock(((internal_session_handle)s)->chan_lock);
+	UNLOCK(((internal_session_handle)s)->chan_lock);
 	return DCAL_SUCCESS;
 }
