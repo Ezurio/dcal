@@ -83,6 +83,8 @@ typedef void * laird_global_handle;
 #define IP4_SZ 4
 #define IP6_STR_SZ 46 //max string:0000:0000:0000:0000:0000:0000:xxx.xxx.xxx.xxx plus NULL
                       //(IPV4 mapped IPV6 address)
+typedef char ipv6_str_type[IP6_STR_SZ];
+
 #define NAME_SZ 48
 #ifndef SSID_SZ
 #define SSID_SZ 32
@@ -139,12 +141,18 @@ int dcal_device_status_get_ccx( laird_session_handle session,
                                        size_t ap_name_buflen,
                                        char * clientname,
                                        size_t clientname_buflen);
-// tcp stack related
-int dcal_device_status_get_tcp( laird_session_handle session,
+// ip stack related
+int dcal_device_status_get_ipv4( laird_session_handle session,
                                        unsigned char *ipv4,
-                                       size_t pv4_buflen,
+                                       size_t buflen);
+
+int dcal_device_status_get_ipv6_count( laird_session_handle session,
+                                       size_t *count);
+
+int dcal_device_status_get_ipv6_string_at_index( laird_session_handle session,
+                                       unsigned int index,
                                        char *ipv6,
-                                       size_t ipv6_buflen);
+                                       size_t buflen);
 
 // things that could change moment to moment
 int dcal_device_status_get_connection( laird_session_handle session,

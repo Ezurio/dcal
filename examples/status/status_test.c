@@ -106,14 +106,35 @@ int main (int argc, char *argv[])
 
 	unsigned char ipv4[IP4_SZ];
 	char ipv6[IP6_STR_SZ];
-	ret = dcal_device_status_get_tcp(session, ipv4, IP4_SZ, ipv6, IP6_STR_SZ);
-	printf("TCP status:\n");
+	ret = dcal_device_status_get_ipv4(session, ipv4, IP4_SZ);
+	printf("IPv4:\n");
 	if (ret != DCAL_SUCCESS)
-		printf("unable to get TCP status: %d\n", ret);
+		printf("unable to get IPv4 status: %d\n", ret);
 	else {
 		printf("\tIP: %d.%d.%d.%d\n",ipv4[0],ipv4[1],
 		                           ipv4[2],ipv4[3]);
-		printf("\tIPv6: %s\n", ipv6);
+	}
+
+	size_t i, count;
+	ret = dcal_device_status_get_ipv6_count(session, &count);
+	if (ret != DCAL_SUCCESS)
+		printf("unable to get IPv6 address count: %d\n", ret);
+	else if (count > 0)
+	{
+		printf("IPv6:\n");
+		ipv6_str_type * ipv6addr = malloc(count*sizeof(ipv6_str_type));
+		if (ipv6addr == NULL)
+			printf("unable to allocate memory for IPv6 addresses\n");
+		else { 
+			for (i=0; i<count; i++){
+				ret = dcal_device_status_get_ipv6_string_at_index(session, i, ipv6addr[i], sizeof(ipv6_str_type));
+				if (ret)
+					printf("unable to get ipv6 address at index %d.  Error: %d\n",i,ret);
+				else
+					printf("\tIPv6: %s\n", ipv6addr[i]);
+			}
+			free(ipv6addr);
+		}
 	}
 
 	unsigned int cardstate;

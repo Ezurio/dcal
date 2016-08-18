@@ -365,6 +365,8 @@ int dcal_session_close( laird_session_handle s)
 			free(session->scan_items);
 		if (session->profiles)
 			free(session->profiles);
+		if (session->status.ipv6_strs)
+			free(session->status.ipv6_strs);
 #ifdef STATIC_MEM
 
 		((internal_session_handle)session)->valid = 0;

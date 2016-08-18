@@ -24,6 +24,8 @@
 
 #define STR_SZ 80
 
+typedef char ipv6_str_type[IP6_STR_SZ];
+
 typedef struct _laird_status_struct {
 	unsigned int cardState;
 	char ProfileName[NAME_SZ];
@@ -34,7 +36,8 @@ typedef struct _laird_status_struct {
 	char clientName[NAME_SZ];
 	unsigned char mac[MAC_SZ];
 	unsigned char ipv4[IP4_SZ];
-	char ipv6[IP6_STR_SZ];
+	ipv6_str_type *ipv6_strs;
+	size_t num_ipv6_addr_strs;
 	unsigned char ap_mac[MAC_SZ];
 	unsigned char ap_ip[IP4_SZ];
 	char ap_name[NAME_SZ];
