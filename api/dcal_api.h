@@ -321,13 +321,6 @@ typedef enum _regulatory_domain{
 int dcal_wifi_global_get_regdomain( laird_global_handle global,
                                     REG_DOMAIN *regdomain);
 
-// 40 and 45 series radios allow setting roamperiod
-int dcal_wifi_global_set_roam_period( laird_global_handle global,
-                                      unsigned int roam_period);
-int dcal_wifi_global_get_roam_period( laird_global_handle global,
-                                      unsigned int *roam_period);
-
-// 50 series radios allow setting roamperiodms
 int dcal_wifi_global_set_roam_periodms( laird_global_handle global,
                                       unsigned int roam_periodms);
 int dcal_wifi_global_get_roam_periodms( laird_global_handle global,

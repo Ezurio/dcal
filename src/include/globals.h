@@ -30,7 +30,6 @@ typedef struct _internal_global_handle {
 	unsigned int pmk;
 	unsigned int probe_delay;
 	unsigned int regdomain;
-	unsigned int roam_period;
 	unsigned int roam_periodms;
 	unsigned int roam_trigger;
 	unsigned int rts;
