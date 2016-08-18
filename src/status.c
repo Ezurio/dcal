@@ -112,11 +112,7 @@ int dcal_device_status_get_ccx( laird_session_handle s,
 	return REPORT_RETURN_DBG(0);
 }
 
-int dcal_device_status_get_tcp( laird_session_handle s,
-                                       unsigned char *ipv4,
-                                       size_t ipv4_buflen,
-                                       char *ipv6,
-                                       size_t ipv6_buflen)
+int dcal_device_status_get_ipv4( laird_session_handle s, unsigned char *ipv4, size_t buflen)
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
@@ -131,23 +127,83 @@ int dcal_device_status_get_tcp( laird_session_handle s,
 	session = s;
 	if (!session->builder_init)
 		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
+
 	s_struct = &session->status;
 
 	time (&now);
 	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
 		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
 
-	if ((ipv4) && (ipv4_buflen < IP4_SZ))
-		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
-
-	if ((ipv6) && (ipv6_buflen < IP6_STR_SZ))
+	if ((ipv4) && (buflen < IP4_SZ))
 		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
 
 	if (ipv4)
-		memcpy(ipv4, s_struct->ipv4, ipv4_buflen);
+		memcpy(ipv4, s_struct->ipv4, buflen);
+	else
+		REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
 
-	if (ipv6)
-		strncpy(ipv6, s_struct->ipv6, ipv6_buflen);
+	return REPORT_RETURN_DBG(0);
+}
+
+int dcal_device_status_get_ipv6_count( laird_session_handle s, size_t *count)
+{
+	int ret = DCAL_SUCCESS;
+	internal_session_handle session=NULL;
+	DCAL_STATUS_STRUCT * s_struct;
+	time_t now;
+
+	REPORT_ENTRY_DEBUG;
+
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
+
+	session = s;
+	if (!session->builder_init)
+		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
+
+	s_struct = &session->status;
+
+	if(!count)
+		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
+
+	*count = s_struct->num_ipv6_addr_strs;
+
+	return REPORT_RETURN_DBG(DCAL_SUCCESS);
+}
+
+int dcal_device_status_get_ipv6_string_at_index( laird_session_handle s, unsigned int index, char *ipv6, size_t buflen)
+{
+	int ret = DCAL_SUCCESS;
+	internal_session_handle session=NULL;
+	DCAL_STATUS_STRUCT * s_struct;
+	time_t now;
+
+	REPORT_ENTRY_DEBUG;
+
+	if (!validate_session(s))
+		return REPORT_RETURN_DBG( DCAL_INVALID_HANDLE);
+
+	session = s;
+	if (!session->builder_init)
+		return REPORT_RETURN_DBG(DCAL_FLATCC_NOT_INITIALIZED);
+
+	s_struct = &session->status;
+
+	if (index > s_struct->num_ipv6_addr_strs)
+		return REPORT_RETURN_DBG(DCAL_INDEX_OUT_OF_BOUNDS);
+
+	// unlike other buflen checks, IP6_STR_SZ includes the trailing NULL
+	if ((ipv6) && (buflen < IP6_STR_SZ))
+		return REPORT_RETURN_DBG(DCAL_BUFFER_TOO_SMALL);
+
+	if (!ipv6)
+		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
+
+	time (&now);
+	if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
+		return REPORT_RETURN_DBG(DCAL_DATA_STALE);
+
+	strncpy(ipv6, s_struct->ipv6_strs[index], buflen);
 
 	return REPORT_RETURN_DBG(0);
 }
@@ -326,11 +382,18 @@ int dcal_device_status_pull( laird_session_handle s)
 	s_struct->beaconPeriod = ns(Status_beaconPeriod(status));
 	s_struct->dtim = ns(Status_dtim(status));
 
-//TODO determine how to present a variable number of addresses
 	flatbuffers_string_vec_t ipaddresses = ns(Status_ipv6(status));
 	size_t num_ips = flatbuffers_string_vec_len(ipaddresses);
-	for (i=0; ((i < num_ips) && i < 1); i++)
-		strncpy(s_struct->ipv6, flatbuffers_string_vec_at(ipaddresses,i),IP6_STR_SZ);
+
+	char * tmp = realloc(s_struct->ipv6_strs, num_ips * IP6_STR_SZ);
+	if (tmp==NULL)
+		return DCAL_NO_MEMORY;
+	s_struct->ipv6_strs = (ipv6_str_type *)tmp;
+	s_struct->num_ipv6_addr_strs = num_ips;
+
+	for (i=0; (i < num_ips); i++)
+		strncpy(s_struct->ipv6_strs[i], flatbuffers_string_vec_at(ipaddresses,i),IP6_STR_SZ);
+
 	time(&s_struct->timestamp);
 	return REPORT_RETURN_DBG (ret);
 }
