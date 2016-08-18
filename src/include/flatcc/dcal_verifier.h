@@ -249,16 +249,15 @@ static int __DCAL_session_Globals_table_verifier(flatcc_table_verifier_descripto
     if ((ret = flatcc_verify_field(td, 11, 4, 4) /* pmk */)) return ret;
     if ((ret = flatcc_verify_field(td, 12, 4, 4) /* probe_delay */)) return ret;
     if ((ret = flatcc_verify_field(td, 13, 4, 4) /* regdomain */)) return ret;
-    if ((ret = flatcc_verify_field(td, 14, 4, 4) /* roam_period */)) return ret;
-    if ((ret = flatcc_verify_field(td, 15, 4, 4) /* roam_periodms */)) return ret;
-    if ((ret = flatcc_verify_field(td, 16, 4, 4) /* roam_trigger */)) return ret;
-    if ((ret = flatcc_verify_field(td, 17, 4, 4) /* rts */)) return ret;
-    if ((ret = flatcc_verify_field(td, 18, 4, 4) /* scan_dfs */)) return ret;
-    if ((ret = flatcc_verify_field(td, 19, 4, 4) /* ttls */)) return ret;
-    if ((ret = flatcc_verify_field(td, 20, 1, 1) /* uapsd */)) return ret;
-    if ((ret = flatcc_verify_field(td, 21, 1, 1) /* wmm */)) return ret;
-    if ((ret = flatcc_verify_field(td, 22, 1, 1) /* ignore_null_ssid */)) return ret;
-    if ((ret = flatcc_verify_field(td, 23, 4, 4) /* dfs_channels */)) return ret;
+    if ((ret = flatcc_verify_field(td, 14, 4, 4) /* roam_periodms */)) return ret;
+    if ((ret = flatcc_verify_field(td, 15, 4, 4) /* roam_trigger */)) return ret;
+    if ((ret = flatcc_verify_field(td, 16, 4, 4) /* rts */)) return ret;
+    if ((ret = flatcc_verify_field(td, 17, 4, 4) /* scan_dfs */)) return ret;
+    if ((ret = flatcc_verify_field(td, 18, 4, 4) /* ttls */)) return ret;
+    if ((ret = flatcc_verify_field(td, 19, 1, 1) /* uapsd */)) return ret;
+    if ((ret = flatcc_verify_field(td, 20, 1, 1) /* wmm */)) return ret;
+    if ((ret = flatcc_verify_field(td, 21, 1, 1) /* ignore_null_ssid */)) return ret;
+    if ((ret = flatcc_verify_field(td, 22, 4, 4) /* dfs_channels */)) return ret;
     return flatcc_verify_ok;
 }
 
