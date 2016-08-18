@@ -172,7 +172,6 @@ int dcal_wifi_global_pull( laird_session_handle session,
 		g->pmk=ns(Globals_pmk(gt));
 		g->probe_delay=ns(Globals_probe_delay(gt));
 		g->regdomain=ns(Globals_regdomain(gt));
-		g->roam_period=ns(Globals_roam_period(gt));
 		g->roam_periodms=ns(Globals_roam_periodms(gt));
 		g->roam_trigger=ns(Globals_roam_trigger(gt));
 		g->rts=ns(Globals_rts(gt));
@@ -254,7 +253,6 @@ int dcal_wifi_global_push( laird_session_handle session,
 		ns(Globals_pmk_add(B, g->pmk));
 		ns(Globals_probe_delay_add(B, g->probe_delay));
 		ns(Globals_regdomain_add(B, g->regdomain));
-		ns(Globals_roam_period_add(B, g->roam_period));
 		ns(Globals_roam_periodms_add(B, g->roam_periodms));
 		ns(Globals_roam_trigger_add(B, g->roam_trigger));
 		ns(Globals_rts_add(B, g->rts));
@@ -769,40 +767,6 @@ int dcal_wifi_global_get_regdomain( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_roam_period( laird_global_handle global,
-                                      unsigned int roam_period)
-{
-	int ret = DCAL_SUCCESS;
-	internal_global_handle g = (internal_global_handle)global;
-	REPORT_ENTRY_DEBUG;
-
-	if(!validate_handle(globals, global))
-		ret = DCAL_INVALID_HANDLE;
-	else {
-		g->roam_period = roam_period;
-	}
-
-	return REPORT_RETURN_DBG(ret);
-}
-
-int dcal_wifi_global_get_roam_period( laird_global_handle global,
-                                      unsigned int *roam_period)
-{
-	int ret = DCAL_SUCCESS;
-	internal_global_handle g = (internal_global_handle)global;
-	REPORT_ENTRY_DEBUG;
-
-	if (roam_period==NULL)
-		ret = DCAL_INVALID_PARAMETER;
-	else if(!validate_handle(globals, global))
-		ret = DCAL_INVALID_HANDLE;
-	else {
-		*roam_period = g->roam_period;
-	}
-
-	return REPORT_RETURN_DBG(ret);
-}
-
 int dcal_wifi_global_set_roam_periodms( laird_global_handle global,
                                       unsigned int roam_periodms)
 {
@@ -1213,7 +1177,6 @@ void dcal_wifi_global_printf( laird_global_handle global)
 		case REG_RU: printf("Russia\n");break;
 		default: printf("invalid\n");
 	}
-	printf("Roam Period: %d\n",g->roam_period);
 	printf("Roam Period ms: %d ms\n",g->roam_periodms);
 	printf("Roam Trigger: -%d dBm\n",g->roam_trigger);
 	printf("RTS Threshold: %d bytes\n",g->rts);
