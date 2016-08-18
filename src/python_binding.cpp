@@ -49,15 +49,6 @@ class ccx
 	boost::python::object clientname() const { return boost::python::object(_clientname); }
 };
 
-class tcp
-{
-  public:
-	char _ipv4[STR_SZ];
-	boost::python::object ipv4() const { return boost::python::object(_ipv4); }
-	char _ipv6[IP6_STR_SZ];
-	boost::python::object ipv6() const { return boost::python::object(_ipv6); }
-};
-
 class connection
 {
   public:
@@ -266,21 +257,37 @@ class dcal
 		return ret;
 	}
 
-	int device_status_get_tcp(class tcp & t) {
+	int device_status_get_ipv4( class generic_string & g ) {
 		int ret;
 		unsigned char ipv4[IP4_SZ];
-		char ipv6[IP6_STR_SZ];
-
-		ret = dcal_device_status_get_tcp( session, ipv4, IP4_SZ, ipv6, IP6_STR_SZ);
-
+		ret = dcal_device_status_get_ipv4(session, ipv4, IP4_SZ);
 		if (ret == DCAL_SUCCESS)
 		{
 			char string_ipv4[STR_SZ];
-
 			sprintf(string_ipv4, "%i.%i.%i.%i", ipv4[0],ipv4[1],ipv4[2],ipv4[3]);
+			strncpy(g._gen_string, string_ipv4, STR_SZ);
+		}
+		return ret;
+	}
 
-			strncpy(t._ipv4, string_ipv4, STR_SZ);
-			strncpy(t._ipv6, ipv6, IP6_STR_SZ);
+	int device_status_get_ipv6_count( class generic_int & g ) {
+		int ret;
+		size_t count;
+		ret = dcal_device_status_get_ipv6_count(session, &count);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = count;
+		}
+		return ret;
+	}
+
+	int device_status_get_ipv6_string_at_index(unsigned int index, class generic_string & g ) {
+		int ret;
+		char ipv6[IP6_STR_SZ];
+		ret = dcal_device_status_get_ipv6_string_at_index(session, index, ipv6, IP6_STR_SZ);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, ipv6, IP6_STR_SZ);
 		}
 		return ret;
 	}
@@ -1038,11 +1045,6 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("clientname", &ccx::clientname)
 	;
 
-	class_<tcp>("tcp")
-		.def("ipv4", &tcp::ipv4)
-		.def("ipv6", &tcp::ipv6)
-	;
-
 	class_<connection>("connection")
 		.def_readwrite("cardstate", &connection::cardstate)
 		.def_readwrite("channel", &connection::channel)
@@ -1089,7 +1091,9 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("device_status_pull", &dcal::device_status_pull)
 		.def("device_status_get_settings", &dcal::device_status_get_settings)
 		.def("device_status_get_ccx", &dcal::device_status_get_ccx)
-		.def("device_status_get_tcp", &dcal::device_status_get_tcp)
+		.def("device_status_get_ipv4", &dcal::device_status_get_ipv4)
+		.def("device_status_get_ipv6_count", &dcal::device_status_get_ipv6_count)
+		.def("device_status_get_ipv6_string_at_index", &dcal::device_status_get_ipv6_string_at_index)
 		.def("device_status_get_connection", &dcal::device_status_get_connection)
 		.def("device_status_get_connection_extended", &dcal::device_status_get_connection_extended)
 		// WiFi Management
