@@ -529,18 +529,6 @@ class dcal
 		return ret;
 	}
 
-	int wifi_global_set_roam_period( unsigned int roam_period ) { return dcal_wifi_global_set_roam_period(global, roam_period); }
-	int wifi_global_get_roam_period( class generic_uint & g ) {
-		int ret;
-		unsigned int roam_period;
-		ret = dcal_wifi_global_get_roam_period(global, &roam_period);
-		if (ret == DCAL_SUCCESS)
-		{
-			g.gen_uint = roam_period;
-		}
-		return ret;
-	}
-
 	int wifi_global_set_roam_periodms( unsigned int roam_periodms ) { return dcal_wifi_global_set_roam_periodms(global, roam_periodms); }
 	int wifi_global_get_roam_periodms( class generic_uint & g ) {
 		int ret;
@@ -1131,8 +1119,6 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("wifi_global_set_probe_delay", &dcal::wifi_global_set_probe_delay)
 		.def("wifi_global_get_probe_delay", &dcal::wifi_global_get_probe_delay)
 		.def("wifi_global_get_regdomain", &dcal::wifi_global_get_regdomain)
-		.def("wifi_global_set_roam_period", &dcal::wifi_global_set_roam_period)
-		.def("wifi_global_get_roam_period", &dcal::wifi_global_get_roam_period)
 		.def("wifi_global_set_roam_periodms", &dcal::wifi_global_set_roam_periodms)
 		.def("wifi_global_get_roam_periodms", &dcal::wifi_global_get_roam_periodms)
 		.def("wifi_global_set_roam_trigger", &dcal::wifi_global_set_roam_trigger)
