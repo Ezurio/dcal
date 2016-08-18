@@ -4,18 +4,12 @@ int dynamic_mem=0;
 #else
 
 #include <stdlib.h>
-#include <pthread.h>
 #include "dcal_internal_api.h"
 #include "session.h"
 #include "lists.h"
 #include "debug.h"
 
 int dynamic_mem=1;
-
-#define INIT_LOCK(x) do {((x) = (pthread_mutex_t*)malloc(sizeof(pthread_mutex_t))); pthread_mutex_init((x), NULL);} while(0)
-#define DESTROY_LOCK(x) do {(pthread_mutex_destroy(x)); free(x);} while(0)
-#define LOCK(x)  (pthread_mutex_lock(x))
-#define UNLOCK(x) (pthread_mutex_unlock(x))
 
 // Should only be called from an __attribute__ (constructor) function
 DCAL_ERR initlist(pointer_list **list)

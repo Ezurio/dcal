@@ -5,9 +5,9 @@
 #include <libssh/server.h>
 #include <stdbool.h>
 #include <time.h>
-#include <pthread.h>
 #include "flatcc/dcal_builder.h"
 #include "dcal_api.h"
+#include "platform.h"
 
 #define HOST_SZ 256
 #define USER_SZ 64
@@ -95,14 +95,14 @@ typedef struct _internal_session_handle {
 	flatcc_builder_t builder;
 	bool builder_init;
 	DCAL_STATUS_STRUCT status;
-	pthread_mutex_t *chan_lock;
+	MUTEX *chan_lock;
 	size_t num_profiles;
 	profile_list_item *profiles;
 	time_t profile_list_timestamp;
 	size_t num_scan_items;
 	dcal_scan_item * scan_items;
 	time_t scan_list_timestamp;
-	pthread_mutex_t *list_lock;
+	MUTEX *list_lock;
 } internal_session_struct;
 typedef internal_session_struct * internal_session_handle;
 

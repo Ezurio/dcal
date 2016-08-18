@@ -6,6 +6,7 @@
 #include "profile.h"
 #include "session.h"
 #include "buffer.h"
+#include "platform.h"
 
 #ifdef STATIC_MEM
 
@@ -1725,9 +1726,6 @@ void dcal_wifi_profile_printf( laird_profile_handle profile)
 	printf("\tsecurity4: %s\n", p->security4);
 	printf("\tsecurity5: %s\n", p->security5);
 }
-
-#define LOCK(x) pthread_mutex_lock(x)
-#define UNLOCK(x) pthread_mutex_unlock(x)
 
 int dcal_wifi_pull_scan_list(laird_session_handle session, size_t *count)
 {
