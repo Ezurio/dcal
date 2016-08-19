@@ -82,7 +82,7 @@ int main (int argc, char *argv[])
 	if (ret)
 		printf("error in dcal_fw_update: %s\n",dcal_err_to_string(ret));
 
-	ret = dcal_file_pull_from_wb(session, "fw_update.out", "/tmp/fw_update.out");
+	ret = dcal_file_pull_from_wb(session, "/tmp/fw_update.out", "fw_update.out");
 	if (ret)
 		printf("Failed to get error file.  error: %s\n", dcal_err_to_string(ret));
 
