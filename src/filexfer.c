@@ -380,6 +380,7 @@ int dcal_fw_update(laird_session_handle session, int flags)
 		return ret;
 	}
 	ret = handshake_error_code(ns(Handshake_as_root(buf)));
+	unlock_session_channel(session);
 
 	return ret;
 }
