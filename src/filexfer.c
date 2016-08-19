@@ -321,7 +321,7 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 // is executed, firmware update will be attempted on the transfered fw.txt
 // file in /tmp.  fw_update flags can be set in the flags variable.  Flags
 // can also be set in the fw.txt file itself.
-// NOTE: The disable reboot flag will be added by dcas so the user must 
+// NOTE: The disable reboot flag will be added by dcas so the user must
 // specifically call dcal_system_restart() when desiring restart after
 // fw_update.
 int dcal_fw_update(laird_session_handle session, int flags)
