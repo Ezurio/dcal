@@ -105,7 +105,6 @@ int main (int argc, char *argv[])
 	}
 
 	unsigned char ipv4[IP4_SZ];
-	char ipv6[IP6_STR_SZ];
 	ret = dcal_device_status_get_ipv4(session, ipv4, IP4_SZ);
 	printf("IPv4:\n");
 	if (ret != DCAL_SUCCESS)
@@ -129,7 +128,7 @@ int main (int argc, char *argv[])
 			for (i=0; i<count; i++){
 				ret = dcal_device_status_get_ipv6_string_at_index(session, i, ipv6addr[i], sizeof(ipv6_str_type));
 				if (ret)
-					printf("unable to get ipv6 address at index %d.  Error: %d\n",i,ret);
+					printf("unable to get ipv6 address at index %zu.  Error: %d\n",i,ret);
 				else
 					printf("\tIPv6: %s\n", ipv6addr[i]);
 			}

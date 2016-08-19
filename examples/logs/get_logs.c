@@ -35,6 +35,7 @@ int main (int argc, char *argv[])
 	{
 		ret = DCAL_INVALID_PARAMETER;
 		printf("missing filename for retrieved log file\n");
+		printf("Usage: \n\t%s [OPTIONS] <destination file name>\n", argv[0]);
 		goto cleanup;
 	}
 

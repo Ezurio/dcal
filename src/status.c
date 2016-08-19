@@ -140,7 +140,7 @@ int dcal_device_status_get_ipv4( laird_session_handle s, unsigned char *ipv4, si
 	if (ipv4)
 		memcpy(ipv4, s_struct->ipv4, buflen);
 	else
-		REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
+		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
 
 	return REPORT_RETURN_DBG(0);
 }
