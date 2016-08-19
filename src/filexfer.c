@@ -436,6 +436,7 @@ int dcal_pull_logs(laird_session_handle session, char * dest_file)
 		return ret;
 	}
 	ret = handshake_error_code(ns(Handshake_as_root(buf)));
+	unlock_session_channel(session);
 
 	if (ret==DCAL_SUCCESS)
 		ret = dcal_file_pull_from_wb(session,  "/tmp/log_dump.txt", dest_file);
