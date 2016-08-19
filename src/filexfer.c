@@ -505,6 +505,7 @@ int dcal_process_cli_command_file(laird_session_handle session, char * src_file)
 		return ret;
 	}
 	ret = handshake_error_code(ns(Handshake_as_root(buf)));
+	unlock_session_channel(session);
 
 	return ret;
 }
