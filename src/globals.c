@@ -163,7 +163,6 @@ int dcal_wifi_global_pull( laird_session_handle session,
 		g->channel_set_b=ns(Globals_channel_set_b(gt));
 		g->auto_profile=ns(Globals_auto_profile(gt));
 		g->beacon_miss=ns(Globals_beacon_miss(gt));
-		g->bt_coex=ns(Globals_bt_coex(gt));
 		g->ccx=ns(Globals_ccx(gt));
 		strncpy(g->cert_path, ns(Globals_cert_path(gt)), MAX_CERT_PATH);
 		g->date_check=ns(Globals_date_check(gt));
@@ -244,7 +243,6 @@ int dcal_wifi_global_push( laird_session_handle session,
 		ns(Globals_channel_set_b_add(B, g->channel_set_b));
 		ns(Globals_auto_profile_add(B, g->auto_profile));
 		ns(Globals_beacon_miss_add(B, g->beacon_miss));
-		ns(Globals_bt_coex_add(B, g->bt_coex));
 		ns(Globals_ccx_add(B, g->ccx));
 		ns(Globals_cert_path_create_str(B, g->cert_path));
 		ns(Globals_date_check_add(B, g->date_check));
@@ -474,40 +472,6 @@ int dcal_wifi_global_get_beacon_miss( laird_global_handle global,
 		ret = DCAL_INVALID_HANDLE;
 	else {
 		*beacon_miss = g->beacon_miss;
-	}
-
-	return REPORT_RETURN_DBG(ret);
-}
-
-int dcal_wifi_global_set_bt_coex( laird_global_handle global,
-                                  bool bt_coex)
-{
-	int ret = DCAL_SUCCESS;
-	internal_global_handle g = (internal_global_handle)global;
-	REPORT_ENTRY_DEBUG;
-
-	if(!validate_handle(globals, global))
-		ret = DCAL_INVALID_HANDLE;
-	else {
-		g->bt_coex = bt_coex;
-	}
-
-	return REPORT_RETURN_DBG(ret);
-}
-
-int dcal_wifi_global_get_bt_coex( laird_global_handle global,
-                                  bool *bt_coex)
-{
-	int ret = DCAL_SUCCESS;
-	internal_global_handle g = (internal_global_handle)global;
-	REPORT_ENTRY_DEBUG;
-
-	if (bt_coex==NULL)
-		ret = DCAL_INVALID_PARAMETER;
-	else if(!validate_handle(globals, global))
-		ret = DCAL_INVALID_HANDLE;
-	else {
-		*bt_coex = g->bt_coex;
 	}
 
 	return REPORT_RETURN_DBG(ret);
