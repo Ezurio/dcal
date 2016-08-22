@@ -997,6 +997,13 @@ class dcal
 
 	int ntpdate( char * server_name ){ return dcal_ntpdate(session, server_name); }
 
+	// file handling
+	int file_push_to_wb( char * local_file_name, char * remote_file_name ) { return dcal_file_push_to_wb(session, local_file_name, remote_file_name); }
+	int file_pull_from_wb( char * remote_file_name, char * local_file_name ) { return dcal_file_pull_from_wb(session, remote_file_name, local_file_name); }
+	int fw_update( int flags ) { return dcal_fw_update(session, flags); }
+	int pull_logs( char * dest_file ) { return dcal_pull_logs(session, dest_file); }
+	int process_cli_command_file( char * src_file ) { return dcal_process_cli_command_file(session, src_file); }
+
   private:
 	laird_session_handle session;
 	laird_profile_handle profile;
@@ -1198,5 +1205,11 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("time_set", &dcal::time_set)
 		.def("time_get", &dcal::time_get)
 		.def("ntpdate", &dcal::ntpdate)
+		// File functions
+		.def("file_push_to_wb", &dcal::file_push_to_wb)
+		.def("file_pull_from_wb", &dcal::file_pull_from_wb)
+		.def("fw_update", &dcal::fw_update)
+		.def("pull_logs", &dcal::pull_logs)
+		.def("process_cli_command_file", &dcal::process_cli_command_file)
 	;
 }
