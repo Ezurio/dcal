@@ -416,18 +416,6 @@ class dcal
 		return ret;
 	}
 
-	int wifi_global_set_bt_coex( bool bt_coex ) { return dcal_wifi_global_set_bt_coex(global, bt_coex); }
-	int wifi_global_get_bt_coex( class generic_int & g ) {
-		int ret;
-		bool bt_coex;
-		ret = dcal_wifi_global_get_bt_coex(global, &bt_coex);
-		if (ret == DCAL_SUCCESS)
-		{
-			g.gen_int = (int) bt_coex;
-		}
-		return ret;
-	}
-
 	int wifi_global_set_ccx( bool ccx ) { return dcal_wifi_global_set_ccx(global, ccx); }
 	int wifi_global_get_ccx( class generic_int & g ) {
 		int ret;
@@ -1109,8 +1097,6 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("wifi_global_get_auto_profile", &dcal::wifi_global_get_auto_profile)
 		.def("wifi_global_set_beacon_miss", &dcal::wifi_global_set_beacon_miss)
 		.def("wifi_global_get_beacon_miss", &dcal::wifi_global_get_beacon_miss)
-		.def("wifi_global_set_bt_coex", &dcal::wifi_global_set_bt_coex)
-		.def("wifi_global_get_bt_coex", &dcal::wifi_global_get_bt_coex)
 		.def("wifi_global_set_ccx", &dcal::wifi_global_set_ccx)
 		.def("wifi_global_get_ccx", &dcal::wifi_global_get_ccx)
 		.def("wifi_global_set_cert_path", &dcal::wifi_global_set_cert_path)
