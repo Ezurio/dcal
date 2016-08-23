@@ -637,7 +637,129 @@ class dcal
 
 	void wifi_global_printf() { return dcal_wifi_global_printf(global); }
 
+	// Wifi Scan
+	int wifi_pull_scan_list( class generic_int & g ) {
+		int ret;
+		size_t scan_count;
+		ret =  dcal_wifi_pull_scan_list(session, &scan_count);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = scan_count;
+		}
+		return ret;
+	}
+	int wifi_get_scan_list_entry_ssid(int index, class profile_SSID & s) {
+		int ret;
+		LRD_WF_SSID ssid={0};
+		ret = dcal_wifi_get_scan_list_entry_ssid( session, index, &ssid );
+		if (ret == DCAL_SUCCESS)
+		{
+			s.len = ssid.len;
+			memcpy(s._val, ssid.val, LRD_WF_MAX_SSID_LEN);
+		}
+		return ret;
+	}
+	int wifi_get_scan_list_entry_bssid( int index, class generic_string & g) {
+		int ret;
+		unsigned char bssid[MAC_SZ];
+		ret =  dcal_wifi_get_scan_list_entry_bssid(session, index, bssid, MAC_SZ);
+		if (ret == DCAL_SUCCESS)
+		{
+			char string_bssid[STR_SZ];
+			sprintf(string_bssid, "%x:%x:%x:%x:%x:%x", bssid[0],bssid[1],bssid[2],bssid[3],bssid[4],bssid[5]);
+			strncpy(g._gen_string, string_bssid, STR_SZ);
+		}
+		return ret;
+	}
+
+	int wifi_get_scan_list_entry_channel( int index, class generic_int & g) {
+		int ret;
+		int channel;
+		ret = dcal_wifi_get_scan_list_entry_channel(session, index, &channel);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = channel;
+		}
+		return ret;
+	}
+
+
+	int wifi_get_scan_list_entry_rssi( int index, class generic_int & g) {
+		int ret;
+		int rssi;
+		ret = dcal_wifi_get_scan_list_entry_rssi(session, index, &rssi);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = rssi;
+		}
+		return ret;
+	}
+
+	int wifi_get_scan_list_entry_securityMask( int index, class generic_int & g) {
+		int ret;
+		int securityMask;
+		ret = dcal_wifi_get_scan_list_entry_securityMask(session, index, &securityMask);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = securityMask;
+		}
+		return ret;
+	}
+
+	int wifi_get_scan_list_entry_type( int index, class generic_int & g ) {
+		int ret;
+		LRD_WF_BSSTYPE bssType;
+		ret = dcal_wifi_get_scan_list_entry_type(session, index, &bssType);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) bssType;
+		}
+		return ret;
+	}
+
 	// WiFi Profile Management
+	int wifi_pull_profile_list( class generic_int & g ) {
+		int ret;
+		size_t profile_count;
+		ret = dcal_wifi_pull_profile_list(session, &profile_count);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = profile_count;
+		}
+		return ret;
+	}
+	int wifi_get_profile_list_entry_profilename( int index, class generic_string & g) {
+		int ret;
+		char profilename[CONFIG_NAME_SZ];
+		ret = dcal_wifi_get_profile_list_entry_profilename(session, index, profilename, CONFIG_NAME_SZ);
+		if (ret == DCAL_SUCCESS)
+		{
+			memcpy(g._gen_string, profilename, CONFIG_NAME_SZ);
+		}
+		return ret;
+	}
+	int wifi_get_profile_list_entry_autoprofile( int index, class generic_int & g ) {
+		int ret;
+		bool autoprofile;
+		ret = dcal_wifi_get_profile_list_entry_autoprofile(session, index, &autoprofile);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) autoprofile;
+		}
+		return ret;
+	}
+
+	int wifi_get_profile_list_entry_active( int index, class generic_int & g ) {
+		int ret;
+		bool active;
+		ret = dcal_wifi_get_profile_list_entry_active(session, index, &active);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) active;
+		}
+		return ret;
+	}
+
 	int wifi_profile_create() { return dcal_wifi_profile_create( &profile ); }
 	int wifi_profile_pull( char * profilename ) { return dcal_wifi_profile_pull(session, &profile, profilename); }
 	int wifi_profile_close_handle() { return dcal_wifi_profile_close_handle( profile ); }
@@ -1131,7 +1253,19 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("wifi_global_set_dfs_channels", &dcal::wifi_global_set_dfs_channels)
 		.def("wifi_global_get_dfs_channels", &dcal::wifi_global_get_dfs_channels)
 		.def("wifi_global_printf", &dcal::wifi_global_printf)
+		// Wifi Scan
+		.def("wifi_pull_scan_list", &dcal::wifi_pull_scan_list)
+		.def("wifi_get_scan_list_entry_ssid", &dcal::wifi_get_scan_list_entry_ssid)
+		.def("wifi_get_scan_list_entry_bssid", &dcal::wifi_get_scan_list_entry_bssid)
+		.def("wifi_get_scan_list_entry_channel", &dcal::wifi_get_scan_list_entry_channel)
+		.def("wifi_get_scan_list_entry_rssi", &dcal::wifi_get_scan_list_entry_rssi)
+		.def("wifi_get_scan_list_entry_securityMask", &dcal::wifi_get_scan_list_entry_securityMask)
+		.def("wifi_get_scan_list_entry_type", &dcal::wifi_get_scan_list_entry_type)
 		// Wifi Profile Management
+		.def("wifi_pull_profile_list", &dcal::wifi_pull_profile_list)
+		.def("wifi_get_profile_list_entry_profilename", &dcal::wifi_get_profile_list_entry_profilename)
+		.def("wifi_get_profile_list_entry_autoprofile", &dcal::wifi_get_profile_list_entry_autoprofile)
+		.def("wifi_get_profile_list_entry_active", &dcal::wifi_get_profile_list_entry_active)
 		.def("wifi_profile_create", &dcal::wifi_profile_create)
 		.def("wifi_profile_pull", &dcal::wifi_profile_pull)
 		.def("wifi_profile_close_handle", &dcal::wifi_profile_close_handle)
