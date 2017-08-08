@@ -344,13 +344,14 @@ static int __DCAL_session_Interface_table_verifier(flatcc_table_verifier_descrip
     if ((ret = flatcc_verify_field(td, 12, 4, 4) /* bridge */)) return ret;
     if ((ret = flatcc_verify_field(td, 13, 4, 4) /* ap_mode */)) return ret;
     if ((ret = flatcc_verify_field(td, 14, 4, 4) /* nat */)) return ret;
-    if ((ret = flatcc_verify_field(td, 15, 1, 1) /* ipv6 */)) return ret;
-    if ((ret = flatcc_verify_string_field(td, 16, 0) /* method6 */)) return ret;
-    if ((ret = flatcc_verify_string_field(td, 17, 0) /* address6 */)) return ret;
-    if ((ret = flatcc_verify_string_field(td, 18, 0) /* gateway6 */)) return ret;
-    if ((ret = flatcc_verify_string_field(td, 19, 0) /* nameserver6 */)) return ret;
-    if ((ret = flatcc_verify_field(td, 20, 4, 4) /* state6 */)) return ret;
-    if ((ret = flatcc_verify_field(td, 21, 4, 4) /* nat6 */)) return ret;
+    if ((ret = flatcc_verify_field(td, 15, 4, 4) /* prop6 */)) return ret;
+    if ((ret = flatcc_verify_field(td, 16, 1, 1) /* ipv6 */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 17, 0) /* method6 */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 18, 0) /* address6 */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 19, 0) /* gateway6 */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 20, 0) /* nameserver6 */)) return ret;
+    if ((ret = flatcc_verify_field(td, 21, 4, 4) /* state6 */)) return ret;
+    if ((ret = flatcc_verify_field(td, 22, 4, 4) /* nat6 */)) return ret;
     return flatcc_verify_ok;
 }
 
