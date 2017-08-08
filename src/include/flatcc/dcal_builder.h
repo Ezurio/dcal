@@ -118,10 +118,10 @@ static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers
   v12, v13, v14, v15, v16, v17
 static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers_builder_t *B __DCAL_session_Profile_formal_args);
 #define __DCAL_session_Interface_formal_args ,\
-  flatbuffers_string_ref_t v0, flatbuffers_bool_t v1, flatbuffers_string_ref_t v2, uint32_t v3,\
-  flatbuffers_string_ref_t v4, flatbuffers_string_ref_t v5, flatbuffers_string_ref_t v6, flatbuffers_string_ref_t v7,\
-  flatbuffers_string_ref_t v8, flatbuffers_string_ref_t v9, uint32_t v10, flatbuffers_string_ref_t v11,\
-  flatbuffers_string_ref_t v12, uint32_t v13, uint32_t v14, flatbuffers_bool_t v15,\
+  flatbuffers_string_ref_t v0, uint32_t v1, flatbuffers_bool_t v2, flatbuffers_string_ref_t v3,\
+  uint32_t v4, flatbuffers_string_ref_t v5, flatbuffers_string_ref_t v6, flatbuffers_string_ref_t v7,\
+  flatbuffers_string_ref_t v8, flatbuffers_string_ref_t v9, flatbuffers_string_ref_t v10, uint32_t v11,\
+  uint32_t v12, uint32_t v13, uint32_t v14, flatbuffers_bool_t v15,\
   flatbuffers_string_ref_t v16, flatbuffers_string_ref_t v17, flatbuffers_string_ref_t v18, flatbuffers_string_ref_t v19, uint32_t v20, uint32_t v21
 #define __DCAL_session_Interface_call_args ,\
   v0, v1, v2, v3,\
@@ -421,18 +421,18 @@ static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers
 __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Profile, DCAL_session_Profile_identifier, DCAL_session_Profile_type_identifier)
 
 __flatbuffers_build_string_field(0, flatbuffers_, DCAL_session_Interface_interface_name)
-__flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Interface_ipv4, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
-__flatbuffers_build_string_field(2, flatbuffers_, DCAL_session_Interface_method)
-__flatbuffers_build_scalar_field(3, flatbuffers_, DCAL_session_Interface_auto_start, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_string_field(4, flatbuffers_, DCAL_session_Interface_address)
-__flatbuffers_build_string_field(5, flatbuffers_, DCAL_session_Interface_netmask)
-__flatbuffers_build_string_field(6, flatbuffers_, DCAL_session_Interface_netmask6)
-__flatbuffers_build_string_field(7, flatbuffers_, DCAL_session_Interface_gateway)
-__flatbuffers_build_string_field(8, flatbuffers_, DCAL_session_Interface_nameserver)
+__flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Interface_prop, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(2, flatbuffers_, DCAL_session_Interface_ipv4, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
+__flatbuffers_build_string_field(3, flatbuffers_, DCAL_session_Interface_method)
+__flatbuffers_build_scalar_field(4, flatbuffers_, DCAL_session_Interface_auto_start, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_string_field(5, flatbuffers_, DCAL_session_Interface_address)
+__flatbuffers_build_string_field(6, flatbuffers_, DCAL_session_Interface_netmask)
+__flatbuffers_build_string_field(7, flatbuffers_, DCAL_session_Interface_netmask6)
+__flatbuffers_build_string_field(8, flatbuffers_, DCAL_session_Interface_gateway)
 __flatbuffers_build_string_field(9, flatbuffers_, DCAL_session_Interface_broadcast)
-__flatbuffers_build_scalar_field(10, flatbuffers_, DCAL_session_Interface_state, flatbuffers_uint32, uint32_t, 4, 4, 0)
-__flatbuffers_build_string_field(11, flatbuffers_, DCAL_session_Interface_bridge_one)
-__flatbuffers_build_string_field(12, flatbuffers_, DCAL_session_Interface_bridge_two)
+__flatbuffers_build_string_field(10, flatbuffers_, DCAL_session_Interface_nameserver)
+__flatbuffers_build_scalar_field(11, flatbuffers_, DCAL_session_Interface_state, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(12, flatbuffers_, DCAL_session_Interface_bridge, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(13, flatbuffers_, DCAL_session_Interface_ap_mode, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(14, flatbuffers_, DCAL_session_Interface_nat, flatbuffers_uint32, uint32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(15, flatbuffers_, DCAL_session_Interface_ipv6, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
@@ -447,17 +447,17 @@ static inline DCAL_session_Interface_ref_t DCAL_session_Interface_create(flatbuf
 {
     if (DCAL_session_Interface_start(B)
         || DCAL_session_Interface_interface_name_add(B, v0)
-        || DCAL_session_Interface_method_add(B, v2)
-        || DCAL_session_Interface_auto_start_add(B, v3)
-        || DCAL_session_Interface_address_add(B, v4)
-        || DCAL_session_Interface_netmask_add(B, v5)
-        || DCAL_session_Interface_netmask6_add(B, v6)
-        || DCAL_session_Interface_gateway_add(B, v7)
-        || DCAL_session_Interface_nameserver_add(B, v8)
+        || DCAL_session_Interface_prop_add(B, v1)
+        || DCAL_session_Interface_method_add(B, v3)
+        || DCAL_session_Interface_auto_start_add(B, v4)
+        || DCAL_session_Interface_address_add(B, v5)
+        || DCAL_session_Interface_netmask_add(B, v6)
+        || DCAL_session_Interface_netmask6_add(B, v7)
+        || DCAL_session_Interface_gateway_add(B, v8)
         || DCAL_session_Interface_broadcast_add(B, v9)
-        || DCAL_session_Interface_state_add(B, v10)
-        || DCAL_session_Interface_bridge_one_add(B, v11)
-        || DCAL_session_Interface_bridge_two_add(B, v12)
+        || DCAL_session_Interface_nameserver_add(B, v10)
+        || DCAL_session_Interface_state_add(B, v11)
+        || DCAL_session_Interface_bridge_add(B, v12)
         || DCAL_session_Interface_ap_mode_add(B, v13)
         || DCAL_session_Interface_nat_add(B, v14)
         || DCAL_session_Interface_method6_add(B, v16)
@@ -466,7 +466,7 @@ static inline DCAL_session_Interface_ref_t DCAL_session_Interface_create(flatbuf
         || DCAL_session_Interface_nameserver6_add(B, v19)
         || DCAL_session_Interface_state6_add(B, v20)
         || DCAL_session_Interface_nat6_add(B, v21)
-        || DCAL_session_Interface_ipv4_add(B, v1)
+        || DCAL_session_Interface_ipv4_add(B, v2)
         || DCAL_session_Interface_ipv6_add(B, v15)) {
         return 0;
     }
