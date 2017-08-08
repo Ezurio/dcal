@@ -32,6 +32,7 @@ typedef struct _internal_interface_handle {
 	int ap_mode;
 	int nat;
 	bool ipv6;
+	unsigned int prop6;
 	char method6[STR_SZ];
 	char address6[STR_SZ];
 	char netmask6[STR_SZ];
