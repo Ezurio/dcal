@@ -99,20 +99,21 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_GETPROFILELIST ((DCAL_session_Commands_enum_t)8UL)
 #define DCAL_session_Commands_GETSCANLIST ((DCAL_session_Commands_enum_t)9UL)
 #define DCAL_session_Commands_ACTIVATEPROFILE ((DCAL_session_Commands_enum_t)10UL)
-#define DCAL_session_Commands_SETINTERFACE ((DCAL_session_Commands_enum_t)11UL)
-#define DCAL_session_Commands_DELINTERFACE ((DCAL_session_Commands_enum_t)12UL)
-#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)13UL)
-#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)14UL)
-#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)15UL)
-#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)16UL)
-#define DCAL_session_Commands_SETTIME ((DCAL_session_Commands_enum_t)17UL)
-#define DCAL_session_Commands_GETTIME ((DCAL_session_Commands_enum_t)18UL)
-#define DCAL_session_Commands_NTPDATE ((DCAL_session_Commands_enum_t)19UL)
-#define DCAL_session_Commands_FILEPUSH ((DCAL_session_Commands_enum_t)20UL)
-#define DCAL_session_Commands_FILEPULL ((DCAL_session_Commands_enum_t)21UL)
-#define DCAL_session_Commands_FWUPDATE ((DCAL_session_Commands_enum_t)22UL)
-#define DCAL_session_Commands_CLIFILE ((DCAL_session_Commands_enum_t)23UL)
-#define DCAL_session_Commands_GETLOGS ((DCAL_session_Commands_enum_t)24UL)
+#define DCAL_session_Commands_GETINTERFACE ((DCAL_session_Commands_enum_t)11UL)
+#define DCAL_session_Commands_SETINTERFACE ((DCAL_session_Commands_enum_t)12UL)
+#define DCAL_session_Commands_DELINTERFACE ((DCAL_session_Commands_enum_t)13UL)
+#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)14UL)
+#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)15UL)
+#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)16UL)
+#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)17UL)
+#define DCAL_session_Commands_SETTIME ((DCAL_session_Commands_enum_t)18UL)
+#define DCAL_session_Commands_GETTIME ((DCAL_session_Commands_enum_t)19UL)
+#define DCAL_session_Commands_NTPDATE ((DCAL_session_Commands_enum_t)20UL)
+#define DCAL_session_Commands_FILEPUSH ((DCAL_session_Commands_enum_t)21UL)
+#define DCAL_session_Commands_FILEPULL ((DCAL_session_Commands_enum_t)22UL)
+#define DCAL_session_Commands_FWUPDATE ((DCAL_session_Commands_enum_t)23UL)
+#define DCAL_session_Commands_CLIFILE ((DCAL_session_Commands_enum_t)24UL)
+#define DCAL_session_Commands_GETLOGS ((DCAL_session_Commands_enum_t)25UL)
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -128,6 +129,7 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_GETPROFILELIST: return "GETPROFILELIST";
     case DCAL_session_Commands_GETSCANLIST: return "GETSCANLIST";
     case DCAL_session_Commands_ACTIVATEPROFILE: return "ACTIVATEPROFILE";
+    case DCAL_session_Commands_GETINTERFACE: return "GETINTERFACE";
     case DCAL_session_Commands_SETINTERFACE: return "SETINTERFACE";
     case DCAL_session_Commands_DELINTERFACE: return "DELINTERFACE";
     case DCAL_session_Commands_WIFIENABLE: return "WIFIENABLE";
