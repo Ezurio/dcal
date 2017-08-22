@@ -750,30 +750,35 @@ __flatbuffers_vector_field(flatbuffers_string_t, 17, t, 0)
 static inline int DCAL_session_Interface_method6_is_present(DCAL_session_Interface_table_t t)
 __flatbuffers_field_present(17, t)
 
-static inline flatbuffers_string_t DCAL_session_Interface_address6(DCAL_session_Interface_table_t t)
+static inline flatbuffers_string_t DCAL_session_Interface_dhcp6(DCAL_session_Interface_table_t t)
 __flatbuffers_vector_field(flatbuffers_string_t, 18, t, 0)
-static inline int DCAL_session_Interface_address6_is_present(DCAL_session_Interface_table_t t)
+static inline int DCAL_session_Interface_dhcp6_is_present(DCAL_session_Interface_table_t t)
 __flatbuffers_field_present(18, t)
 
-static inline flatbuffers_string_t DCAL_session_Interface_gateway6(DCAL_session_Interface_table_t t)
+static inline flatbuffers_string_t DCAL_session_Interface_address6(DCAL_session_Interface_table_t t)
 __flatbuffers_vector_field(flatbuffers_string_t, 19, t, 0)
-static inline int DCAL_session_Interface_gateway6_is_present(DCAL_session_Interface_table_t t)
+static inline int DCAL_session_Interface_address6_is_present(DCAL_session_Interface_table_t t)
 __flatbuffers_field_present(19, t)
 
-static inline flatbuffers_string_t DCAL_session_Interface_nameserver6(DCAL_session_Interface_table_t t)
+static inline flatbuffers_string_t DCAL_session_Interface_gateway6(DCAL_session_Interface_table_t t)
 __flatbuffers_vector_field(flatbuffers_string_t, 20, t, 0)
-static inline int DCAL_session_Interface_nameserver6_is_present(DCAL_session_Interface_table_t t)
+static inline int DCAL_session_Interface_gateway6_is_present(DCAL_session_Interface_table_t t)
 __flatbuffers_field_present(20, t)
 
-static inline uint32_t DCAL_session_Interface_state6(DCAL_session_Interface_table_t t)
-__flatbuffers_scalar_field(flatbuffers_uint32, 21, 0, t)
-static inline int DCAL_session_Interface_state6_is_present(DCAL_session_Interface_table_t t)
+static inline flatbuffers_string_t DCAL_session_Interface_nameserver6(DCAL_session_Interface_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 21, t, 0)
+static inline int DCAL_session_Interface_nameserver6_is_present(DCAL_session_Interface_table_t t)
 __flatbuffers_field_present(21, t)
 
-static inline uint32_t DCAL_session_Interface_nat6(DCAL_session_Interface_table_t t)
+static inline uint32_t DCAL_session_Interface_state6(DCAL_session_Interface_table_t t)
 __flatbuffers_scalar_field(flatbuffers_uint32, 22, 0, t)
-static inline int DCAL_session_Interface_nat6_is_present(DCAL_session_Interface_table_t t)
+static inline int DCAL_session_Interface_state6_is_present(DCAL_session_Interface_table_t t)
 __flatbuffers_field_present(22, t)
+
+static inline uint32_t DCAL_session_Interface_nat6(DCAL_session_Interface_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 23, 0, t)
+static inline int DCAL_session_Interface_nat6_is_present(DCAL_session_Interface_table_t t)
+__flatbuffers_field_present(23, t)
 
 
 struct DCAL_session_P_entry_table { uint8_t unused__; };
