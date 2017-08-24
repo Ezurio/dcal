@@ -88,6 +88,12 @@ int main (int argc, char *argv[])
 			if (ret != DCAL_SUCCESS)
 				printf("unable to set IPv6 method\n");
 
+			// SLAAC is "0", Stateless DHCPv6 is "1"
+			// This property is only used when IPv6 method is set to "auto"
+			ret = dcal_wifi_interface_set_dhcp6(interface, "1");
+			if (ret != DCAL_SUCCESS)
+				printf("unable to set IPv6 DHCP option\n");
+
 			ret = dcal_wifi_interface_set_address6(interface, "2001:db8::1");
 			if (ret != DCAL_SUCCESS)
 				printf("unable to set IPv6 address\n");
@@ -200,6 +206,7 @@ int main (int argc, char *argv[])
 				ret = dcal_wifi_interface_get_ipv6_state(interface, &ipv6);
 				if (ret == DCAL_SUCCESS && ipv6){
 					char method6[STR_SZ];
+					char dhcp6[STR_SZ];
 					char address6[STR_SZ];
 					char netmask6[STR_SZ];
 					char gateway6[STR_SZ];
@@ -212,6 +219,11 @@ int main (int argc, char *argv[])
 					if (ret == DCAL_SUCCESS){
 						if (method6[0] != '\0')
 							printf("\t method %s\n",method6);
+					}
+					ret = dcal_wifi_interface_get_dhcp6(interface, dhcp6, sizeof(dhcp6));
+					if (ret == DCAL_SUCCESS){
+						if (dhcp6[0] != '\0')
+							printf("\t DHCP %s\n",dhcp6);
 					}
 					ret = dcal_wifi_interface_get_address6(interface, address6, sizeof(address6));
 					if (ret == DCAL_SUCCESS){
@@ -311,6 +323,10 @@ int main (int argc, char *argv[])
 						ret = dcal_wifi_interface_clear_property6( interface, NAMESERVER);
 						if (ret != DCAL_SUCCESS)
 							printf("unable to clear IPv6 nameserver\n");
+
+						ret = dcal_wifi_interface_clear_property6( interface, DHCP);
+						if (ret != DCAL_SUCCESS)
+							printf("unable to clear IPv6 DHCP option\n");
 
 						ret = dcal_wifi_interface_set_nat6(interface, 0);
 						if (ret != DCAL_SUCCESS)

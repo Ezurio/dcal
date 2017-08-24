@@ -177,6 +177,7 @@ int dcal_wifi_interface_pull( laird_session_handle session,
 		i->nat=ns(Interface_nat(it));
 		i->ipv6=ns(Interface_ipv6(it));
 		strncpy(i->method6, ns(Interface_method6(it)), STR_SZ);
+		strncpy(i->dhcp6, ns(Interface_dhcp6(it)), STR_SZ);
 		strncpy(i->address6, ns(Interface_address6(it)), STR_SZ);
 		strncpy(i->netmask6, ns(Interface_netmask6(it)), STR_SZ);
 		strncpy(i->gateway6, ns(Interface_gateway6(it)), STR_SZ);
@@ -261,6 +262,7 @@ int dcal_wifi_interface_push( laird_session_handle session,
 		ns(Interface_ipv6_add(B, i->ipv6));
 		ns(Interface_prop6_add(B, i->prop6));
 		ns(Interface_method6_create_str(B, i->method6));
+		ns(Interface_dhcp6_create_str(B, i->dhcp6));
 		ns(Interface_address6_create_str(B, i->address6));
 		ns(Interface_netmask6_create_str(B, i->netmask6));
 		ns(Interface_gateway6_create_str(B, i->gateway6));
@@ -895,6 +897,44 @@ int dcal_wifi_interface_get_method6( laird_interface_handle interface,
 		ret = DCAL_INVALID_HANDLE;
 	else {
 		clear_and_strncpy(method6, i->method6, buf_len);
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_interface_set_dhcp6( laird_interface_handle interface,
+                                  char * dhcp6)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if (dhcp6 == NULL)
+		ret = DCAL_INVALID_PARAMETER;
+
+	if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		clear_and_strncpy(i->dhcp6, dhcp6, CONFIG_NAME_SZ);
+		i->ipv6 = 1;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_interface_get_dhcp6( laird_interface_handle interface,
+                                    char *dhcp6, size_t buf_len)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if ((dhcp6==NULL) || buf_len == 0)
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		clear_and_strncpy(dhcp6, i->dhcp6, buf_len);
 	}
 
 	return REPORT_RETURN_DBG(ret);
