@@ -175,6 +175,13 @@ int dcal_wifi_interface_pull( laird_session_handle session,
 		i->bridge=ns(Interface_bridge(it));
 		i->ap_mode=ns(Interface_ap_mode(it));
 		i->nat=ns(Interface_nat(it));
+		i->ipv6=ns(Interface_ipv6(it));
+		strncpy(i->method6, ns(Interface_method6(it)), STR_SZ);
+		strncpy(i->address6, ns(Interface_address6(it)), STR_SZ);
+		strncpy(i->netmask6, ns(Interface_netmask6(it)), STR_SZ);
+		strncpy(i->gateway6, ns(Interface_gateway6(it)), STR_SZ);
+		strncpy(i->nameserver6, ns(Interface_nameserver6(it)), STR_SZ);
+		i->nat6=ns(Interface_nat6(it));
 
 		#ifdef STATIC_MEM
 		i->valid = true;
@@ -836,6 +843,28 @@ int dcal_wifi_interface_clear_property( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
+int dcal_wifi_interface_get_ipv6_state( laird_interface_handle interface,
+                                  bool * state6)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if (state6 == NULL)
+		ret = DCAL_INVALID_PARAMETER;
+
+	if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		if (i->ipv6)
+			*state6 = true;
+		else
+			*state6 = false;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
 int dcal_wifi_interface_set_method6( laird_interface_handle interface,
                                   char * method6)
 {
@@ -848,6 +877,24 @@ int dcal_wifi_interface_set_method6( laird_interface_handle interface,
 	else {
 		clear_and_strncpy(i->method6, method6, CONFIG_NAME_SZ);
 		i->ipv6 = 1;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_interface_get_method6( laird_interface_handle interface,
+                                    char *method6, size_t buf_len)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if ((method6==NULL) || buf_len == 0)
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		clear_and_strncpy(method6, i->method6, buf_len);
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -870,6 +917,24 @@ int dcal_wifi_interface_set_address6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
+int dcal_wifi_interface_get_address6( laird_interface_handle interface,
+                                    char *address6, size_t buf_len)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if ((address6==NULL) || buf_len == 0)
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		clear_and_strncpy(address6, i->address6, buf_len);
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
 int dcal_wifi_interface_set_netmask6( laird_interface_handle interface,
                                   char * netmask6)
 {
@@ -882,6 +947,24 @@ int dcal_wifi_interface_set_netmask6( laird_interface_handle interface,
 	else {
 		clear_and_strncpy(i->netmask6, netmask6, CONFIG_NAME_SZ);
 		i->ipv6 = 1;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_interface_get_netmask6( laird_interface_handle interface,
+                                    char *netmask6, size_t buf_len)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if ((netmask6==NULL) || buf_len == 0)
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		clear_and_strncpy(netmask6, i->netmask6, buf_len);
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -904,6 +987,24 @@ int dcal_wifi_interface_set_gateway6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
+int dcal_wifi_interface_get_gateway6( laird_interface_handle interface,
+                                    char *gateway6, size_t buf_len)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if ((gateway6==NULL) || buf_len == 0)
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		clear_and_strncpy(gateway6, i->gateway6, buf_len);
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
 int dcal_wifi_interface_set_nameserver6( laird_interface_handle interface,
                                   char * nameserver6)
 {
@@ -916,6 +1017,24 @@ int dcal_wifi_interface_set_nameserver6( laird_interface_handle interface,
 	else {
 		clear_and_strncpy(i->nameserver6, nameserver6, CONFIG_NAME_SZ);
 		i->ipv6 = 1;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_interface_get_nameserver6( laird_interface_handle interface,
+                                    char *nameserver6, size_t buf_len)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if ((nameserver6==NULL) || buf_len == 0)
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		clear_and_strncpy(nameserver6, i->nameserver6, buf_len);
 	}
 
 	return REPORT_RETURN_DBG(ret);
@@ -956,6 +1075,28 @@ int dcal_wifi_interface_set_nat6( laird_interface_handle interface,
 			i->nat6 = INTERFACE_DISABLE;
 
 		i->ipv6 = 1;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_interface_get_nat6( laird_interface_handle interface,
+                                  bool * nat6)
+{
+	int ret = DCAL_SUCCESS;
+	internal_interface_handle i = (internal_interface_handle)interface;
+	REPORT_ENTRY_DEBUG;
+
+	if (nat6 == NULL)
+		ret = DCAL_INVALID_PARAMETER;
+
+	if(!validate_handle(interfaces, interface))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		if (i->nat6)
+			*nat6 = true;
+		else
+			*nat6 = false;
 	}
 
 	return REPORT_RETURN_DBG(ret);

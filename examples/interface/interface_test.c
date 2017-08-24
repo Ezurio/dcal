@@ -120,10 +120,22 @@ int main (int argc, char *argv[])
 			// Get interface settings
 			ret = dcal_wifi_interface_pull(session, &interface, interface_name);
 			if (ret == DCAL_SUCCESS){
+				bool auto_start;
 				bool ipv4;
+				bool ipv6;
+
+				printf("Interface: %s\n",interface_name);
+				ret = dcal_wifi_interface_get_auto_start(interface, &auto_start);
+				if (ret == DCAL_SUCCESS){
+					if (auto_start){
+						printf("auto start is enabled\n");
+					} else {
+						printf("auto start is disabled\n");
+					}
+				}
+				//IPv4
 				ret = dcal_wifi_interface_get_ipv4_state(interface, &ipv4);
 				if (ret == DCAL_SUCCESS && ipv4){
-					bool auto_start;
 					char method[STR_SZ];
 					char address[STR_SZ];
 					char netmask[STR_SZ];
@@ -133,17 +145,6 @@ int main (int argc, char *argv[])
 					bool bridge_ports;
 					bool ap_mode;
 					bool nat;
-
-					printf("Interface: %s\n",interface_name);
-
-					ret = dcal_wifi_interface_get_auto_start(interface, &auto_start);
-					if (ret == DCAL_SUCCESS){
-						if (auto_start){
-							printf("auto start is enabled\n");
-						} else {
-							printf("auto start is disabled\n");
-						}
-					}
 
 					printf("IPv4:\n");
 
@@ -194,6 +195,51 @@ int main (int argc, char *argv[])
 					}
 				} else {
 					printf("%s IPv4 is not present\n",interface_name);
+				}
+				//IPv6
+				ret = dcal_wifi_interface_get_ipv6_state(interface, &ipv6);
+				if (ret == DCAL_SUCCESS && ipv6){
+					char method6[STR_SZ];
+					char address6[STR_SZ];
+					char netmask6[STR_SZ];
+					char gateway6[STR_SZ];
+					char nameserver6[STR_SZ];
+					bool nat6;
+
+					printf("IPv6:\n");
+
+					ret = dcal_wifi_interface_get_method6(interface, method6, sizeof(method6));
+					if (ret == DCAL_SUCCESS){
+						if (method6[0] != '\0')
+							printf("\t method %s\n",method6);
+					}
+					ret = dcal_wifi_interface_get_address6(interface, address6, sizeof(address6));
+					if (ret == DCAL_SUCCESS){
+						if (address6[0] != '\0')
+							printf("\t address %s\n",address6);
+					}
+					ret = dcal_wifi_interface_get_netmask6(interface, netmask6, sizeof(netmask6));
+					if (ret == DCAL_SUCCESS){
+						if (netmask6[0] != '\0')
+							printf("\t netmask %s\n",netmask6);
+					}
+					ret = dcal_wifi_interface_get_gateway6(interface, gateway6, sizeof(gateway6));
+					if (ret == DCAL_SUCCESS){
+						if (gateway6[0] != '\0')
+							printf("\t gateway %s\n",gateway6);
+					}
+					ret = dcal_wifi_interface_get_nameserver6(interface, nameserver6, sizeof(nameserver6));
+					if (ret == DCAL_SUCCESS){
+						if (nameserver6[0] != '\0')
+							printf("\t nameserver %s\n",nameserver6);
+					}
+					ret = dcal_wifi_interface_get_nat6(interface, &nat6);
+					if (ret == DCAL_SUCCESS){
+						if (nat6)
+							printf("\t NAT is enabled\n");
+					}
+				} else {
+					printf("%s IPv6 is not present\n",interface_name);
 				}
 			} else {
 				printf("unable to pull interface: return code:%d\n",ret);
