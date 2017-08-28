@@ -18,23 +18,23 @@ typedef struct _internal_interface_handle {
 	int valid;
 	#endif
 	char interface_name[STR_SZ];
+	unsigned int prop;
 	bool ipv4;
 	char method[STR_SZ];
 	int auto_start;
 	char address[STR_SZ];
 	char netmask[STR_SZ];
-	char netmask6[STR_SZ];
 	char gateway[STR_SZ];
-	char nameserver[STR_SZ];
 	char broadcast[STR_SZ];
+	char nameserver[STR_SZ];
 	int state;
-	char bridge_one[STR_SZ];
-	char bridge_two[STR_SZ];
+	int bridge;
 	int ap_mode;
 	int nat;
 	bool ipv6;
 	char method6[STR_SZ];
 	char address6[STR_SZ];
+	char netmask6[STR_SZ];
 	char gateway6[STR_SZ];
 	char nameserver6[STR_SZ];
 	int state6;
