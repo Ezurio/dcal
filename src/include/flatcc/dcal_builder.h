@@ -45,6 +45,8 @@ static const flatbuffers_voffset_t __DCAL_session_Profile_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Profile, 18)
 static const flatbuffers_voffset_t __DCAL_session_Interface_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Interface, 24)
+static const flatbuffers_voffset_t __DCAL_session_Lease_required[] = {0 };
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Lease, 12)
 static const flatbuffers_voffset_t __DCAL_session_P_entry_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_P_entry, 3)
 static const flatbuffers_voffset_t __DCAL_session_Profile_list_required[] = {0 };
@@ -132,6 +134,15 @@ static inline DCAL_session_Profile_ref_t DCAL_session_Profile_create(flatbuffers
   v16, v17, v18, v19,\
   v20, v21, v22, v23
 static inline DCAL_session_Interface_ref_t DCAL_session_Interface_create(flatbuffers_builder_t *B __DCAL_session_Interface_formal_args);
+#define __DCAL_session_Lease_formal_args ,\
+  flatbuffers_string_ref_t v0, flatbuffers_string_ref_t v1, flatbuffers_string_ref_t v2, flatbuffers_string_ref_t v3,\
+  int64_t v4, uint32_t v5, flatbuffers_string_ref_t v6, flatbuffers_string_ref_t v7,\
+  flatbuffers_string_ref_t v8, flatbuffers_string_ref_t v9, flatbuffers_string_ref_t v10, flatbuffers_string_ref_t v11
+#define __DCAL_session_Lease_call_args ,\
+  v0, v1, v2, v3,\
+  v4, v5, v6, v7,\
+  v8, v9, v10, v11
+static inline DCAL_session_Lease_ref_t DCAL_session_Lease_create(flatbuffers_builder_t *B __DCAL_session_Lease_formal_args);
 #define __DCAL_session_P_entry_formal_args , flatbuffers_string_ref_t v0, flatbuffers_bool_t v1, flatbuffers_bool_t v2
 #define __DCAL_session_P_entry_call_args , v0, v1, v2
 static inline DCAL_session_P_entry_ref_t DCAL_session_P_entry_create(flatbuffers_builder_t *B __DCAL_session_P_entry_formal_args);
@@ -164,6 +175,7 @@ struct DCAL_session_Cmd_pl_union_ref {
         DCAL_session_Globals_ref_t Globals;
         DCAL_session_Profile_ref_t Profile;
         DCAL_session_Interface_ref_t Interface;
+        DCAL_session_Lease_ref_t Lease;
         DCAL_session_U32_ref_t U32;
         DCAL_session_String_ref_t String;
         DCAL_session_Time_ref_t Time;
@@ -179,6 +191,8 @@ static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_Profile(DCA
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_Profile; uref.Profile = ref; return uref; }
 static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_Interface(DCAL_session_Interface_ref_t ref)
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_Interface; uref.Interface = ref; return uref; }
+static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_Lease(DCAL_session_Lease_ref_t ref)
+{ DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_Lease; uref.Lease = ref; return uref; }
 static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_U32(DCAL_session_U32_ref_t ref)
 { DCAL_session_Cmd_pl_union_ref_t uref; uref.type = DCAL_session_Cmd_pl_U32; uref.U32 = ref; return uref; }
 static inline DCAL_session_Cmd_pl_union_ref_t DCAL_session_Cmd_pl_as_String(DCAL_session_String_ref_t ref)
@@ -480,6 +494,40 @@ static inline DCAL_session_Interface_ref_t DCAL_session_Interface_create(flatbuf
 }
 __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Interface, DCAL_session_Interface_identifier, DCAL_session_Interface_type_identifier)
 
+__flatbuffers_build_string_field(0, flatbuffers_, DCAL_session_Lease_interface)
+__flatbuffers_build_string_field(1, flatbuffers_, DCAL_session_Lease_address)
+__flatbuffers_build_string_field(2, flatbuffers_, DCAL_session_Lease_subnet_mask)
+__flatbuffers_build_string_field(3, flatbuffers_, DCAL_session_Lease_routers)
+__flatbuffers_build_scalar_field(4, flatbuffers_, DCAL_session_Lease_lease_time, flatbuffers_int64, int64_t, 8, 8, 0)
+__flatbuffers_build_scalar_field(5, flatbuffers_, DCAL_session_Lease_message_type, flatbuffers_uint32, uint32_t, 4, 4, 0)
+__flatbuffers_build_string_field(6, flatbuffers_, DCAL_session_Lease_dns_servers)
+__flatbuffers_build_string_field(7, flatbuffers_, DCAL_session_Lease_dhcp_server)
+__flatbuffers_build_string_field(8, flatbuffers_, DCAL_session_Lease_domain_name)
+__flatbuffers_build_string_field(9, flatbuffers_, DCAL_session_Lease_renew)
+__flatbuffers_build_string_field(10, flatbuffers_, DCAL_session_Lease_rebind)
+__flatbuffers_build_string_field(11, flatbuffers_, DCAL_session_Lease_expire)
+
+static inline DCAL_session_Lease_ref_t DCAL_session_Lease_create(flatbuffers_builder_t *B __DCAL_session_Lease_formal_args)
+{
+    if (DCAL_session_Lease_start(B)
+        || DCAL_session_Lease_lease_time_add(B, v4)
+        || DCAL_session_Lease_interface_add(B, v0)
+        || DCAL_session_Lease_address_add(B, v1)
+        || DCAL_session_Lease_subnet_mask_add(B, v2)
+        || DCAL_session_Lease_routers_add(B, v3)
+        || DCAL_session_Lease_message_type_add(B, v5)
+        || DCAL_session_Lease_dns_servers_add(B, v6)
+        || DCAL_session_Lease_dhcp_server_add(B, v7)
+        || DCAL_session_Lease_domain_name_add(B, v8)
+        || DCAL_session_Lease_renew_add(B, v9)
+        || DCAL_session_Lease_rebind_add(B, v10)
+        || DCAL_session_Lease_expire_add(B, v11)) {
+        return 0;
+    }
+    return DCAL_session_Lease_end(B);
+}
+__flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Lease, DCAL_session_Lease_identifier, DCAL_session_Lease_type_identifier)
+
 __flatbuffers_build_string_field(0, flatbuffers_, DCAL_session_P_entry_name)
 __flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_P_entry_active, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
 __flatbuffers_build_scalar_field(2, flatbuffers_, DCAL_session_P_entry_autoprof, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
@@ -577,6 +625,7 @@ __flatbuffers_build_union_field(2, flatbuffers_, DCAL_session_Command_cmd_pl, DC
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Globals, DCAL_session_Globals)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Profile, DCAL_session_Profile)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Interface, DCAL_session_Interface)
+__flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Lease, DCAL_session_Lease)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, U32, DCAL_session_U32)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, String, DCAL_session_String)
 __flatbuffers_build_union_member_field(flatbuffers_, DCAL_session_Command_cmd_pl, DCAL_session_Cmd_pl, Time, DCAL_session_Time)
