@@ -76,6 +76,12 @@ flatbuffers_thash_t verify_buffer(const void * buf, const size_t size)
 				ret = 0;
 				}
 			break;
+		case ns(Lease_type_hash):
+			if(ns(Lease_verify_as_root(buf,size))){
+				DBGERROR("%s: unable to verify buffer\n", __func__);
+				ret = 0;
+				}
+			break;
 		case ns(Time_type_hash):
 			if(ns(Time_verify_as_root(buf,size))){
 				DBGERROR("%s: unable to verify buffer\n", __func__);
