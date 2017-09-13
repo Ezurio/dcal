@@ -20,6 +20,7 @@ static int __DCAL_session_Globals_table_verifier(flatcc_table_verifier_descripto
 static int __DCAL_session_Profile_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_Interface_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_Lease_table_verifier(flatcc_table_verifier_descriptor_t *td);
+static int __DCAL_session_Default_route_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_P_entry_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_Profile_list_table_verifier(flatcc_table_verifier_descriptor_t *td);
 static int __DCAL_session_Scan_item_table_verifier(flatcc_table_verifier_descriptor_t *td);
@@ -35,10 +36,11 @@ static int __DCAL_session_Cmd_pl_union_verifier(flatcc_table_verifier_descriptor
     case 2: return flatcc_verify_table_field(td, id, 0, __DCAL_session_Profile_table_verifier);
     case 3: return flatcc_verify_table_field(td, id, 0, __DCAL_session_Interface_table_verifier);
     case 4: return flatcc_verify_table_field(td, id, 0, __DCAL_session_Lease_table_verifier);
-    case 5: return flatcc_verify_table_field(td, id, 0, __DCAL_session_U32_table_verifier);
-    case 6: return flatcc_verify_table_field(td, id, 0, __DCAL_session_String_table_verifier);
-    case 7: return flatcc_verify_table_field(td, id, 0, __DCAL_session_Time_table_verifier);
-    case 8: return flatcc_verify_table_field(td, id, 0, __DCAL_session_Filexfer_table_verifier);
+    case 5: return flatcc_verify_table_field(td, id, 0, __DCAL_session_Default_route_table_verifier);
+    case 6: return flatcc_verify_table_field(td, id, 0, __DCAL_session_U32_table_verifier);
+    case 7: return flatcc_verify_table_field(td, id, 0, __DCAL_session_String_table_verifier);
+    case 8: return flatcc_verify_table_field(td, id, 0, __DCAL_session_Time_table_verifier);
+    case 9: return flatcc_verify_table_field(td, id, 0, __DCAL_session_Filexfer_table_verifier);
     default: return flatcc_verify_ok;
     }
 }
@@ -414,6 +416,41 @@ static inline int DCAL_session_Lease_verify_as_root_with_identifier(const void *
 static inline int DCAL_session_Lease_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
 { __flatbuffers_thash_write_to_pe(&thash, thash);
   return flatcc_verify_table_as_root(buf, bufsiz, thash ? (const char *)&thash : 0, &__DCAL_session_Lease_table_verifier);
+}
+
+static int __DCAL_session_Default_route_table_verifier(flatcc_table_verifier_descriptor_t *td)
+{
+    int ret;
+    if ((ret = flatcc_verify_string_field(td, 0, 0) /* interface */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 1, 0) /* destination */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 2, 0) /* gateway */)) return ret;
+    if ((ret = flatcc_verify_field(td, 3, 4, 4) /* flags */)) return ret;
+    if ((ret = flatcc_verify_field(td, 4, 4, 4) /* metric */)) return ret;
+    if ((ret = flatcc_verify_string_field(td, 5, 0) /* subnet_mask */)) return ret;
+    if ((ret = flatcc_verify_field(td, 6, 4, 4) /* mtu */)) return ret;
+    if ((ret = flatcc_verify_field(td, 7, 4, 4) /* window */)) return ret;
+    if ((ret = flatcc_verify_field(td, 8, 4, 4) /* irtt */)) return ret;
+    return flatcc_verify_ok;
+}
+
+static inline int DCAL_session_Default_route_verify_as_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, DCAL_session_Default_route_identifier, &__DCAL_session_Default_route_table_verifier);
+}
+
+static inline int DCAL_session_Default_route_verify_as_typed_root(const void *buf, size_t bufsiz)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, DCAL_session_Default_route_type_identifier, &__DCAL_session_Default_route_table_verifier);
+}
+
+static inline int DCAL_session_Default_route_verify_as_root_with_identifier(const void *buf, size_t bufsiz, const char *fid)
+{
+    return flatcc_verify_table_as_root(buf, bufsiz, fid, &__DCAL_session_Default_route_table_verifier);
+}
+
+static inline int DCAL_session_Default_route_verify_as_root_with_type_hash(const void *buf, size_t bufsiz, flatbuffers_thash_t thash)
+{ __flatbuffers_thash_write_to_pe(&thash, thash);
+  return flatcc_verify_table_as_root(buf, bufsiz, thash ? (const char *)&thash : 0, &__DCAL_session_Default_route_table_verifier);
 }
 
 static int __DCAL_session_P_entry_table_verifier(flatcc_table_verifier_descriptor_t *td)

@@ -49,6 +49,9 @@ typedef flatbuffers_uoffset_t *DCAL_session_Interface_mutable_vec_t;
 typedef const struct DCAL_session_Lease_table *DCAL_session_Lease_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_Lease_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_Lease_mutable_vec_t;
+typedef const struct DCAL_session_Default_route_table *DCAL_session_Default_route_table_t;
+typedef const flatbuffers_uoffset_t *DCAL_session_Default_route_vec_t;
+typedef flatbuffers_uoffset_t *DCAL_session_Default_route_mutable_vec_t;
 typedef const struct DCAL_session_P_entry_table *DCAL_session_P_entry_table_t;
 typedef const flatbuffers_uoffset_t *DCAL_session_P_entry_vec_t;
 typedef flatbuffers_uoffset_t *DCAL_session_P_entry_mutable_vec_t;
@@ -106,18 +109,19 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_SETINTERFACE ((DCAL_session_Commands_enum_t)12UL)
 #define DCAL_session_Commands_DELINTERFACE ((DCAL_session_Commands_enum_t)13UL)
 #define DCAL_session_Commands_GETLEASE ((DCAL_session_Commands_enum_t)14UL)
-#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)15UL)
-#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)16UL)
-#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)17UL)
-#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)18UL)
-#define DCAL_session_Commands_SETTIME ((DCAL_session_Commands_enum_t)19UL)
-#define DCAL_session_Commands_GETTIME ((DCAL_session_Commands_enum_t)20UL)
-#define DCAL_session_Commands_NTPDATE ((DCAL_session_Commands_enum_t)21UL)
-#define DCAL_session_Commands_FILEPUSH ((DCAL_session_Commands_enum_t)22UL)
-#define DCAL_session_Commands_FILEPULL ((DCAL_session_Commands_enum_t)23UL)
-#define DCAL_session_Commands_FWUPDATE ((DCAL_session_Commands_enum_t)24UL)
-#define DCAL_session_Commands_CLIFILE ((DCAL_session_Commands_enum_t)25UL)
-#define DCAL_session_Commands_GETLOGS ((DCAL_session_Commands_enum_t)26UL)
+#define DCAL_session_Commands_GETDEFAULTROUTE ((DCAL_session_Commands_enum_t)15UL)
+#define DCAL_session_Commands_WIFIENABLE ((DCAL_session_Commands_enum_t)16UL)
+#define DCAL_session_Commands_WIFIDISABLE ((DCAL_session_Commands_enum_t)17UL)
+#define DCAL_session_Commands_WIFIRESTART ((DCAL_session_Commands_enum_t)18UL)
+#define DCAL_session_Commands_SYSTEMREBOOT ((DCAL_session_Commands_enum_t)19UL)
+#define DCAL_session_Commands_SETTIME ((DCAL_session_Commands_enum_t)20UL)
+#define DCAL_session_Commands_GETTIME ((DCAL_session_Commands_enum_t)21UL)
+#define DCAL_session_Commands_NTPDATE ((DCAL_session_Commands_enum_t)22UL)
+#define DCAL_session_Commands_FILEPUSH ((DCAL_session_Commands_enum_t)23UL)
+#define DCAL_session_Commands_FILEPULL ((DCAL_session_Commands_enum_t)24UL)
+#define DCAL_session_Commands_FWUPDATE ((DCAL_session_Commands_enum_t)25UL)
+#define DCAL_session_Commands_CLIFILE ((DCAL_session_Commands_enum_t)26UL)
+#define DCAL_session_Commands_GETLOGS ((DCAL_session_Commands_enum_t)27UL)
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -137,6 +141,7 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_SETINTERFACE: return "SETINTERFACE";
     case DCAL_session_Commands_DELINTERFACE: return "DELINTERFACE";
     case DCAL_session_Commands_GETLEASE: return "GETLEASE";
+    case DCAL_session_Commands_GETDEFAULTROUTE: return "GETDEFAULTROUTE";
     case DCAL_session_Commands_WIFIENABLE: return "WIFIENABLE";
     case DCAL_session_Commands_WIFIDISABLE: return "WIFIDISABLE";
     case DCAL_session_Commands_WIFIRESTART: return "WIFIRESTART";
@@ -860,6 +865,65 @@ static inline int DCAL_session_Lease_expire_is_present(DCAL_session_Lease_table_
 __flatbuffers_field_present(11, t)
 
 
+struct DCAL_session_Default_route_table { uint8_t unused__; };
+
+#ifndef DCAL_session_Default_route_identifier
+#define DCAL_session_Default_route_identifier flatbuffers_identifier
+#endif
+#define DCAL_session_Default_route_type_hash ((flatbuffers_thash_t)0xbeb749ee)
+#define DCAL_session_Default_route_type_identifier "\xee\x49\xb7\xbe"
+static inline size_t DCAL_session_Default_route_vec_len(DCAL_session_Default_route_vec_t vec)
+__flatbuffers_vec_len(vec)
+static inline DCAL_session_Default_route_table_t DCAL_session_Default_route_vec_at(DCAL_session_Default_route_vec_t vec, size_t i)
+__flatbuffers_offset_vec_at(DCAL_session_Default_route_table_t, vec, i, 0)
+__flatbuffers_table_as_root(DCAL_session_Default_route)
+
+static inline flatbuffers_string_t DCAL_session_Default_route_interface(DCAL_session_Default_route_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 0, t, 0)
+static inline int DCAL_session_Default_route_interface_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(0, t)
+
+static inline flatbuffers_string_t DCAL_session_Default_route_destination(DCAL_session_Default_route_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 1, t, 0)
+static inline int DCAL_session_Default_route_destination_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(1, t)
+
+static inline flatbuffers_string_t DCAL_session_Default_route_gateway(DCAL_session_Default_route_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 2, t, 0)
+static inline int DCAL_session_Default_route_gateway_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(2, t)
+
+static inline uint32_t DCAL_session_Default_route_flags(DCAL_session_Default_route_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 3, 0, t)
+static inline int DCAL_session_Default_route_flags_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(3, t)
+
+static inline uint32_t DCAL_session_Default_route_metric(DCAL_session_Default_route_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 4, 0, t)
+static inline int DCAL_session_Default_route_metric_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(4, t)
+
+static inline flatbuffers_string_t DCAL_session_Default_route_subnet_mask(DCAL_session_Default_route_table_t t)
+__flatbuffers_vector_field(flatbuffers_string_t, 5, t, 0)
+static inline int DCAL_session_Default_route_subnet_mask_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(5, t)
+
+static inline uint32_t DCAL_session_Default_route_mtu(DCAL_session_Default_route_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 6, 0, t)
+static inline int DCAL_session_Default_route_mtu_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(6, t)
+
+static inline uint32_t DCAL_session_Default_route_window(DCAL_session_Default_route_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 7, 0, t)
+static inline int DCAL_session_Default_route_window_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(7, t)
+
+static inline uint32_t DCAL_session_Default_route_irtt(DCAL_session_Default_route_table_t t)
+__flatbuffers_scalar_field(flatbuffers_uint32, 8, 0, t)
+static inline int DCAL_session_Default_route_irtt_is_present(DCAL_session_Default_route_table_t t)
+__flatbuffers_field_present(8, t)
+
+
 struct DCAL_session_P_entry_table { uint8_t unused__; };
 
 #ifndef DCAL_session_P_entry_identifier
@@ -1030,10 +1094,11 @@ __flatbuffers_define_integer_type(DCAL_session_Cmd_pl, DCAL_session_Cmd_pl_union
 #define DCAL_session_Cmd_pl_Profile ((DCAL_session_Cmd_pl_union_type_t)2U)
 #define DCAL_session_Cmd_pl_Interface ((DCAL_session_Cmd_pl_union_type_t)3U)
 #define DCAL_session_Cmd_pl_Lease ((DCAL_session_Cmd_pl_union_type_t)4U)
-#define DCAL_session_Cmd_pl_U32 ((DCAL_session_Cmd_pl_union_type_t)5U)
-#define DCAL_session_Cmd_pl_String ((DCAL_session_Cmd_pl_union_type_t)6U)
-#define DCAL_session_Cmd_pl_Time ((DCAL_session_Cmd_pl_union_type_t)7U)
-#define DCAL_session_Cmd_pl_Filexfer ((DCAL_session_Cmd_pl_union_type_t)8U)
+#define DCAL_session_Cmd_pl_Default_route ((DCAL_session_Cmd_pl_union_type_t)5U)
+#define DCAL_session_Cmd_pl_U32 ((DCAL_session_Cmd_pl_union_type_t)6U)
+#define DCAL_session_Cmd_pl_String ((DCAL_session_Cmd_pl_union_type_t)7U)
+#define DCAL_session_Cmd_pl_Time ((DCAL_session_Cmd_pl_union_type_t)8U)
+#define DCAL_session_Cmd_pl_Filexfer ((DCAL_session_Cmd_pl_union_type_t)9U)
 
 static inline const char *DCAL_session_Cmd_pl_type_name(DCAL_session_Cmd_pl_union_type_t type)
 {
@@ -1043,6 +1108,7 @@ static inline const char *DCAL_session_Cmd_pl_type_name(DCAL_session_Cmd_pl_unio
     case DCAL_session_Cmd_pl_Profile: return "Profile";
     case DCAL_session_Cmd_pl_Interface: return "Interface";
     case DCAL_session_Cmd_pl_Lease: return "Lease";
+    case DCAL_session_Cmd_pl_Default_route: return "Default_route";
     case DCAL_session_Cmd_pl_U32: return "U32";
     case DCAL_session_Cmd_pl_String: return "String";
     case DCAL_session_Cmd_pl_Time: return "Time";
