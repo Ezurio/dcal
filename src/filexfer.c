@@ -511,3 +511,152 @@ int dcal_process_cli_command_file(laird_session_handle session, char * src_file)
 	return ret;
 }
 
+int dcal_cert_push_to_wb(laird_session_handle session,
+                             char * local_cert_name)
+{
+	int ret = DCAL_SUCCESS;
+	FILE *file= NULL;
+	int fd, r,w, total, mode;
+	size_t size, filesize;
+	struct stat stats;
+	internal_session_handle s = (internal_session_handle)session;
+	char *buf;
+	REPORT_ENTRY_DEBUG;
+
+	if (local_cert_name==NULL)
+		return REPORT_RETURN_DBG(DCAL_INVALID_PARAMETER);
+
+	if (!validate_session(session))
+		return REPORT_RETURN_DBG(DCAL_INVALID_HANDLE);
+
+	buf = malloc(FILEBUFSZ);
+	if (!buf)
+		return REPORT_RETURN_DBG(DCAL_NO_MEMORY);
+	memset(buf, 0, FILEBUFSZ);
+
+	//TODO add cert file verification
+	file = fopen(local_cert_name, "r");
+	if (!file)
+		return REPORT_RETURN_DBG(DCAL_LOCAL_FILE_ACCESS_DENIED);
+
+	fd=fileno(file);
+	if(fd < 0) {
+		ret = DCAL_LOCAL_FILE_ACCESS_DENIED;
+		goto closefile;
+	}
+
+	size = fstat(fd, &stats);
+	if (size < 0) {
+		ret = DCAL_LOCAL_FILE_ACCESS_DENIED;
+		goto closefile;
+	}
+
+	filesize = stats.st_size;
+	mode = stats.st_mode & ~S_IFMT;//TODO - do we need to check for directory instead of file?
+
+	ns(Cmd_pl_union_ref_t) cmd_pl;
+	flatcc_builder_t *B;
+	B=&s->builder;
+	flatcc_builder_reset(B);
+
+	ns(Filexfer_start(B));
+
+	ns(Filexfer_file_path_create_str(B, local_cert_name));
+	ns(Filexfer_size_add(B, filesize));
+	ns(Filexfer_mode_add(B, mode));
+	ns(Filexfer_cert_add(B, 1));
+
+	cmd_pl.Filexfer = ns(Filexfer_end(B));
+	cmd_pl.type = ns(Cmd_pl_Filexfer);
+
+	flatbuffers_buffer_start(B, ns(Command_type_identifier));
+	ns(Command_start(B));
+	ns(Command_cmd_pl_add(B, cmd_pl));
+	ns(Command_command_add(B, ns(Commands_FILEPUSH)));
+	ns(Command_end_as_root(B));
+
+	size=flatcc_builder_get_buffer_size(B);
+	assert(size<=FILEBUFSZ);
+	flatcc_builder_copy_buffer(B, buf, size);
+
+	ret = lock_session_channel(session);
+	if(ret)
+		goto closefile;
+
+	ret=dcal_send_buffer(session, buf, size);
+
+	if (ret!=DCAL_SUCCESS) {
+		unlock_session_channel(session);
+		goto closefile;
+	}
+
+	size = FILEBUFSZ;
+	ret = dcal_read_buffer(session, buf, &size);
+
+	if(ret != DCAL_SUCCESS) {
+		unlock_session_channel(session);
+		goto closefile;
+	}
+
+	flatbuffers_thash_t buftype = verify_buffer(buf, size);
+	if(buftype != ns(Handshake_type_hash)){
+		DBGERROR("could not verify handshake buffer.  Validated as: %s\n", buftype_to_string(buftype));
+		ret = DCAL_FLATBUFF_ERROR;
+		unlock_session_channel(session);
+		goto closefile;
+	}
+	ret = handshake_error_code(ns(Handshake_as_root(buf)));
+
+	if (ret != DCAL_SUCCESS){
+		unlock_session_channel(session);
+		goto closefile;
+	}
+
+	total = 0;
+	do {
+		r = fread(buf, 1, FILEBUFSZ, file);
+		if (r==0) break;
+		else if (r<0){
+			DBGERROR("Error reading file: %s\n", strerror(errno));
+			ret = DCAL_LOCAL_FILE_ACCESS_DENIED;
+			unlock_session_channel(session);
+			goto closefile;
+		}
+		DBGINFO("Read %d bytes\n", r);
+
+		ret=dcal_send_buffer(session, buf, r);
+		if(ret!=DCAL_SUCCESS){
+			DBGERROR("Error writing to socket: %s\n", dcal_err_to_string(ret));
+			unlock_session_channel(session);
+			goto closefile;
+		}
+		DBGINFO("Wrote %d bytes\n", r);
+
+		total+=r;
+	}while (total < filesize);
+
+	DBGINFO("Wrote %d bytes total\n", total);
+
+	size = FILEBUFSZ;
+	ret = dcal_read_buffer(session, buf, &size);
+
+	unlock_session_channel(session);
+
+	if(ret != DCAL_SUCCESS) {
+		goto closefile;
+	}
+
+	buftype = verify_buffer(buf, size);
+	if(buftype != ns(Handshake_type_hash)){
+		DBGERROR("could not verify handshake buffer.  Validated as: %s\n", buftype_to_string(buftype));
+		ret = DCAL_FLATBUFF_ERROR;
+		goto closefile;
+	}
+	ret = handshake_error_code(ns(Handshake_as_root(buf)));
+
+	closefile:
+	fclose(file);
+	safe_free(buf);
+
+	return REPORT_RETURN_DBG(ret);
+}
