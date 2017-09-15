@@ -60,7 +60,7 @@ __flatbuffers_build_table(flatbuffers_, DCAL_session_Scan_list, 1)
 static const flatbuffers_voffset_t __DCAL_session_Time_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Time, 2)
 static const flatbuffers_voffset_t __DCAL_session_Filexfer_required[] = {0 };
-__flatbuffers_build_table(flatbuffers_, DCAL_session_Filexfer, 3)
+__flatbuffers_build_table(flatbuffers_, DCAL_session_Filexfer, 4)
 static const flatbuffers_voffset_t __DCAL_session_Command_required[] = {0 };
 __flatbuffers_build_table(flatbuffers_, DCAL_session_Command, 3)
 #define __DCAL_session_Handshake_formal_args ,\
@@ -169,8 +169,8 @@ static inline DCAL_session_Scan_list_ref_t DCAL_session_Scan_list_create(flatbuf
 #define __DCAL_session_Time_formal_args , int32_t v0, int32_t v1
 #define __DCAL_session_Time_call_args , v0, v1
 static inline DCAL_session_Time_ref_t DCAL_session_Time_create(flatbuffers_builder_t *B __DCAL_session_Time_formal_args);
-#define __DCAL_session_Filexfer_formal_args , flatbuffers_string_ref_t v0, int32_t v1, int32_t v2
-#define __DCAL_session_Filexfer_call_args , v0, v1, v2
+#define __DCAL_session_Filexfer_formal_args , flatbuffers_string_ref_t v0, int32_t v1, int32_t v2, flatbuffers_bool_t v3
+#define __DCAL_session_Filexfer_call_args , v0, v1, v2, v3
 static inline DCAL_session_Filexfer_ref_t DCAL_session_Filexfer_create(flatbuffers_builder_t *B __DCAL_session_Filexfer_formal_args);
 #define __DCAL_session_Command_formal_args , DCAL_session_Commands_enum_t v0, DCAL_session_Cmd_pl_union_ref_t v2
 #define __DCAL_session_Command_call_args , v0, v2
@@ -647,13 +647,15 @@ __flatbuffers_build_table_prolog(flatbuffers_, DCAL_session_Time, DCAL_session_T
 __flatbuffers_build_string_field(0, flatbuffers_, DCAL_session_Filexfer_file_path)
 __flatbuffers_build_scalar_field(1, flatbuffers_, DCAL_session_Filexfer_size, flatbuffers_int32, int32_t, 4, 4, 0)
 __flatbuffers_build_scalar_field(2, flatbuffers_, DCAL_session_Filexfer_mode, flatbuffers_int32, int32_t, 4, 4, 0)
+__flatbuffers_build_scalar_field(3, flatbuffers_, DCAL_session_Filexfer_cert, flatbuffers_bool, flatbuffers_bool_t, 1, 1, 0)
 
 static inline DCAL_session_Filexfer_ref_t DCAL_session_Filexfer_create(flatbuffers_builder_t *B __DCAL_session_Filexfer_formal_args)
 {
     if (DCAL_session_Filexfer_start(B)
         || DCAL_session_Filexfer_file_path_add(B, v0)
         || DCAL_session_Filexfer_size_add(B, v1)
-        || DCAL_session_Filexfer_mode_add(B, v2)) {
+        || DCAL_session_Filexfer_mode_add(B, v2)
+        || DCAL_session_Filexfer_cert_add(B, v3)) {
         return 0;
     }
     return DCAL_session_Filexfer_end(B);

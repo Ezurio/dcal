@@ -602,6 +602,7 @@ static int __DCAL_session_Filexfer_table_verifier(flatcc_table_verifier_descript
     if ((ret = flatcc_verify_string_field(td, 0, 0) /* file_path */)) return ret;
     if ((ret = flatcc_verify_field(td, 1, 4, 4) /* size */)) return ret;
     if ((ret = flatcc_verify_field(td, 2, 4, 4) /* mode */)) return ret;
+    if ((ret = flatcc_verify_field(td, 3, 1, 1) /* cert */)) return ret;
     return flatcc_verify_ok;
 }
 
