@@ -10,6 +10,7 @@
 #include <libssh/libssh.h>
 #include <libssh/server.h>
 
+#define file_size 256
 #define cert_size 1024
 
 #define DUMPLOCATION {printf("%s: %d\n", __func__, __LINE__);}
@@ -21,9 +22,10 @@
 #define param_max_sz 127
 #define param_max_sz_with_null (param_max_sz+1)
 
-char local_file[256];
-char remote_file[256];
+char local_file[file_size];
+char remote_file[file_size];
 bool sendfile = true;
+bool certificate = false;
 int verbose_lvl = 0;
 
 void usage(char * app_name)
@@ -41,6 +43,7 @@ void usage(char * app_name)
 	       "  -l <value>      local filename (with path) (defaults to remote name)\n"
 	       "  -r <value>      remote filename (defaults to local basename)\n"
 	       "  -x <value>      g==get file from remote, otherwise send to remote\n"
+	       "  -c <value>      local certificate (with path)\n"
 	       "\nexample: %s -h 192.168.2.114 -p 1234 -u username -P apwd -ddd -l foo.txt -r foo.txt -x g\n\n", app_name);
 	printf("(note sending a file to remote will always be placed in remote's /tmp directory\n");
 }
@@ -65,6 +68,7 @@ int session_connect( laird_session_handle session, int argc, char *argv[])
 		{"local_file", required_argument, NULL, 'l'},
 		{"remote_file", required_argument, NULL, 'r'},
 		{"direction", required_argument, NULL, 'x'},
+		{"certificate", required_argument, NULL, 'c'},
 		{NULL, 0, NULL, 0}
 	};
 	int c;
@@ -74,7 +78,7 @@ int session_connect( laird_session_handle session, int argc, char *argv[])
 	strncpy(user, DEFAULT_USER, param_max_sz);
 	strncpy(password, DEFAULT_PWD, param_max_sz);
 
-	while ((c=getopt_long(argc,argv,"h:p:u:P:l:r:x:vd?",longopt,&optidx)) != -1) {
+	while ((c=getopt_long(argc,argv,"h:p:u:P:l:r:x:vd:c:?",longopt,&optidx)) != -1) {
 		switch(c) {
 		case 'v':
 			ssh_options_set(session, SSH_OPTIONS_LOG_VERBOSITY, &verbosity);
@@ -95,13 +99,17 @@ int session_connect( laird_session_handle session, int argc, char *argv[])
 			verbose_lvl++;
 			break;
 		case 'l':
-			strncpy(local_file, optarg, 256);
+			strncpy(local_file, optarg, file_size);
 			break;
 		case 'r':
-			strncpy(remote_file, optarg, 256);
+			strncpy(remote_file, optarg, file_size);
 			break;
 		case 'x':
 			sendfile = *((char*)optarg)!='g';
+			break;
+		case 'c':
+			strncpy(local_file, optarg, file_size);
+			certificate = true;
 			break;
 		case '?':
 			usage(argv[0]);
@@ -146,12 +154,12 @@ int session_connect( laird_session_handle session, int argc, char *argv[])
 
 	if (sendfile){
 		if (remote_file[0]==0)
-			strncpy(remote_file, local_file, 256);
+			strncpy(remote_file, local_file, file_size);
 	}
 	else if (local_file[0]==0){
-		char temp[256];
-		strncpy(temp, remote_file, 256);
-		strncpy(local_file, basename(temp), 256);
+		char temp[file_size];
+		strncpy(temp, remote_file, file_size);
+		strncpy(local_file, basename(temp), file_size);
 	}
 
 	ret = dcal_session_open(session);
@@ -193,8 +201,12 @@ int main (int argc, char *argv[])
 	}
 
 // device interaction
-if (sendfile)
-	ret =dcal_file_push_to_wb(session, local_file, remote_file);
+if (sendfile){
+	if (certificate)
+		ret =dcal_cert_push_to_wb(session, local_file);
+	else
+		ret =dcal_file_push_to_wb(session, local_file, remote_file);
+}
 else
 	ret = dcal_file_pull_from_wb(session, remote_file, local_file);
 
