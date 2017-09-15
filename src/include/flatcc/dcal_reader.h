@@ -1087,6 +1087,11 @@ __flatbuffers_scalar_field(flatbuffers_int32, 2, 0, t)
 static inline int DCAL_session_Filexfer_mode_is_present(DCAL_session_Filexfer_table_t t)
 __flatbuffers_field_present(2, t)
 
+static inline flatbuffers_bool_t DCAL_session_Filexfer_cert(DCAL_session_Filexfer_table_t t)
+__flatbuffers_scalar_field(flatbuffers_bool, 3, 0, t)
+static inline int DCAL_session_Filexfer_cert_is_present(DCAL_session_Filexfer_table_t t)
+__flatbuffers_field_present(3, t)
+
 typedef uint8_t DCAL_session_Cmd_pl_union_type_t;
 __flatbuffers_define_integer_type(DCAL_session_Cmd_pl, DCAL_session_Cmd_pl_union_type_t, 8)
 #define DCAL_session_Cmd_pl_NONE ((DCAL_session_Cmd_pl_union_type_t)0U)
