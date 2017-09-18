@@ -77,7 +77,7 @@ int dcal_wifi_global_create( laird_global_handle * global)
 		}
 	#endif // STATIC_MEM
 	}
-	if (ret==DCAL_SUCCESS);
+	if (ret==DCAL_SUCCESS)
 		*global = handle;
 	return REPORT_RETURN_DBG(ret);
 }
