@@ -127,7 +127,7 @@ int dcal_wifi_profile_create( laird_profile_handle * profile)
 		}
 	#endif // STATIC_MEM
 	}
-	if (ret==DCAL_SUCCESS);
+	if (ret==DCAL_SUCCESS)
 		*profile = handle;
 	return REPORT_RETURN_DBG(ret);
 }
