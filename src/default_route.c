@@ -44,7 +44,7 @@ static void clear_and_strncpy( char * dest, const char * src, size_t size)
 	strncpy(dest, src, size);
 }
 
-int dcal_wifi_default_route_create( laird_default_route_handle * default_route)
+static int default_route_create( laird_default_route_handle * default_route)
 {
 	internal_default_route_handle handle=NULL;
 	int ret = DCAL_SUCCESS;
@@ -93,6 +93,8 @@ int dcal_wifi_default_route_pull( laird_session_handle session,
 	//Its ok if interface_name is NULL
 	if ((session == NULL) || (default_route == NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if ((ret = default_route_create(default_route)) != DCAL_SUCCESS)
+		return ret;
 	else if (validate_handle(default_routes, default_route))
 		ret = DCAL_HANDLE_IN_USE;
 	else if (!validate_session(session))
@@ -158,10 +160,6 @@ int dcal_wifi_default_route_pull( laird_session_handle session,
 			DBGERROR("Failed to retrieve default_route.  Error received: %d\n",ret);
 			return REPORT_RETURN_DBG(ret);
 		}
-
-		//if valid, get handle (ifdef for STATIC or not)
-		if (dcal_wifi_default_route_create(default_route) != DCAL_SUCCESS)
-			return REPORT_RETURN_DBG(ret);
 
 		assert(*default_route);
 		//copy data from buffer to handle

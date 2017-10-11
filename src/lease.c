@@ -44,7 +44,7 @@ static void clear_and_strncpy( char * dest, const char * src, size_t size)
 	strncpy(dest, src, size);
 }
 
-int dcal_wifi_lease_create( laird_lease_handle * lease)
+static int lease_create( laird_lease_handle * lease)
 {
 	internal_lease_handle handle=NULL;
 	int ret = DCAL_SUCCESS;
@@ -92,6 +92,8 @@ int dcal_wifi_lease_pull( laird_session_handle session,
 
 	if ((session == NULL) || (lease == NULL) || (interfaceName == NULL))
 		ret = DCAL_INVALID_PARAMETER;
+	else if ((ret = lease_create(lease)) != DCAL_SUCCESS)
+		return ret;
 	else if (validate_handle(leases, lease))
 		ret = DCAL_HANDLE_IN_USE;
 	else if (!validate_session(session))
@@ -155,9 +157,6 @@ int dcal_wifi_lease_pull( laird_session_handle session,
 			DBGERROR("Failed to retrieve lease.  Error received: %d\n",ret);
 			return REPORT_RETURN_DBG(ret);
 		}
-
-		//if valid, get handle (ifdef for STATIC or not)
-		dcal_wifi_lease_create(lease);
 
 		assert(*lease);
 		//copy data from buffer to handle
