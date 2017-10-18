@@ -6,4 +6,6 @@ int in_valid_set(char c);
 
 int validate_fqdn(char *str);
 
+void clear_and_strncpy( char * dest, const char * src, size_t size);
+
 #endif // __COMMON_H__
