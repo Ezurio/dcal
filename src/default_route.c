@@ -6,6 +6,7 @@
 #include "default_route.h"
 #include "session.h"
 #include "buffer.h"
+#include "common.h"
 
 #ifdef STATIC_MEM
 
@@ -33,15 +34,6 @@ void __attribute__ ((destructor)) default_routes_fini(void)
 	default_routes = NULL;
 	if(rc)
 		DBGERROR("freelist() failed for default_routes list with: %d\n", rc);
-}
-
-
-static void clear_and_strncpy( char * dest, const char * src, size_t size)
-{
-	assert(dest);
-	assert(src);
-	memset(dest,0,size);
-	strncpy(dest, src, size);
 }
 
 static int default_route_create( laird_default_route_handle * default_route)

@@ -6,6 +6,7 @@
 #include "interface.h"
 #include "session.h"
 #include "buffer.h"
+#include "common.h"
 
 #ifdef STATIC_MEM
 
@@ -33,15 +34,6 @@ void __attribute__ ((destructor)) interfaces_fini(void)
 	interfaces = NULL;
 	if(rc)
 		DBGERROR("freelist() failed for interfaces list with: %d\n", rc);
-}
-
-
-static void clear_and_strncpy( char * dest, const char * src, size_t size)
-{
-	assert(dest);
-	assert(src);
-	memset(dest,0,size);
-	strncpy(dest, src, size);
 }
 
 int dcal_wifi_interface_create( laird_interface_handle * interface)
