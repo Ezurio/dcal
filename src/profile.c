@@ -7,6 +7,7 @@
 #include "session.h"
 #include "buffer.h"
 #include "platform.h"
+#include "common.h"
 
 #ifdef STATIC_MEM
 
@@ -34,14 +35,6 @@ void __attribute__ ((destructor)) profiles_fini(void)
 	profiles = NULL;
 	if(rc)
 		DBGERROR("freelist() failed for profiles list with: %d\n", rc);
-}
-
-static void clear_and_strncpy( char * dest, const char * src, size_t size)
-{
-	assert(dest);
-	assert(src);
-	memset(dest,0,size);
-	strncpy(dest, src, size);
 }
 
 static void clear_security_by_index(internal_profile_handle p, int i)

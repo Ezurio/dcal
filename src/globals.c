@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "session.h"
 #include "buffer.h"
+#include "common.h"
 
 #ifdef STATIC_MEM
 
@@ -33,14 +34,6 @@ void __attribute__ ((destructor)) globals_fini(void)
 	globals = NULL;
 	if(rc)
 		DBGERROR("freelist() failed for globals list with: %d\n", rc);
-}
-
-static void clear_and_strncpy( char * dest, const char * src, size_t size)
-{
-	assert(dest);
-	assert(src);
-	memset(dest,0,size);
-	strncpy(dest, src, size);
 }
 
 int dcal_wifi_global_create( laird_global_handle * global)

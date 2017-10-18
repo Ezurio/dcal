@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include "dcal_api.h"
@@ -37,4 +38,11 @@ int validate_fqdn(char *str)
 	return 0;
 }
 
+void clear_and_strncpy( char * dest, const char * src, size_t size)
+{
+	assert(dest);
+	assert(src);
+	memset(dest,0,size);
+	strncpy(dest, src, size);
+}
 
