@@ -79,7 +79,7 @@ libssh: $(LIBSSH_TARGET) $(LIBSSH_INSTALL)
 #
 lib.local/flatcc : lib.local
 	cd lib.local && git clone git@github.com:dvidelabs/flatcc.git
-	cd lib.local/flatcc && git checkout v0.3.3
+	cd lib.local/flatcc && git checkout v0.4.3
 	cd lib.local/flatcc && patch -p1 < ../../patches/flatcc001_add_fPIC.patch
 	cp lib.local/flatcc/scripts/build.cfg.make lib.local/flatcc/scripts/build.cfg
 
