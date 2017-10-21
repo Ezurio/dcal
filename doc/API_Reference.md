@@ -9,6 +9,8 @@ This document used markdown and can be viewed in text but formatting is best vie
 | Date        | Version | Note |
 |:------------|:--------|:-----|
 |Oct. 8, 2017 | 3.1.5   |      |
+|Oct. 20, 2017 | 3.1.6  | added dcal_set_key and dcal_get_auth_methods; |
+|             |         | documentation edits                           |
 |             |         |      |
 ***
 ## Introduction ##
@@ -59,22 +61,38 @@ int dcal_set_host( laird_session_handle session, FQDN address );
 int dcal_set_port( laird_session_handle session, unsigned int port );
 int dcal_set_user( laird_session_handle session, char * user );
 int dcal_set_pw( laird_session_handle session, char * pw );
+int dcal_set_keyfile( laird_session_handle session, char * filename);
+int dcal_get_auth_methods ( laird_session_handle s, int * method );
 int dcal_session_open ( laird_session_handle session );
 int dcal_session_close( laird_session_handle session);
 ````
 #### int dcal_session_create( laird_session_handle \* session);
-The dcal_session_create call will allocate the session handle. If the API is configured for static memory, there is only a single handle available.    By default the API is configured for dynamic memory use and so multiple calls to create_session will result in multiple handles, each independent from the next.
+The dcal\_session\_create call will allocate the session handle. If the API is configured for static memory, there is only a single handle available.    By default the API is configured for dynamic memory use and so multiple calls to create_session will result in multiple handles, each independent from the next.
 #### int dcal_set_host( laird_session_handle session, FQDN address );
 dcal_set_host allows the ip address to be specified for the session.  Currently IP address is "a.b.c.d" format only.
 
 #### int dcal_set_port( laird_session_handle session, unsigned int port );
 dcal_set_port allows the selection of the tcp port at the host
+
+<span style="color:red">
+Note about authentication:
+
+dcal will first attempt to authenticate with the keys in the user's .ssh
+directory. If the user has provided a key via the following dcal_set_keyfile function, that key will be tried if still not-authenticated.  If a username and password are supplied, password authentication will then be attempted if authentication has not yet been achieved.
+</span>
+
 #### int dcal_set_user( laird_session_handle session, char * user );
 dcal_set_user allows the setting of the user for authentication
 #### int dcal_set_pw( laird_session_handle session, char * pw );
 dcal_set_pw allows the setting of the password for authentication
+#### int dcal_set_keyfile( laird_session_handle session, char * filename);
+dcal_set_keyfile allows the user to specify a specific key file for authentication. Specify the private key file name.  The public key should be named the same with the '.pub' extention.
+#### int dcal_get_auth_methods ( laird_session_handle s, int * method );
+dcal_get_auth_methods will return the types of methods via bitwise values.
+DCAS supports METHOD_PUBKEY and METHOD_PASSWORD.
+_both host and port should be set before calling_
 #### int dcal_session_open ( laird_session_handle session );
-dcal_session_open will attempt to access the specified WB.  Once a session is open, it will remain open and available until either closed by the dcal_session_close() API, a power-mode (shutdown, suspend) API, or a loss of network communication.
+dcal_session_open will attempt to authenticate with the specified WB.  Once a session is open, it will remain open and available until either closed by the dcal_session_close() API, a power-mode (shutdown, suspend) API, or a loss of network communication.
 #### int dcal_session_close( laird_session_handle session);
 dcal_session_close will close the connection and invalidate the handle.  The handle can no longer be used.
 ***
@@ -1128,7 +1146,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 //these three values define the API version between DCAL and DCAS
 #define LAIRD_SDK_MSB       3
 #define LAIRD_DCAL_MAJOR    1
-#define LAIRD_DCAL_MINOR    5
+#define LAIRD_DCAL_MINOR    6
 #include "version.h"
 
 #ifdef __cplusplus
@@ -1197,6 +1215,10 @@ typedef char ipv6_str_type[IP6_STR_SZ];
 
 #define STR_SZ 80
 
+// bitwise methods
+#define METHOD_PUBKEY   1
+#define METHOD_PASSWORD 2
+
 // API session management
 
 int dcal_session_create( laird_session_handle * session);
@@ -1204,7 +1226,8 @@ int dcal_set_host( laird_session_handle session, FQDN address );
 int dcal_set_port( laird_session_handle session, unsigned int port );
 int dcal_set_user( laird_session_handle session, char * user );
 int dcal_set_pw( laird_session_handle session, char * pw );
-//TODO int dcal_set_key( laird_session_handle session, char * keydata, int size);
+int dcal_set_keyfile( laird_session_handle session, char * filename);
+int dcal_get_auth_methods ( laird_session_handle s, int * method );
 int dcal_session_open ( laird_session_handle session );
 int dcal_session_close( laird_session_handle session);
 
