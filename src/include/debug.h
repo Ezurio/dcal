@@ -16,6 +16,7 @@ typedef enum _WF_LOGLEVEL {
 
 #ifdef DEBUG
 void DbgPrintfLvl(int level, char *format, ...);
+const char *dcal_dbg_lvl_to_string( int code);
 
 //helpers
 #define DBGERROR( format, ...)\

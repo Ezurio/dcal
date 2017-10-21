@@ -23,7 +23,7 @@ int main (int argc, char *argv[])
 
 	application_name = "default_route_test";
 
-	if((ret = session_connect_with_opts(session, argc, argv))){
+	if((ret = session_connect_with_opts(session, argc, argv, true))){
 		printf("unable to make connection\n");
 		dcal_session_close(session);
 		session = NULL;

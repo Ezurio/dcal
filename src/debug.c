@@ -47,6 +47,20 @@ struct timeval *result, *x, *y;
 	return x->tv_sec < y->tv_sec;
 }
 
+const char *dcal_dbg_lvl_to_string( int code)
+{
+	switch(code) {
+		case DCAL_DBG_NONE: return "None";
+		case DCAL_DBG_ERROR: return "Error";
+		case DCAL_DBG_WARNING: return "Warning";
+		case DCAL_DBG_INFO: return "Info";
+		case DCAL_DBG_DEBUG: return "Debug";
+		case DCAL_DBG_MSGDUMP: return "MSGDUMP";
+		case DCAL_DBG_EXCESSIVE: return "Excessive";
+		default: return "unknown";
+	}
+}
+
 void __attribute__ ((constructor)) debuginit(void)
 {
 	struct timeval tv;
@@ -71,9 +85,10 @@ void __attribute__ ((constructor)) debuginit(void)
 	debug_level = DCAL_DBG_ERROR; // default to minimum
 	if (envl) {
 		lvl=(int)strtol(envl, NULL, 10);
-		if ((lvl >= DCAL_DBG_NONE) && (lvl <= DCAL_DBG_EXCESSIVE))
+		if (lvl >= DCAL_DBG_NONE)
 			debug_level = lvl;
 	}
+	printf("Debug error level set to: %s (%d)\n",dcal_dbg_lvl_to_string(debug_level), debug_level);
 }
 
 void DbgPrintfLvl(int dbglvl, char *format, ...)
