@@ -124,8 +124,8 @@ static int verify_knownhost(ssh_session session)
 		/* fallback to SSH_SERVER_NOT_KNOWN behavior */
 	case SSH_SERVER_NOT_KNOWN:
 		hexa = ssh_get_hexa(hash, hlen);
-		printf("The server is unknown. Do you trust the host key ?\n"
-			"Public key hash: %s\n", hexa);
+		printf("The server is unknown. \nPublic key hash: %s\n"
+		"Do you trust the host key ?\n", hexa);
 		ssh_string_free_char(hexa);
 		if (fgets(buf, sizeof(buf), stdin) == NULL) {
 			ssh_clean_pubkey_hash(&hash);
@@ -248,6 +248,66 @@ int dcal_set_pw( laird_session_handle s, char *pw )
 	return REPORT_RETURN_DBG(ret);
 }
 
+int dcal_set_keyfile( laird_session_handle s, char *fn )
+{
+	internal_session_handle session = (internal_session_handle)s;
+	int ret = DCAL_SUCCESS;
+
+	REPORT_ENTRY_DEBUG;
+	if ((session==NULL) || (fn==NULL) || !strlen(fn))
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
+	else
+		strncpy(session->keyfile, fn, FILENAME_SZ);
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+
+static int auth_auto(internal_session_handle session)
+{
+	return ssh_userauth_publickey_auto(session->ssh, NULL, NULL);
+}
+
+static int auth_keyfile(internal_session_handle session)
+{
+	ssh_key key = NULL;
+	char pubkey[FILENAME_SZ+4]; // +".pub"
+	int rc;
+
+	snprintf(pubkey, FILENAME_SZ+4, "%s.pub", session->keyfile);
+
+	rc = ssh_pki_import_pubkey_file( pubkey, &key);
+
+	if (rc != SSH_OK)
+		return SSH_AUTH_DENIED;
+
+	rc = ssh_userauth_try_publickey(session->ssh, NULL, key);
+
+	ssh_key_free(key);
+
+	if (rc!=SSH_AUTH_SUCCESS)
+		return SSH_AUTH_DENIED;
+
+	rc = ssh_pki_import_privkey_file(session->keyfile, NULL, NULL, NULL, &key);
+
+	if (rc != SSH_OK)
+		return SSH_AUTH_DENIED;
+
+	rc = ssh_userauth_publickey(session->ssh, NULL, key);
+
+	ssh_key_free(key);
+
+	return rc;
+
+}
+
+static int auth_password(internal_session_handle session)
+{
+	return ssh_userauth_password(session->ssh, NULL, session->pw);
+}
+
 int dcal_session_open ( laird_session_handle s )
 {
 	internal_session_handle session = (internal_session_handle)s;
@@ -268,10 +328,11 @@ int dcal_session_open ( laird_session_handle s )
 		}
 
 		ssh_options_set(session->ssh, SSH_OPTIONS_HOST, session->host);
-		if (ssh_options_set(session->ssh, SSH_OPTIONS_USER, session->user) < 0){
-			DBGERROR("unable to set ssh user: %s\n", session->user);
-			goto bad_exit;
-		}
+		if (session->user[0])
+			if (ssh_options_set(session->ssh, SSH_OPTIONS_USER, session->user) < 0){
+				DBGERROR("unable to set ssh user: %s\n", session->user);
+				goto bad_exit;
+			}
 
 		if (ssh_options_set(session->ssh, SSH_OPTIONS_PORT, &session->port) < 0){
 			DBGERROR("unable to set port: %d\n", session->port);
@@ -294,10 +355,24 @@ int dcal_session_open ( laird_session_handle s )
 			goto bad_exit;
 		}
 
-		rc = ssh_userauth_password(session->ssh, NULL, session->pw);
+		rc = auth_auto(session);
+
+		if(rc==SSH_AUTH_SUCCESS)
+			DBGINFO("Authenticated with auth_auto\n");
+		else if( session->keyfile[0]){
+			rc = auth_keyfile(session);
+			if(rc==SSH_AUTH_SUCCESS)
+				DBGINFO("Authenticated with auth_keyfile\n");
+		}
+
+		if((rc != SSH_AUTH_SUCCESS) && session->pw[0]){
+			rc = auth_password(session);
+			if(rc==SSH_AUTH_SUCCESS)
+				DBGINFO("Authenticated with auth_password\n");
+		}
 
 		if(rc != SSH_AUTH_SUCCESS) {
-			DBGERROR("Error authenticating: %s\n",ssh_get_error(session->ssh));
+			DBGINFO("Error authenticating\n");
 			goto bad_exit;
 		}
 
@@ -461,3 +536,73 @@ int unlock_session_channel(laird_session_handle s)
 	UNLOCK(((internal_session_handle)s)->chan_lock);
 	return DCAL_SUCCESS;
 }
+
+// this API will use a local ssh_session rather than the one in the laird
+// session handle in order to avoid having to determine and deal with the
+// state of the internal ssh_session.
+int dcal_get_auth_methods ( laird_session_handle s, int * method )
+{
+	internal_session_handle session = (internal_session_handle)s;
+	int ret = -1;
+	int ssh_method;
+
+	if ((s==NULL) || (method==NULL))
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(sessions, s))
+		ret = DCAL_INVALID_HANDLE;
+
+	ssh_session temp_session;
+	temp_session=ssh_new();
+	if (temp_session==NULL){
+		DBGERROR("ssh_new() failed\n");
+		ret = DCAL_NO_MEMORY;
+		goto bad_session;
+	}
+
+	if (ssh_options_set(temp_session, SSH_OPTIONS_HOST, session->host) < 0){
+		DBGERROR("unable to set ssh host: %s\n", session->host);
+		ret = DCAL_SSH_ERROR;
+		goto cleanup_session;
+	}
+
+	if (ssh_options_set(temp_session, SSH_OPTIONS_PORT, &session->port) < 0){
+		DBGERROR("unable to set port: %d\n", session->port);
+		ret = DCAL_SSH_ERROR;
+		goto cleanup_session;
+	}
+
+	if (ssh_options_set(temp_session, SSH_OPTIONS_LOG_VERBOSITY, &session->verbosity) <0){
+		DBGERROR("unable to set verbosity: %d\n", session->verbosity);
+		ret = DCAL_SSH_ERROR;
+		goto cleanup_session;
+	}
+
+	if (ssh_connect(temp_session)) {
+		DBGERROR("unable to connect. error: %d\n", ssh_get_error(temp_session));
+		ret = DCAL_SSH_ERROR;
+		goto cleanup_disconnect;
+	}
+
+	ret = ssh_userauth_none(temp_session, NULL);
+	if (ret == SSH_AUTH_SUCCESS || ret == SSH_AUTH_ERROR) {
+		ret = DCAL_SSH_ERROR;
+		goto cleanup_session;
+	}
+
+	ssh_method = ssh_userauth_list(temp_session, NULL);
+	*method=0;
+	if(ssh_method & SSH_AUTH_METHOD_PUBLICKEY)
+		*method |= METHOD_PUBKEY;
+	if(ssh_method & SSH_AUTH_METHOD_PASSWORD)
+		*method |= METHOD_PASSWORD;
+
+	ret = DCAL_SUCCESS;
+
+cleanup_disconnect:
+	ssh_disconnect(temp_session);
+cleanup_session:
+	ssh_free(temp_session);
+bad_session:
+	return ret;
+}
+
