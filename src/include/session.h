@@ -21,6 +21,7 @@
 #define IP6_STR_SZ 46 //max string:0000:0000:0000:0000:0000:0000:xxx.xxx.xxx.xxx plus NULL (IPV4 mapped IPV6 address)
 #define NAME_SZ 48
 #define SSID_SZ 32
+#define FILENAME_SZ 256
 
 #define STR_SZ 80
 
@@ -89,6 +90,7 @@ typedef struct _internal_session_handle {
 	char host[HOST_SZ];
 	char user[USER_SZ];
 	char pw[USER_SZ];
+	char keyfile[FILENAME_SZ];
 	unsigned int port;
 	ssh_channel channel;
 	int verbosity;
@@ -113,9 +115,6 @@ typedef internal_session_struct * internal_session_handle;
 #define SESSION_ACTIVE 3
 
 #define DEF_PORT 2222
-#define KEYS_FOLDER "./test/"
-#define SSHD_USER "libssh"
-#define SSHD_PASSWORD "libssh"
 #define LAIRD_HELLO "HELLO DCAS"
 
 // internal use only
