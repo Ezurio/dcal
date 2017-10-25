@@ -38,7 +38,7 @@ int main (int argc, char *argv[])
 	if(!ret) ret = dcal_wifi_pull_profile_list(session, &elements);
 	if(!ret) ret = dcal_wifi_pull_profile_list(session, &elements);
 
-	printf("pulled %lu elements\n", elements);
+	printf("pulled %zu elements\n", elements);
 	int i;
 	char profilename[BUFLEN];
 	bool active;

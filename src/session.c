@@ -468,7 +468,7 @@ int dcal_session_close( laird_session_handle s)
 int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes)
 {
 	internal_session_handle session = (internal_session_handle)s;
-	size_t nwrite;
+	size_t nwrite = 0;
 	int ret = DCAL_SUCCESS;
 
 	REPORT_ENTRY_DEBUG;

@@ -9,15 +9,15 @@ OBJDIR := obj
 SRCDIR := src
 APIDIR := api
 
-LIBS   += -L./api/lib -lflatccrt -lssh
-
-CFLAGS += -Wall -Werror -fPIC -I$(SRCDIR)/include -I$(SRCDIR) -I$(APIDIR) -I$(APIDIR)/include
-CFLAGS += -Ilib.local/flatcc/include/
+INCLUDES += -Isrc/include -Ilib.local/flatcc/include/ -I$(SRCDIR) -I$(APIDIR) -I$(APIDIR)/include -I$(OBJDIR)
+TARGET  = dcal
+LDFLAGS = -Llib.local/flatcc/lib
+LIBS = -L./api/lib -lssh -lflatccrt
 COMPILEONLY = -c
 
 OBJECTS = $(patsubst src/%.c, $(OBJDIR)/%.o, $(wildcard src/*.c))
 
-CFLAGS += -ggdb -DDEBUG -fPIC
+CFLAGS += -Wall -Werror -ggdb -DDEBUG -fPIC
 
 APILIB = libdcal
 LIB= $(APIDIR)/$(APILIB).so.1.0
@@ -30,14 +30,14 @@ static: remake
 
 remake: clean all
 
-.PHONY: all clean static
+.PHONY: all clean static $(TARGET)
 .DEFAULT: all
 
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
-	$(CC) $(CFLAGS) $(COMPILEONLY) $^ -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $(COMPILEONLY) $^ -o $@
 
 $(LIB): $(OBJECTS) api/dcal_api.h
 	$(CC) -shared -Wl,-soname,$(APILIB).so.1 \
@@ -65,6 +65,8 @@ clean:
 
 $(APIDIR)/$(OPT_LIB): examples/common.c
 	echo "build session option library"
+
+$(TARGET) : $(LIB)
 
 #
 # Library builds
