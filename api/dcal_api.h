@@ -659,7 +659,7 @@ int dcal_wifi_profile_close_handle( laird_profile_handle profile);
 // radio
 int dcal_wifi_profile_push( laird_session_handle session,
                                  laird_profile_handle profile);
-int dcal_wifi_profile_activate( laird_session_handle sesion,
+int dcal_wifi_profile_activate( laird_session_handle session,
                                      laird_profile_handle profile);
 int dcal_wifi_profile_activate_by_name( laird_session_handle session,
                                           char * profile_name);
@@ -854,7 +854,7 @@ int dcal_file_pull_from_wb(laird_session_handle session,
                              char * local_file_name);
 
 // local_cert_name is the full path and file name on local system.
-// files will be transfered to the the certificate path
+// files will be transferred to the the certificate path
 // which can be changed by dcal_wifi_global_set_cert_path()
 int dcal_cert_push_to_wb(laird_session_handle session,
                              char * local_cert_name);
@@ -866,9 +866,9 @@ typedef enum _fw_update_flags {
 } FW_UPDATE_FLAGS;
 
 // in order to issue the fw_update() function, the desired files must first
-// be transfered to the remote device.  This includes the fw.txt file.  The
+// be transferred to the remote device.  This includes the fw.txt file.  The
 // files will be placed in the /tmp directory on the WB.  When this function
-// is executed, firmware update will be attempted on the transfered fw.txt
+// is executed, firmware update will be attempted on the transferred fw.txt
 // file in /tmp.  fw_update flags can be set in the flags variable.  Flags
 // can also be set in the fw.txt file itself.
 // NOTE: The disable reboot flag will be added by dcas so the user must

@@ -156,6 +156,7 @@ int dcal_wifi_interface_pull( laird_session_handle session,
 
 		ns(Interface_table_t) it = ns(Interface_as_root(buffer));
 
+		strncpy(i->interface_name, ns(Interface_interface_name(it)), STR_SZ);
 		i->ipv4=ns(Interface_ipv4(it));
 		i->auto_start=ns(Interface_auto_start(it));
 		strncpy(i->method, ns(Interface_method(it)), STR_SZ);
