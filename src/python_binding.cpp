@@ -1114,10 +1114,269 @@ class dcal
 	int pull_logs( char * dest_file ) { return dcal_pull_logs(session, dest_file); }
 	int process_cli_command_file( char * src_file ) { return dcal_process_cli_command_file(session, src_file); }
 
+	// interface handling
+	int interface_create() { return dcal_wifi_interface_create( &interface ); }
+	int interface_pull( char * interface_name ) { return dcal_wifi_interface_pull(session, &interface, interface_name); }
+	int interface_close_handle() { return dcal_wifi_interface_close_handle( interface ); }
+	int interface_push() { return dcal_wifi_interface_push( session, interface ); }
+	int interface_delete( char * interface_name ) { return dcal_wifi_interface_delete(session, interface_name); }
+	int interface_set_interface_name( char * interface_name ) { return dcal_wifi_interface_set_interface_name(interface, interface_name); }
+	int interface_get_ipv4_state( class generic_int & g ) {
+		int ret;
+		bool state;
+		ret = dcal_wifi_interface_get_ipv4_state(interface, &state);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) state;
+		}
+		return ret;
+	}
+
+	int interface_set_method( char * method ) { return dcal_wifi_interface_set_method(interface, method); }
+	int interface_get_method( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char method[buf_len];
+		ret = dcal_wifi_interface_get_method(interface, method, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, method, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_auto_start( bool auto_start ) { return dcal_wifi_interface_set_auto_start(interface, auto_start); }
+	int interface_get_auto_start( class generic_int & g ) {
+		int ret;
+		bool auto_start;
+		ret = dcal_wifi_interface_get_auto_start(interface, &auto_start);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) auto_start;
+		}
+		return ret;
+	}
+
+	int interface_set_address( char * address ) { return dcal_wifi_interface_set_address(interface, address); }
+	int interface_get_address( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char address[buf_len];
+		ret = dcal_wifi_interface_get_address(interface, address, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, address, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_netmask( char * netmask ) { return dcal_wifi_interface_set_netmask(interface, netmask); }
+	int interface_get_netmask( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char netmask[buf_len];
+		ret = dcal_wifi_interface_get_netmask(interface, netmask, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, netmask, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_gateway( char * gateway ) { return dcal_wifi_interface_set_gateway(interface, gateway); }
+	int interface_get_gateway( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char gateway[buf_len];
+		ret = dcal_wifi_interface_get_gateway(interface, gateway, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, gateway, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_broadcast_address( char * broadcast ) { return dcal_wifi_interface_set_broadcast_address(interface, broadcast); }
+	int interface_get_broadcast_address( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char broadcast[buf_len];
+		ret = dcal_wifi_interface_get_broadcast_address(interface, broadcast, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, broadcast, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_nameserver( char * nameserver ) { return dcal_wifi_interface_set_nameserver(interface, nameserver); }
+	int interface_get_nameserver( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char nameserver[buf_len];
+		ret = dcal_wifi_interface_get_nameserver(interface, nameserver, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, nameserver, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_state( bool state ) { return dcal_wifi_interface_set_state(interface, state); }
+	int interface_set_bridge( bool bridge ) { return dcal_wifi_interface_set_bridge(interface, bridge); }
+	int interface_get_bridge( class generic_int & g ) {
+		int ret;
+		bool bridge;
+		ret = dcal_wifi_interface_get_bridge(interface, &bridge);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) bridge;
+		}
+		return ret;
+	}
+
+	int interface_set_ap_mode( bool ap_mode ) { return dcal_wifi_interface_set_ap_mode(interface, ap_mode); }
+	int interface_get_ap_mode( class generic_int & g ) {
+		int ret;
+		bool ap_mode;
+		ret = dcal_wifi_interface_get_ap_mode(interface, &ap_mode);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) ap_mode;
+		}
+		return ret;
+	}
+	int interface_set_nat( bool nat ) { return dcal_wifi_interface_set_nat(interface, nat); }
+	int interface_get_nat( class generic_int & g ) {
+		int ret;
+		bool nat;
+		ret = dcal_wifi_interface_get_nat(interface, &nat);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) nat;
+		}
+		return ret;
+	}
+
+	int interface_clear_property( int prop ) {
+		INTERFACE_PROPERTY interface_prop;
+		interface_prop = (INTERFACE_PROPERTY) prop;
+		return dcal_wifi_interface_clear_property(interface, interface_prop);
+	}
+
+	int interface_get_ipv6_state( class generic_int & g ) {
+		int ret;
+		bool state6;
+		ret = dcal_wifi_interface_get_ipv6_state(interface, &state6);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) state6;
+		}
+		return ret;
+	}
+
+	int interface_set_dhcp6( char * dhcp6 ) { return dcal_wifi_interface_set_dhcp6(interface, dhcp6); }
+	int interface_get_dhcp6( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char dhcp6[buf_len];
+		ret = dcal_wifi_interface_get_dhcp6(interface, dhcp6, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, dhcp6, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_method6( char * method6 ) { return dcal_wifi_interface_set_method6(interface, method6); }
+	int interface_get_method6( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char method6[buf_len];
+		ret = dcal_wifi_interface_get_method6(interface, method6, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, method6, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_address6( char * address6 ) { return dcal_wifi_interface_set_address6(interface, address6); }
+	int interface_get_address6( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char address6[buf_len];
+		ret = dcal_wifi_interface_get_address6(interface, address6, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, address6, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_netmask6( char * netmask6 ) { return dcal_wifi_interface_set_netmask6(interface, netmask6); }
+	int interface_get_netmask6( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char netmask6[buf_len];
+		ret = dcal_wifi_interface_get_netmask6(interface, netmask6, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, netmask6, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_gateway6( char * gateway6 ) { return dcal_wifi_interface_set_gateway6(interface, gateway6); }
+	int interface_get_gateway6( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char gateway6[buf_len];
+		ret = dcal_wifi_interface_get_gateway6(interface, gateway6, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, gateway6, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_nameserver6( char * nameserver6 ) { return dcal_wifi_interface_set_nameserver6(interface, nameserver6); }
+	int interface_get_nameserver6( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char nameserver6[buf_len];
+		ret = dcal_wifi_interface_get_nameserver6(interface, nameserver6, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, nameserver6, buf_len);
+		}
+		return ret;
+	}
+
+	int interface_set_state6( bool state6 ) { return dcal_wifi_interface_set_state6(interface, state6); }
+	int interface_set_nat6( bool nat6 ) { return dcal_wifi_interface_set_nat6(interface, nat6); }
+	int interface_get_nat6( class generic_int & g ) {
+		int ret;
+		bool nat6;
+		ret = dcal_wifi_interface_get_nat6(interface, &nat6);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) nat6;
+		}
+		return ret;
+	}
+
+	int interface_clear_property6( int prop6 ) {
+		INTERFACE_PROPERTY interface_prop6;
+		interface_prop6 = (INTERFACE_PROPERTY) prop6;
+		return dcal_wifi_interface_clear_property6(interface, interface_prop6);
+	}
+
   private:
 	laird_session_handle session;
 	laird_profile_handle profile;
 	laird_global_handle global;
+	laird_interface_handle interface;
 };
 
 using namespace boost::python;
@@ -1331,5 +1590,52 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("fw_update", &dcal::fw_update)
 		.def("pull_logs", &dcal::pull_logs)
 		.def("process_cli_command_file", &dcal::process_cli_command_file)
+		// Interface functions
+		.def("interface_create", &dcal::interface_create)
+		.def("interface_pull", &dcal::interface_pull)
+		.def("interface_close_handle", &dcal::interface_close_handle)
+		.def("interface_push", &dcal::interface_push)
+		.def("interface_delete", &dcal::interface_delete)
+		.def("interface_set_interface_name", &dcal::interface_set_interface_name)
+		.def("interface_get_ipv4_state", &dcal::interface_get_ipv4_state)
+		.def("interface_set_method", &dcal::interface_set_method)
+		.def("interface_get_method", &dcal::interface_get_method)
+		.def("interface_set_auto_start", &dcal::interface_set_auto_start)
+		.def("interface_get_auto_start", &dcal::interface_get_auto_start)
+		.def("interface_set_address", &dcal::interface_set_address)
+		.def("interface_get_address", &dcal::interface_get_address)
+		.def("interface_set_netmask", &dcal::interface_set_netmask)
+		.def("interface_get_netmask", &dcal::interface_get_netmask)
+		.def("interface_set_gateway", &dcal::interface_set_gateway)
+		.def("interface_get_gateway", &dcal::interface_get_gateway)
+		.def("interface_set_broadcast_address", &dcal::interface_set_broadcast_address)
+		.def("interface_get_broadcast_address", &dcal::interface_get_broadcast_address)
+		.def("interface_set_nameserver", &dcal::interface_set_nameserver)
+		.def("interface_get_nameserver", &dcal::interface_get_nameserver)
+		.def("interface_set_state", &dcal::interface_set_state)
+		.def("interface_set_bridge", &dcal::interface_set_bridge)
+		.def("interface_get_bridge", &dcal::interface_get_bridge)
+		.def("interface_set_ap_mode", &dcal::interface_set_ap_mode)
+		.def("interface_get_ap_mode", &dcal::interface_get_ap_mode)
+		.def("interface_set_nat", &dcal::interface_set_nat)
+		.def("interface_get_nat", &dcal::interface_get_nat)
+		.def("interface_clear_property", &dcal::interface_clear_property)
+		.def("interface_get_ipv6_state", &dcal::interface_get_ipv6_state)
+		.def("interface_set_dhcp6", &dcal::interface_set_dhcp6)
+		.def("interface_get_dhcp6", &dcal::interface_get_dhcp6)
+		.def("interface_set_method6", &dcal::interface_set_method6)
+		.def("interface_get_method6", &dcal::interface_get_method6)
+		.def("interface_set_address6", &dcal::interface_set_address6)
+		.def("interface_get_address6", &dcal::interface_get_address6)
+		.def("interface_set_netmask6", &dcal::interface_set_netmask6)
+		.def("interface_get_netmask6", &dcal::interface_get_netmask6)
+		.def("interface_set_gateway6", &dcal::interface_set_gateway6)
+		.def("interface_get_gateway6", &dcal::interface_get_gateway6)
+		.def("interface_set_nameserver6", &dcal::interface_set_nameserver6)
+		.def("interface_get_nameserver6", &dcal::interface_get_nameserver6)
+		.def("interface_set_state6", &dcal::interface_set_state6)
+		.def("interface_set_nat6", &dcal::interface_set_nat6)
+		.def("interface_get_nat6", &dcal::interface_get_nat6)
+		.def("interface_clear_property6", &dcal::interface_clear_property6)
 	;
 }
