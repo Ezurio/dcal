@@ -1372,11 +1372,157 @@ class dcal
 		return dcal_wifi_interface_clear_property6(interface, interface_prop6);
 	}
 
+	// DHCP ipv4 lease information
+	int lease_pull( char * interface_name ) { return dcal_wifi_lease_pull(session, &lease, interface_name); }
+	int lease_close_handle() { return dcal_wifi_lease_close_handle( lease ); }
+	int lease_get_interface( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char interface[buf_len];
+		ret = dcal_wifi_lease_get_interface(lease, interface, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, interface, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_address( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char address[buf_len];
+		ret = dcal_wifi_lease_get_address(lease, address, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, address, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_subnet_mask( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char subnet_mask[buf_len];
+		ret = dcal_wifi_lease_get_subnet_mask(lease, subnet_mask, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, subnet_mask, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_routers( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char routers[buf_len];
+		ret = dcal_wifi_lease_get_routers(lease, routers, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, routers, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_lease_time( class generic_int & g ) {
+		int ret;
+		long int lease_time;
+		ret = dcal_wifi_lease_get_lease_time(lease, &lease_time);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) lease_time;
+		}
+		return ret;
+	}
+
+	int lease_get_message_type( class generic_int & g ) {
+		int ret;
+		int message_type;
+		ret = dcal_wifi_lease_get_message_type(lease, &message_type);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) message_type;
+		}
+		return ret;
+	}
+
+	int lease_get_dns_servers( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char dns_servers[buf_len];
+		ret = dcal_wifi_lease_get_dns_servers(lease, dns_servers, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, dns_servers, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_dhcp_server( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char dhcp_server[buf_len];
+		ret = dcal_wifi_lease_get_dhcp_server(lease, dhcp_server, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, dhcp_server, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_domain_name( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char domain_name[buf_len];
+		ret = dcal_wifi_lease_get_domain_name(lease, domain_name, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, domain_name, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_renew( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char renew[buf_len];
+		ret = dcal_wifi_lease_get_renew(lease, renew, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, renew, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_rebind( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char rebind[buf_len];
+		ret = dcal_wifi_lease_get_rebind(lease, rebind, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, rebind, buf_len);
+		}
+		return ret;
+	}
+
+	int lease_get_expire( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char expire[buf_len];
+		ret = dcal_wifi_lease_get_expire(lease, expire, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, expire, buf_len);
+		}
+		return ret;
+	}
+
   private:
 	laird_session_handle session;
 	laird_profile_handle profile;
 	laird_global_handle global;
 	laird_interface_handle interface;
+	laird_lease_handle lease;
 };
 
 using namespace boost::python;
@@ -1637,5 +1783,19 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("interface_set_nat6", &dcal::interface_set_nat6)
 		.def("interface_get_nat6", &dcal::interface_get_nat6)
 		.def("interface_clear_property6", &dcal::interface_clear_property6)
+		// Lease functions
+		.def("lease_pull", &dcal::lease_pull)
+		.def("lease_close_handle", &dcal::lease_close_handle)
+		.def("lease_get_address", &dcal::lease_get_address)
+		.def("lease_get_subnet_mask", &dcal::lease_get_subnet_mask)
+		.def("lease_get_routers", &dcal::lease_get_routers)
+		.def("lease_get_lease_time", &dcal::lease_get_lease_time)
+		.def("lease_get_message_type", &dcal::lease_get_message_type)
+		.def("lease_get_dns_servers", &dcal::lease_get_dns_servers)
+		.def("lease_get_dhcp_server", &dcal::lease_get_dhcp_server)
+		.def("lease_get_domain_name", &dcal::lease_get_domain_name)
+		.def("lease_get_renew", &dcal::lease_get_renew)
+		.def("lease_get_rebind", &dcal::lease_get_rebind)
+		.def("lease_get_expire", &dcal::lease_get_expire)
 	;
 }
