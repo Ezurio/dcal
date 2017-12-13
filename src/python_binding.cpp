@@ -1517,12 +1517,119 @@ class dcal
 		return ret;
 	}
 
+	// Default route functions
+	int default_route_pull( char * interface_name ) { return dcal_wifi_default_route_pull(session, &default_route, interface_name); }
+	int default_route_close_handle() { return dcal_wifi_default_route_close_handle( default_route ); }
+	int default_route_get_interface( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char interface[buf_len];
+		ret = dcal_wifi_default_route_get_interface(default_route, interface, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, interface, buf_len);
+		}
+		return ret;
+	}
+
+	int default_route_get_destination( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char destination[buf_len];
+		ret = dcal_wifi_default_route_get_destination(default_route, destination, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, destination, buf_len);
+		}
+		return ret;
+	}
+
+	int default_route_get_gateway( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char gateway[buf_len];
+		ret = dcal_wifi_default_route_get_gateway(default_route, gateway, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, gateway, buf_len);
+		}
+		return ret;
+	}
+
+	int default_route_get_flags( class generic_int & g ) {
+		int ret;
+		int flags;
+		ret = dcal_wifi_default_route_get_flags(default_route, &flags);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) flags;
+		}
+		return ret;
+	}
+
+	int default_route_get_metric( class generic_int & g ) {
+		int ret;
+		unsigned int metric;
+		ret = dcal_wifi_default_route_get_metric(default_route, &metric);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) metric;
+		}
+		return ret;
+	}
+
+	int default_route_get_subnet_mask( class generic_string & g ) {
+		int ret;
+		size_t buf_len = STR_SZ;
+		char subnet_mask[buf_len];
+		ret = dcal_wifi_default_route_get_subnet_mask(default_route, subnet_mask, buf_len);
+		if (ret == DCAL_SUCCESS)
+		{
+			strncpy(g._gen_string, subnet_mask, buf_len);
+		}
+		return ret;
+	}
+
+	int default_route_get_mtu( class generic_int & g ) {
+		int ret;
+		unsigned int mtu;
+		ret = dcal_wifi_default_route_get_mtu(default_route, &mtu);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) mtu;
+		}
+		return ret;
+	}
+
+	int default_route_get_window( class generic_int & g ) {
+		int ret;
+		unsigned int window;
+		ret = dcal_wifi_default_route_get_window(default_route, &window);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) window;
+		}
+		return ret;
+	}
+
+	int default_route_get_irtt( class generic_int & g ) {
+		int ret;
+		unsigned int irtt;
+		ret = dcal_wifi_default_route_get_irtt(default_route, &irtt);
+		if (ret == DCAL_SUCCESS)
+		{
+			g.gen_int = (int) irtt;
+		}
+		return ret;
+	}
+
   private:
 	laird_session_handle session;
 	laird_profile_handle profile;
 	laird_global_handle global;
 	laird_interface_handle interface;
 	laird_lease_handle lease;
+	laird_default_route_handle default_route;
 };
 
 using namespace boost::python;
@@ -1797,5 +1904,17 @@ BOOST_PYTHON_MODULE(dcal_py)
 		.def("lease_get_renew", &dcal::lease_get_renew)
 		.def("lease_get_rebind", &dcal::lease_get_rebind)
 		.def("lease_get_expire", &dcal::lease_get_expire)
+		// Default route functions
+		.def("default_route_pull", &dcal::default_route_pull)
+		.def("default_route_close_handle", &dcal::default_route_close_handle)
+		.def("default_route_get_interface", &dcal::default_route_get_interface)
+		.def("default_route_get_destination", &dcal::default_route_get_destination)
+		.def("default_route_get_gateway", &dcal::default_route_get_gateway)
+		.def("default_route_get_flags", &dcal::default_route_get_flags)
+		.def("default_route_get_metric", &dcal::default_route_get_metric)
+		.def("default_route_get_subnet_mask", &dcal::default_route_get_subnet_mask)
+		.def("default_route_get_mtu", &dcal::default_route_get_mtu)
+		.def("default_route_get_window", &dcal::default_route_get_window)
+		.def("default_route_get_irtt", &dcal::default_route_get_irtt)
 	;
 }
