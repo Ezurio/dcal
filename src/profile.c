@@ -897,6 +897,8 @@ int dcal_wifi_profile_set_eap( laird_profile_handle profile,
 		ret = DCAL_INVALID_HANDLE;
 	else {
 		p->psk = false;
+		if (p->weptype == WEP_ON)
+			p->weptype = WEP_AUTO;
 		if (p->eap != eap)
 			clear_all(p);  // clear all security fields if changing eaptype
 		p->eap = eap;
@@ -1274,6 +1276,9 @@ int dcal_wifi_profile_set_wep_key( laird_profile_handle profile,
 	else if(!validate_handle(profiles, profile))
 		ret = DCAL_INVALID_HANDLE;
 	else {
+		if (p->weptype == WEP_AUTO)
+			p->weptype = WEP_ON;
+			p->eap = EAP_NONE;
 		if(wepkey){
 			switch(index) {
 				case 1: dest = (char*)&p->security1; break;

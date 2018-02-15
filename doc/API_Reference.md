@@ -917,6 +917,11 @@ typedef enum _encyption_standards {
 
 // security
 // setting an encryption standard will clear all security fields
+// if ES_WEP is configured
+// dcal_wifi_profile_set_eap should be used to signify Dynamic WEP (802.1x) is desired
+// or
+// dcal_wifi_profile_set_wep_key should be used to signify WEP 40/128 is desired
+// most recent configured option will determine which is used
 int dcal_wifi_profile_set_encrypt_std( laird_profile_handle profile,
                                             ENCRYPT_STD estd);
 int dcal_wifi_profile_get_encrypt_std( laird_profile_handle profile,
@@ -1810,6 +1815,11 @@ typedef enum _encyption_standards {
 
 // security
 // setting an encryption standard will clear all security fields
+// if ES_WEP is configured
+// dcal_wifi_profile_set_eap should be used to signify Dynamic WEP (802.1x) is desired
+// or
+// dcal_wifi_profile_set_wep_key should be used to signify WEP 40/128 is desired
+// most recent configured option will determine which is used
 int dcal_wifi_profile_set_encrypt_std( laird_profile_handle profile,
                                             ENCRYPT_STD estd);
 int dcal_wifi_profile_get_encrypt_std( laird_profile_handle profile,
