@@ -671,7 +671,7 @@ int dcal_wifi_profile_set_encrypt_std( laird_profile_handle profile,
 					p->weptype = WPA2_AES;
 				break;
 			case ES_CCKM:
-				if (p->aes)
+				if (!p->aes)
 					p->weptype = CCKM_AES;
 				else
 					p->weptype = CCKM_TKIP;
