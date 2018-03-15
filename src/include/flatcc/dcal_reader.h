@@ -313,7 +313,7 @@ __flatbuffers_define_scalar_field(14, DCAL_session_Globals, roam_trigger, flatbu
 __flatbuffers_define_scalar_field(15, DCAL_session_Globals, rts, flatbuffers_uint32, uint32_t, UINT32_C(0))
 __flatbuffers_define_scalar_field(16, DCAL_session_Globals, scan_dfs, flatbuffers_uint32, uint32_t, UINT32_C(0))
 __flatbuffers_define_scalar_field(17, DCAL_session_Globals, ttls, flatbuffers_uint32, uint32_t, UINT32_C(0))
-__flatbuffers_define_scalar_field(18, DCAL_session_Globals, uapsd, flatbuffers_bool, flatbuffers_bool_t, UINT8_C(0))
+__flatbuffers_define_scalar_field(18, DCAL_session_Globals, uapsd, flatbuffers_uint32, uint32_t, UINT32_C(0))
 __flatbuffers_define_scalar_field(19, DCAL_session_Globals, wmm, flatbuffers_bool, flatbuffers_bool_t, UINT8_C(0))
 __flatbuffers_define_scalar_field(20, DCAL_session_Globals, ignore_null_ssid, flatbuffers_bool, flatbuffers_bool_t, UINT8_C(0))
 __flatbuffers_define_scalar_field(21, DCAL_session_Globals, dfs_channels, flatbuffers_uint32, uint32_t, UINT32_C(0))
