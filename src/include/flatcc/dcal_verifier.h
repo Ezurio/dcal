@@ -259,7 +259,7 @@ static int __DCAL_session_Globals_table_verifier(flatcc_table_verifier_descripto
     if ((ret = flatcc_verify_field(td, 15, 4, 4) /* rts */)) return ret;
     if ((ret = flatcc_verify_field(td, 16, 4, 4) /* scan_dfs */)) return ret;
     if ((ret = flatcc_verify_field(td, 17, 4, 4) /* ttls */)) return ret;
-    if ((ret = flatcc_verify_field(td, 18, 1, 1) /* uapsd */)) return ret;
+    if ((ret = flatcc_verify_field(td, 18, 4, 4) /* uapsd */)) return ret;
     if ((ret = flatcc_verify_field(td, 19, 1, 1) /* wmm */)) return ret;
     if ((ret = flatcc_verify_field(td, 20, 1, 1) /* ignore_null_ssid */)) return ret;
     if ((ret = flatcc_verify_field(td, 21, 4, 4) /* dfs_channels */)) return ret;

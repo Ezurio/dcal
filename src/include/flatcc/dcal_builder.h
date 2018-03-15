@@ -102,7 +102,7 @@ static inline DCAL_session_Version_ref_t DCAL_session_Version_create(flatbuffers
   uint32_t v4, flatbuffers_bool_t v5, flatbuffers_string_ref_t v6, flatbuffers_bool_t v7,\
   uint32_t v8, flatbuffers_bool_t v9, uint32_t v10, uint32_t v11,\
   uint32_t v12, uint32_t v13, uint32_t v14, uint32_t v15,\
-  uint32_t v16, uint32_t v17, flatbuffers_bool_t v18, flatbuffers_bool_t v19, flatbuffers_bool_t v20, uint32_t v21
+  uint32_t v16, uint32_t v17, uint32_t v18, flatbuffers_bool_t v19, flatbuffers_bool_t v20, uint32_t v21
 #define __DCAL_session_Globals_call_args ,\
   v0, v1, v2, v3,\
   v4, v5, v6, v7,\
@@ -366,7 +366,7 @@ __flatbuffers_build_scalar_field(14, flatbuffers_, DCAL_session_Globals_roam_tri
 __flatbuffers_build_scalar_field(15, flatbuffers_, DCAL_session_Globals_rts, flatbuffers_uint32, uint32_t, 4, 4, UINT32_C(0))
 __flatbuffers_build_scalar_field(16, flatbuffers_, DCAL_session_Globals_scan_dfs, flatbuffers_uint32, uint32_t, 4, 4, UINT32_C(0))
 __flatbuffers_build_scalar_field(17, flatbuffers_, DCAL_session_Globals_ttls, flatbuffers_uint32, uint32_t, 4, 4, UINT32_C(0))
-__flatbuffers_build_scalar_field(18, flatbuffers_, DCAL_session_Globals_uapsd, flatbuffers_bool, flatbuffers_bool_t, 1, 1, UINT8_C(0))
+__flatbuffers_build_scalar_field(18, flatbuffers_, DCAL_session_Globals_uapsd, flatbuffers_uint32, uint32_t, 4, 4, UINT32_C(0))
 __flatbuffers_build_scalar_field(19, flatbuffers_, DCAL_session_Globals_wmm, flatbuffers_bool, flatbuffers_bool_t, 1, 1, UINT8_C(0))
 __flatbuffers_build_scalar_field(20, flatbuffers_, DCAL_session_Globals_ignore_null_ssid, flatbuffers_bool, flatbuffers_bool_t, 1, 1, UINT8_C(0))
 __flatbuffers_build_scalar_field(21, flatbuffers_, DCAL_session_Globals_dfs_channels, flatbuffers_uint32, uint32_t, 4, 4, UINT32_C(0))
@@ -388,12 +388,12 @@ static inline DCAL_session_Globals_ref_t DCAL_session_Globals_create(flatbuffers
         || DCAL_session_Globals_rts_add(B, v15)
         || DCAL_session_Globals_scan_dfs_add(B, v16)
         || DCAL_session_Globals_ttls_add(B, v17)
+        || DCAL_session_Globals_uapsd_add(B, v18)
         || DCAL_session_Globals_dfs_channels_add(B, v21)
         || DCAL_session_Globals_auto_profile_add(B, v3)
         || DCAL_session_Globals_ccx_add(B, v5)
         || DCAL_session_Globals_date_check_add(B, v7)
         || DCAL_session_Globals_fips_add(B, v9)
-        || DCAL_session_Globals_uapsd_add(B, v18)
         || DCAL_session_Globals_wmm_add(B, v19)
         || DCAL_session_Globals_ignore_null_ssid_add(B, v20)) {
         return 0;
