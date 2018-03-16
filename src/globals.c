@@ -905,13 +905,52 @@ int dcal_wifi_global_set_uapsd( laird_global_handle global, bool uapsd)
 	if(!validate_handle(globals, global))
 		ret = DCAL_INVALID_HANDLE;
 	else {
-		g->uapsd = uapsd;
+		if (uapsd)
+			g->uapsd = (AC_VO | AC_VI | AC_BK | AC_BE);
+		else
+			g->uapsd = 0;
 	}
 
 	return REPORT_RETURN_DBG(ret);
 }
 
 int dcal_wifi_global_get_uapsd( laird_global_handle global, bool *uapsd)
+{
+	int ret = DCAL_SUCCESS;
+	internal_global_handle g = (internal_global_handle)global;
+	REPORT_ENTRY_DEBUG;
+
+	if (uapsd==NULL)
+		ret = DCAL_INVALID_PARAMETER;
+	else if(!validate_handle(globals, global))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		if (g->uapsd == 0)
+			*uapsd = g->uapsd;
+		else
+			*uapsd = 1;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+
+int dcal_wifi_global_set_uapsd_mask( laird_global_handle global, unsigned int uapsd)
+{
+	int ret = DCAL_SUCCESS;
+	internal_global_handle g = (internal_global_handle)global;
+	REPORT_ENTRY_DEBUG;
+
+	if(!validate_handle(globals, global))
+		ret = DCAL_INVALID_HANDLE;
+	else {
+		g->uapsd = uapsd;
+	}
+
+	return REPORT_RETURN_DBG(ret);
+}
+
+int dcal_wifi_global_get_uapsd_mask( laird_global_handle global, unsigned int *uapsd)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
