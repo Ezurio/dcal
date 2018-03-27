@@ -171,10 +171,10 @@ int dcal_wifi_interface_pull( laird_session_handle session,
 		i->ipv6=ns(Interface_ipv6(it));
 		strncpy(i->method6, ns(Interface_method6(it)), STR_SZ);
 		strncpy(i->dhcp6, ns(Interface_dhcp6(it)), STR_SZ);
-		strncpy(i->address6, ns(Interface_address6(it)), STR_SZ);
-		strncpy(i->netmask6, ns(Interface_netmask6(it)), STR_SZ);
-		strncpy(i->gateway6, ns(Interface_gateway6(it)), STR_SZ);
-		strncpy(i->nameserver6, ns(Interface_nameserver6(it)), STR_SZ);
+		strncpy(i->address6, ns(Interface_address6(it)), IP6_STR_SZ);
+		strncpy(i->netmask6, ns(Interface_netmask6(it)), IP6_STR_SZ);
+		strncpy(i->gateway6, ns(Interface_gateway6(it)), IP6_STR_SZ);
+		strncpy(i->nameserver6, ns(Interface_nameserver6(it)), IP6_STR_SZ);
 		i->nat6=ns(Interface_nat6(it));
 
 		#ifdef STATIC_MEM
@@ -943,7 +943,7 @@ int dcal_wifi_interface_set_address6( laird_interface_handle interface,
 	if(!validate_handle(interfaces, interface))
 		ret = DCAL_INVALID_HANDLE;
 	else {
-		clear_and_strncpy(i->address6, address6, CONFIG_NAME_SZ);
+		clear_and_strncpy(i->address6, address6, IP6_STR_SZ);
 		i->ipv6 = 1;
 	}
 
@@ -978,7 +978,7 @@ int dcal_wifi_interface_set_netmask6( laird_interface_handle interface,
 	if(!validate_handle(interfaces, interface))
 		ret = DCAL_INVALID_HANDLE;
 	else {
-		clear_and_strncpy(i->netmask6, netmask6, CONFIG_NAME_SZ);
+		clear_and_strncpy(i->netmask6, netmask6, IP6_STR_SZ);
 		i->ipv6 = 1;
 	}
 
@@ -1013,7 +1013,7 @@ int dcal_wifi_interface_set_gateway6( laird_interface_handle interface,
 	if(!validate_handle(interfaces, interface))
 		ret = DCAL_INVALID_HANDLE;
 	else {
-		clear_and_strncpy(i->gateway6, gateway6, CONFIG_NAME_SZ);
+		clear_and_strncpy(i->gateway6, gateway6, IP6_STR_SZ);
 		i->ipv6 = 1;
 	}
 
@@ -1048,7 +1048,7 @@ int dcal_wifi_interface_set_nameserver6( laird_interface_handle interface,
 	if(!validate_handle(interfaces, interface))
 		ret = DCAL_INVALID_HANDLE;
 	else {
-		clear_and_strncpy(i->nameserver6, nameserver6, CONFIG_NAME_SZ);
+		clear_and_strncpy(i->nameserver6, nameserver6, IP6_STR_SZ);
 		i->ipv6 = 1;
 	}
 
