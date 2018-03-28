@@ -49,17 +49,17 @@ lib.local/libssh: lib.local
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-LIBSSH_TARGET := lib.local/libssh/build/src/libssh.so.4.4.1
-LIBSSH_INSTALL := api/lib/libssh.so.4.4.1
+LIBSSH_TARGET := lib.local/libssh/build/src/libssh.so.4.4.2
+LIBSSH_INSTALL := api/lib/libssh.so.4.4.2
 endif
 ifeq ($(UNAME_S),Darwin)
-LIBSSH_TARGET := lib.local/libssh/build/src/libssh.4.4.1.dylib
-LIBSSH_INSTALL := api/lib/libssh.4.4.1.dylib
+LIBSSH_TARGET := lib.local/libssh/build/src/libssh.4.4.2.dylib
+LIBSSH_INSTALL := api/lib/libssh.4.4.2.dylib
 endif
 
 
 $(LIBSSH_TARGET): lib.local lib.local/libssh
-	cd lib.local/libssh && git checkout libssh-0.7.3
+	cd lib.local/libssh && git checkout libssh-0.7.5
 	mkdir -p lib.local/libssh/build
 	cd lib.local/libssh/build && cmake -DCMAKE_INSTALL_PREFIX=$(BASE_DIR)/api ..
 	cd lib.local/libssh/build && make
