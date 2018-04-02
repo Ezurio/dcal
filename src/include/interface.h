@@ -35,10 +35,10 @@ typedef struct _internal_interface_handle {
 	unsigned int prop6;
 	char method6[STR_SZ];
 	char dhcp6[STR_SZ];
-	char address6[STR_SZ];
-	char netmask6[STR_SZ];
-	char gateway6[STR_SZ];
-	char nameserver6[STR_SZ];
+	char address6[IP6_STR_SZ];
+	char netmask6[IP6_STR_SZ];
+	char gateway6[IP6_STR_SZ];
+	char nameserver6[IP6_STR_SZ];
 	int state6;
 	int nat6;
 
