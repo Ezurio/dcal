@@ -11,7 +11,9 @@ This document used markdown and can be viewed in text but formatting is best vie
 |Oct. 8, 2017 | 3.1.5   |      |
 |Oct. 20, 2017 | 3.1.6  | added dcal_set_key and dcal_get_auth_methods; |
 |             |         | documentation edits                           |
-|             |         |      |
+|Mar. 16, 2018 | 3.1.7  | added functions to get and set enhanced UAPSD;|
+|             |         | In src/include/globals.h, bool uapsd;         |
+|             |         | is now unsigned int uapsd;                    |
 ***
 ## Introduction ##
 
@@ -541,9 +543,23 @@ int dcal_wifi_global_set_uapsd( laird_global_handle global, bool uapsd);
 int dcal_wifi_global_get_uapsd( laird_global_handle global, bool *uapsd);
 ````
 #### int dcal_wifi_global_set_uapsd( laird_global_handle global, bool uapsd);
-Set the UAPSD value.
+Set the UAPSD value. This can be used to enable all UAPSD access classes or disable all.
 #### int dcal_wifi_global_get_uapsd( laird_global_handle global, bool *uapsd);
 Retrieve the UAPSD value.
+
+Sets are created by or'ing bit mask entries.
+#### UAPSD Masks
+| Access class | Bitmask |
+|:------------:|:-------:|
+| Voice        | AC_VO   |
+| Video        | AC_VI   |
+| Background   | AC_BK   |
+| Best Effort  | AC_BE   |
+
+#### int dcal_wifi_global_set_uapsd_mask( laird_global_handle global, unsigned int uapsd);
+Set the enhanced UAPSD bit mask to allow selection of specific access classes.
+#### int dcal_wifi_global_get_uapsd_mask( laird_global_handle global, unsigned int *uapsd);
+Get the enhanced UAPSD bit mask channel set.
 
 #### WMM
 Windows Multimedia Extension (WMM)

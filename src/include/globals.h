@@ -35,7 +35,7 @@ typedef struct _internal_global_handle {
 	unsigned int rts;
 	unsigned int scan_dfs;
 	unsigned int ttls_inner_method;
-	bool uapsd;
+	unsigned int uapsd;
 	bool wmm;
 	bool ignore_null_ssid;
 	unsigned int dfs_channels;

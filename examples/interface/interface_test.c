@@ -94,7 +94,7 @@ int main (int argc, char *argv[])
 			if (ret != DCAL_SUCCESS)
 				printf("unable to set IPv6 DHCP option\n");
 
-			ret = dcal_wifi_interface_set_address6(interface, "2001:db8::1");
+			ret = dcal_wifi_interface_set_address6(interface, "2001:DB88:1234:1234:1234:1234:1234:1111");
 			if (ret != DCAL_SUCCESS)
 				printf("unable to set IPv6 address\n");
 
@@ -102,11 +102,11 @@ int main (int argc, char *argv[])
 			if (ret != DCAL_SUCCESS)
 				printf("unable to set IPv6 netmask\n");
 
-			ret = dcal_wifi_interface_set_gateway6(interface, "2001:db8::2");
+			ret = dcal_wifi_interface_set_gateway6(interface, "2001:DB88:1234:1234:1234:1234:1234:2222");
 			if (ret != DCAL_SUCCESS)
 				printf("unable to set IPv6 gateway\n");
 
-			ret = dcal_wifi_interface_set_nameserver6(interface, "2001:db8::10");
+			ret = dcal_wifi_interface_set_nameserver6(interface, "2001:DB88:1234:1234:1234:1234:1234:3333");
 			if (ret != DCAL_SUCCESS)
 				printf("unable to set IPv6 nameserver\n");
 
@@ -143,11 +143,11 @@ int main (int argc, char *argv[])
 				ret = dcal_wifi_interface_get_ipv4_state(interface, &ipv4);
 				if (ret == DCAL_SUCCESS && ipv4){
 					char method[STR_SZ];
-					char address[STR_SZ];
-					char netmask[STR_SZ];
-					char gateway[STR_SZ];
-					char broadcast[STR_SZ];
-					char nameserver[STR_SZ];
+					char address[IP6_STR_SZ];
+					char netmask[IP6_STR_SZ];
+					char gateway[IP6_STR_SZ];
+					char broadcast[IP6_STR_SZ];
+					char nameserver[IP6_STR_SZ];
 					bool bridge_ports;
 					bool ap_mode;
 					bool nat;
@@ -207,10 +207,10 @@ int main (int argc, char *argv[])
 				if (ret == DCAL_SUCCESS && ipv6){
 					char method6[STR_SZ];
 					char dhcp6[STR_SZ];
-					char address6[STR_SZ];
-					char netmask6[STR_SZ];
-					char gateway6[STR_SZ];
-					char nameserver6[STR_SZ];
+					char address6[IP6_STR_SZ];
+					char netmask6[IP6_STR_SZ];
+					char gateway6[IP6_STR_SZ];
+					char nameserver6[IP6_STR_SZ];
 					bool nat6;
 
 					printf("IPv6:\n");
