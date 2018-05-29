@@ -158,7 +158,10 @@ int dcal_wifi_interface_pull( laird_session_handle session,
 
 		strncpy(i->interface_name, ns(Interface_interface_name(it)), STR_SZ);
 		i->ipv4=ns(Interface_ipv4(it));
-		i->auto_start=ns(Interface_auto_start(it));
+		if (ns(Interface_auto_start(it)))
+			i->auto_start=INTERFACE_ENABLE;
+		else
+			i->auto_start=INTERFACE_DISABLE;
 		strncpy(i->method, ns(Interface_method(it)), STR_SZ);
 		strncpy(i->address, ns(Interface_address(it)), STR_SZ);
 		strncpy(i->netmask, ns(Interface_netmask(it)), STR_SZ);
@@ -485,7 +488,7 @@ int dcal_wifi_interface_get_auto_start( laird_interface_handle interface,
 	if(!validate_handle(interfaces, interface))
 		ret = DCAL_INVALID_HANDLE;
 	else {
-		if (i->auto_start){
+		if (i->auto_start == INTERFACE_ENABLE){
 			*auto_start = true;
 		} else {
 			*auto_start = false;
