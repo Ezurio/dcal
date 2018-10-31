@@ -373,6 +373,63 @@ int dcal_fw_update(laird_session_handle session, int flags)
 	return ret;
 }
 
+int dcal_do_swupdate(laird_session_handle session, char * parameters)
+{
+	char buf[BUFSIZE];
+	size_t size=BUFSIZE;
+	int ret = DCAL_SUCCESS;
+	internal_session_handle s = (internal_session_handle)session;
+
+	flatcc_builder_t *B;
+	B=&s->builder;
+	flatcc_builder_reset(B);
+	flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
+	ns(Command_start(B));
+	ns(Command_command_add(B, ns(Commands_SWUPDATE)));
+
+	ns(Command_cmd_pl_String_start(B));
+	ns(String_value_create_str(B, parameters));
+	ns(Command_cmd_pl_String_end(B));
+
+	ns(Command_end_as_root(B));
+
+	size=flatcc_builder_get_buffer_size(B);
+	assert(size<=BUFSIZE);
+	flatcc_builder_copy_buffer(B, buf, size);
+
+	ret = lock_session_channel(session);
+	if(ret)
+		return ret;
+
+	ret=dcal_send_buffer(session, buf, size);
+
+	if (ret!=DCAL_SUCCESS) {
+		unlock_session_channel(session);
+		return ret;
+	}
+
+	size = BUFSIZE;
+	ret = dcal_read_buffer(session, buf, &size);
+
+	if(ret != DCAL_SUCCESS) {
+		unlock_session_channel(session);
+		return ret;
+	}
+
+	flatbuffers_thash_t buftype = verify_buffer(buf, size);
+	if(buftype != ns(Handshake_type_hash)){
+		DBGERROR("could not verify handshake buffer.  Validated as: %s\n", buftype_to_string(buftype));
+		ret = DCAL_FLATBUFF_ERROR;
+		unlock_session_channel(session);
+		return ret;
+	}
+	ret = handshake_error_code(ns(Handshake_as_root(buf)));
+	unlock_session_channel(session);
+
+	return ret;
+}
+
 // dest_file is full location and file name where log should be saved
 int dcal_pull_logs(laird_session_handle session, char * dest_file)
 {

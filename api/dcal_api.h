@@ -71,6 +71,7 @@ typedef enum _DCAL_ERR{
 	DCAL_RADIO_DISABLED,
 	DCAL_INDEX_OUT_OF_BOUNDS,
 	DCAL_BUFFER_TOO_SMALL,
+	DCAL_REMOTE_USER_CMD_NOT_EXIST,
 } DCAL_ERR;
 
 typedef char * FQDN;
@@ -890,6 +891,10 @@ typedef enum _fw_update_flags {
 // specifically call dcal_system_restart() when desiring restart after
 // fw_update.
 int dcal_fw_update(laird_session_handle session, int flags);
+
+// The remote device should have swupdate installed. Parameters for swupdate are
+// passed as a string variable.
+int dcal_do_swupdate(laird_session_handle session, char * parameters);
 
 // dest_file is full location and file name where log should be saved
 int dcal_pull_logs(laird_session_handle session, char * dest_file);

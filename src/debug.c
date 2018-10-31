@@ -150,6 +150,7 @@ const char *dcal_err_to_string( int code)
 		case DCAL_REMOTE_FILE_ACCESS_DENIED:return "DCAL_REMOTE_FILE_ACCESS_DENIED";
 		case DCAL_FQDN_FAILURE:             return "DCAL_FQDN_FAILURE";
 		case DCAL_REMOTE_SHELL_CMD_FAILURE: return "DCAL_REMOTE_SHELL_CMD_FAILURE";
+		case DCAL_REMOTE_USER_CMD_NOT_EXIST: return "DCAL_REMOTE_USER_CMD_NOT_EXIST";
 
 		default:                     snprintf(debugbuf, BUFSIZE, "unknown DCAL_ERR:%d",code);
 		return debugbuf;

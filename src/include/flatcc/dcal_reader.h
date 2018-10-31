@@ -223,6 +223,7 @@ __flatbuffers_define_integer_type(DCAL_session_Commands, DCAL_session_Commands_e
 #define DCAL_session_Commands_FWUPDATE ((DCAL_session_Commands_enum_t)UINT32_C(25))
 #define DCAL_session_Commands_CLIFILE ((DCAL_session_Commands_enum_t)UINT32_C(26))
 #define DCAL_session_Commands_GETLOGS ((DCAL_session_Commands_enum_t)UINT32_C(27))
+#define DCAL_session_Commands_SWUPDATE ((DCAL_session_Commands_enum_t)UINT32_C(28))
 
 static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_t value)
 {
@@ -255,6 +256,7 @@ static inline const char *DCAL_session_Commands_name(DCAL_session_Commands_enum_
     case DCAL_session_Commands_FWUPDATE: return "FWUPDATE";
     case DCAL_session_Commands_CLIFILE: return "CLIFILE";
     case DCAL_session_Commands_GETLOGS: return "GETLOGS";
+    case DCAL_session_Commands_SWUPDATE: return "SWUPDATE";
     default: return "";
     }
 }
@@ -290,6 +292,7 @@ static inline int DCAL_session_Commands_is_known_value(DCAL_session_Commands_enu
     case DCAL_session_Commands_FWUPDATE: return 1;
     case DCAL_session_Commands_CLIFILE: return 1;
     case DCAL_session_Commands_GETLOGS: return 1;
+    case DCAL_session_Commands_SWUPDATE: return 1;
     default: return 0;
     }
 }
