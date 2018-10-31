@@ -69,7 +69,7 @@ static int default_route_create( laird_default_route_handle * default_route)
 		}
 	#endif // STATIC_MEM
 	}
-	if (ret==DCAL_SUCCESS);
+	if (ret==DCAL_SUCCESS)
 		*default_route = handle;
 	return REPORT_RETURN_DBG(ret);
 }
@@ -93,7 +93,6 @@ int dcal_wifi_default_route_pull( laird_session_handle session,
 		return DCAL_INVALID_HANDLE;
 	else {
 		internal_session_handle s = (internal_session_handle)session;
-		ns(Cmd_pl_union_ref_t) cmd_pl;
 		// Attempt to retrieve default_route from device
 		flatcc_builder_t *B;
 		char buffer[BUF_SZ] = {0};
@@ -103,18 +102,15 @@ int dcal_wifi_default_route_pull( laird_session_handle session,
 		B = &s->builder;
 		flatcc_builder_reset(B);
 
-		ns(String_start(B));
-		if (interface_name != NULL){
-			ns(String_value_create_str(B, interface_name));
-		}
-
-		cmd_pl.String = ns(String_end(B));
-		cmd_pl.type = ns(Cmd_pl_String);
-
 		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_GETDEFAULTROUTE)));
+
+		ns(Command_cmd_pl_Default_route_start(B));
+		ns(Default_route_interface_create_str(B, interface_name));
+		ns(Command_cmd_pl_Default_route_end(B));
+
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);

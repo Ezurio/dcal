@@ -59,12 +59,12 @@ int handshake_init(internal_session_handle s)
 		char buffer[BUF_SZ];
 		size_t size;
 
-		flatcc_builder_copy_buffer(B, buffer, BUF_SZ);
 		size = flatcc_builder_get_buffer_size(B);
 		if ((size > BUF_SZ) || (size==0)) {
 			rc = DCAL_FLATBUFF_ERROR;
 			goto exit;
 		}
+		flatcc_builder_copy_buffer(B, buffer, BUF_SZ);
 
 		//send hello
 		rc = lock_session_channel(s);

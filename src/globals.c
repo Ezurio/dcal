@@ -211,7 +211,6 @@ int dcal_wifi_global_push( laird_session_handle session,
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
 	internal_session_handle s = (internal_session_handle)session;
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
 	if (session==NULL)
@@ -229,7 +228,12 @@ int dcal_wifi_global_push( laird_session_handle session,
 		B = &s->builder;
 		flatcc_builder_reset(B);
 
-		ns(Globals_start(B));
+		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
+		ns(Command_start(B));
+		ns(Command_command_add(B, ns(Commands_SETGLOBALS)));
+
+		ns(Command_cmd_pl_Globals_start(B));
 
 		ns(Globals_auth_add(B, g->auth));
 		ns(Globals_channel_set_a_add(B, g->channel_set_a));
@@ -253,14 +257,8 @@ int dcal_wifi_global_push( laird_session_handle session,
 		ns(Globals_wmm_add(B, g->wmm));
 		ns(Globals_ignore_null_ssid_add(B, g->ignore_null_ssid));
 		ns(Globals_dfs_channels_add(B, g->dfs_channels));
+		ns(Command_cmd_pl_Globals_end(B));
 
-		cmd_pl.Globals = ns(Globals_end(B));
-		cmd_pl.type = ns(Cmd_pl_Globals);
-
-		flatbuffers_buffer_start(B, ns(Command_type_identifier));
-		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
-		ns(Command_command_add(B, ns(Commands_SETGLOBALS)));
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);

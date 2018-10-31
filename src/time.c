@@ -21,7 +21,6 @@ int dcal_time_get( laird_session_handle session,
 	#endif
 	else {
 		internal_session_handle s = (internal_session_handle)session;
-		ns(Cmd_pl_union_ref_t) cmd_pl;
 		// Attempt to retrieve time from device
 		flatcc_builder_t *B;
 		char buffer[BUF_SZ] = {0};
@@ -30,10 +29,9 @@ int dcal_time_get( laird_session_handle session,
 
 		B = &s->builder;
 		flatcc_builder_reset(B);
-
 		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_GETTIME)));
 		ns(Command_end_as_root(B));
 
@@ -87,7 +85,6 @@ int dcal_time_set( laird_session_handle session,
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
 	if (session==NULL)
@@ -102,19 +99,16 @@ int dcal_time_set( laird_session_handle session,
 
 		B = &s->builder;
 		flatcc_builder_reset(B);
+		flatbuffers_buffer_start(B, ns(Command_type_identifier));
 
-		ns(Time_start(B));
+		ns(Command_start(B));
+		ns(Command_command_add(B, ns(Commands_SETTIME)));
 
+		ns(Command_cmd_pl_Time_start(B));
 		ns(Time_tv_sec_add(B, tv_sec));
 		ns(Time_tv_usec_add(B, tv_usec));
+		ns(Command_cmd_pl_Time_end(B));
 
-		cmd_pl.Time = ns(Time_end(B));
-		cmd_pl.type = ns(Cmd_pl_Time);
-
-		flatbuffers_buffer_start(B, ns(Command_type_identifier));
-		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
-		ns(Command_command_add(B, ns(Commands_SETTIME)));
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);
@@ -158,7 +152,6 @@ int dcal_ntpdate( laird_session_handle session,
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
 	if (session==NULL)
@@ -176,17 +169,15 @@ int dcal_ntpdate( laird_session_handle session,
 		B = &s->builder;
 		flatcc_builder_reset(B);
 
-		ns(String_start(B));
-
-		ns(String_value_create_str(B,server_name));
-
-		cmd_pl.String = ns(String_end(B));
-		cmd_pl.type = ns(Cmd_pl_String);
-
 		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_NTPDATE)));
+
+		ns(Command_cmd_pl_Time_start(B));
+		ns(String_value_create_str(B,server_name));
+		ns(Command_cmd_pl_Time_end(B));
+
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);

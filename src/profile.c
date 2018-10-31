@@ -144,7 +144,6 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 	#endif
 	else {
 		internal_session_handle s = (internal_session_handle)session;
-		ns(Cmd_pl_union_ref_t) cmd_pl;
 		// Attempt to retrieve profile from device
 		flatcc_builder_t *B;
 		char buffer[BUF_SZ] = {0};
@@ -153,17 +152,15 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 
 		B = &s->builder;
 		flatcc_builder_reset(B);
-
-		ns(String_start(B));
-		ns(String_value_create_str(B, profilename));
-
-		cmd_pl.String = ns(String_end(B));
-		cmd_pl.type = ns(Cmd_pl_String);
-
 		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_GETPROFILE)));
+
+		ns(Command_cmd_pl_Profile_start(B));
+		ns(String_value_create_str(B, profilename));
+		ns(Command_cmd_pl_Profile_end(B));
+
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);
@@ -307,7 +304,6 @@ int dcal_wifi_profile_push( laird_session_handle session,
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
 	internal_session_handle s = (internal_session_handle)session;
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
 	if (!validate_session(session))
@@ -322,8 +318,12 @@ int dcal_wifi_profile_push( laird_session_handle session,
 
 		B = &s->builder;
 		flatcc_builder_reset(B);
+		flatbuffers_buffer_start(B, ns(Command_type_identifier));
 
-		ns(Profile_start(B));
+		ns(Command_start(B));
+		ns(Command_command_add(B, ns(Commands_SETPROFILE)));
+
+		ns(Command_cmd_pl_Profile_start(B));
 		ns(Profile_name_create_str(B, p->profilename));
 		ns(Profile_ssid_create(B, (unsigned char *)p->ssid.val, p->ssid.len));
 		ns(Profile_client_name_create_str(B, p->clientname));
@@ -342,14 +342,8 @@ int dcal_wifi_profile_push( laird_session_handle session,
 		ns(Profile_security4_create_str(B, p->security4));
 		ns(Profile_security5_create_str(B, p->security5));
 		ns(Profile_autoprofile_add(B, p->autoprofile));
+		ns(Command_cmd_pl_Profile_end(B));
 
-		cmd_pl.Profile = ns(Profile_end(B));
-		cmd_pl.type = ns(Cmd_pl_Profile);
-
-		flatbuffers_buffer_start(B, ns(Command_type_identifier));
-		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
-		ns(Command_command_add(B, ns(Commands_SETPROFILE)));
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);
@@ -415,7 +409,6 @@ int dcal_wifi_profile_activate_by_name( laird_session_handle session,
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
 	if ((profile_name==NULL) || (profile_name[0]==0))
@@ -430,17 +423,15 @@ int dcal_wifi_profile_activate_by_name( laird_session_handle session,
 
 		B = &s->builder;
 		flatcc_builder_reset(B);
-
-		ns(String_start(B));
-		ns(String_value_create_str(B, profile_name));
-
-		cmd_pl.String = ns(String_end(B));
-		cmd_pl.type = ns(Cmd_pl_String);
-
 		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_ACTIVATEPROFILE)));
+
+		ns(Command_cmd_pl_Profile_start(B));
+		ns(String_value_create_str(B, profile_name));
+		ns(Command_cmd_pl_Profile_end(B));
+
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);
@@ -484,7 +475,6 @@ int dcal_wifi_profile_delete_from_device( laird_session_handle session,
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
 	if ((profile_name==NULL) || (profile_name[0]==0))
@@ -500,16 +490,13 @@ int dcal_wifi_profile_delete_from_device( laird_session_handle session,
 		B = &s->builder;
 		flatcc_builder_reset(B);
 
-		ns(String_start(B));
-		ns(String_value_create_str(B, profile_name));
-
-		cmd_pl.String = ns(String_end(B));
-		cmd_pl.type = ns(Cmd_pl_String);
-
-		flatbuffers_buffer_start(B, ns(Command_type_identifier));
 		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_DELPROFILE)));
+
+		ns(Command_cmd_pl_Profile_start(B));
+		ns(String_value_create_str(B, profile_name));
+		ns(Command_cmd_pl_Profile_end(B));
+
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);
@@ -1276,9 +1263,10 @@ int dcal_wifi_profile_set_wep_key( laird_profile_handle profile,
 	else if(!validate_handle(profiles, profile))
 		ret = DCAL_INVALID_HANDLE;
 	else {
-		if (p->weptype == WEP_AUTO)
+		if (p->weptype == WEP_AUTO){
 			p->weptype = WEP_ON;
 			p->eap = EAP_NONE;
+		}
 		if(wepkey){
 			switch(index) {
 				case 1: dest = (char*)&p->security1; break;

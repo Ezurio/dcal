@@ -69,7 +69,7 @@ int dcal_wifi_interface_create( laird_interface_handle * interface)
 		}
 	#endif // STATIC_MEM
 	}
-	if (ret==DCAL_SUCCESS);
+	if (ret==DCAL_SUCCESS)
 		*interface = handle;
 	return REPORT_RETURN_DBG(ret);
 }
@@ -89,7 +89,6 @@ int dcal_wifi_interface_pull( laird_session_handle session,
 		return DCAL_INVALID_HANDLE;
 	else {
 		internal_session_handle s = (internal_session_handle)session;
-		ns(Cmd_pl_union_ref_t) cmd_pl;
 		// Attempt to retrieve interface from device
 		flatcc_builder_t *B;
 		char buffer[BUF_SZ] = {0};
@@ -98,22 +97,21 @@ int dcal_wifi_interface_pull( laird_session_handle session,
 
 		B = &s->builder;
 		flatcc_builder_reset(B);
-
-		ns(String_start(B));
-		ns(String_value_create_str(B, interfaceName));
-
-		cmd_pl.String = ns(String_end(B));
-		cmd_pl.type = ns(Cmd_pl_String);
-
 		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_GETINTERFACE)));
+
+		ns(Command_cmd_pl_Interface_start(B));
+		ns(Interface_interface_name_create_str(B, interfaceName));
+		ns(Command_cmd_pl_Interface_end(B));
+
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);
 		assert(size<=BUF_SZ);
 		flatcc_builder_copy_buffer(B, buffer, size);
+
 		ret = lock_session_channel(session);
 		if(ret)
 			return REPORT_RETURN_DBG(ret);
@@ -221,7 +219,6 @@ int dcal_wifi_interface_push( laird_session_handle session,
 	int ret = DCAL_SUCCESS;
 	internal_interface_handle i = (internal_interface_handle)interface;
 	internal_session_handle s = (internal_session_handle)session;
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
 	if (session==NULL)
@@ -238,9 +235,12 @@ int dcal_wifi_interface_push( laird_session_handle session,
 
 		B = &s->builder;
 		flatcc_builder_reset(B);
+		flatbuffers_buffer_start(B, ns(Command_type_identifier));
 
-		ns(Interface_start(B));
+		ns(Command_start(B));
+		ns(Command_command_add(B, ns(Commands_SETINTERFACE)));
 
+		ns(Command_cmd_pl_Interface_start(B));
 		ns(Interface_interface_name_create_str(B, i->interface_name));
 		ns(Interface_prop_add(B, i->prop));
 		ns(Interface_ipv4_add(B, i->ipv4));
@@ -266,13 +266,8 @@ int dcal_wifi_interface_push( laird_session_handle session,
 		ns(Interface_state6_add(B, i->state6));
 		ns(Interface_nat6_add(B, i->nat6));
 
-		cmd_pl.Interface = ns(Interface_end(B));
-		cmd_pl.type = ns(Cmd_pl_Interface);
+		ns(Command_cmd_pl_Interface_end(B));
 
-		flatbuffers_buffer_start(B, ns(Command_type_identifier));
-		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
-		ns(Command_command_add(B, ns(Commands_SETINTERFACE)));
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);
@@ -316,7 +311,6 @@ int dcal_wifi_interface_delete( laird_session_handle session,
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	REPORT_ENTRY_DEBUG;
 
 	if ((interface_name==NULL) || (interface_name[0]==0))
@@ -331,17 +325,15 @@ int dcal_wifi_interface_delete( laird_session_handle session,
 
 		B = &s->builder;
 		flatcc_builder_reset(B);
-
-		ns(String_start(B));
-		ns(String_value_create_str(B, interface_name));
-
-		cmd_pl.String = ns(String_end(B));
-		cmd_pl.type = ns(Cmd_pl_String);
-
 		flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 		ns(Command_start(B));
-		ns(Command_cmd_pl_add(B, cmd_pl));
 		ns(Command_command_add(B, ns(Commands_DELINTERFACE)));
+
+		ns(Command_cmd_pl_Interface_start(B));
+		ns(Interface_interface_name_create_str(B, interface_name));
+		ns(Command_cmd_pl_Interface_end(B));
+
 		ns(Command_end_as_root(B));
 
 		size=flatcc_builder_get_buffer_size(B);

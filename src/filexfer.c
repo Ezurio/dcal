@@ -63,24 +63,20 @@ int dcal_file_push_to_wb(laird_session_handle session,
 	filesize = stats.st_size;
 	mode = stats.st_mode & ~S_IFMT;//TODO - do we need to check for directory instead of file?
 
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	flatcc_builder_t *B;
 	B=&s->builder;
 	flatcc_builder_reset(B);
+	flatbuffers_buffer_start(B, ns(Command_type_identifier));
 
-	ns(Filexfer_start(B));
+	ns(Command_start(B));
+	ns(Command_command_add(B, ns(Commands_FILEPUSH)));
 
+	ns(Command_cmd_pl_Filexfer_start(B));
 	ns(Filexfer_file_path_create_str(B, remote_file_name));
 	ns(Filexfer_size_add(B, filesize));
 	ns(Filexfer_mode_add(B, mode));
+	ns(Command_cmd_pl_Filexfer_end(B));
 
-	cmd_pl.Filexfer = ns(Filexfer_end(B));
-	cmd_pl.type = ns(Cmd_pl_Filexfer);
-
-	flatbuffers_buffer_start(B, ns(Command_type_identifier));
-	ns(Command_start(B));
-	ns(Command_cmd_pl_add(B, cmd_pl));
-	ns(Command_command_add(B, ns(Commands_FILEPUSH)));
 	ns(Command_end_as_root(B));
 
 	size=flatcc_builder_get_buffer_size(B);
@@ -211,22 +207,18 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 		goto cleanup;
 	}
 
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	flatcc_builder_t *B;
 	B=&s->builder;
 	flatcc_builder_reset(B);
-
-	ns(String_start(B));
-
-	ns(String_value_create_str(B, remote_file));
-
-	cmd_pl.String = ns(String_end(B));
-	cmd_pl.type = ns(Cmd_pl_String);
-
 	flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 	ns(Command_start(B));
-	ns(Command_cmd_pl_add(B, cmd_pl));
 	ns(Command_command_add(B, ns(Commands_FILEPULL)));
+
+	ns(Command_cmd_pl_Filexfer_start(B));
+	ns(String_value_create_str(B, remote_file));
+	ns(Command_cmd_pl_Filexfer_end(B));
+
 	ns(Command_end_as_root(B));
 
 	size=flatcc_builder_get_buffer_size(B);
@@ -331,22 +323,18 @@ int dcal_fw_update(laird_session_handle session, int flags)
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
 
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	flatcc_builder_t *B;
 	B=&s->builder;
 	flatcc_builder_reset(B);
-
-	ns(U32_start(B));
-
-	ns(U32_value_add(B, flags));
-
-	cmd_pl.U32 = ns(U32_end(B));
-	cmd_pl.type = ns(Cmd_pl_U32);
-
 	flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 	ns(Command_start(B));
-	ns(Command_cmd_pl_add(B, cmd_pl));
 	ns(Command_command_add(B, ns(Commands_FWUPDATE)));
+
+	ns(Command_cmd_pl_Filexfer_start(B));
+	ns(U32_value_add(B, flags));
+	ns(Command_cmd_pl_Filexfer_end(B));
+
 	ns(Command_end_as_root(B));
 
 	size=flatcc_builder_get_buffer_size(B);
@@ -457,22 +445,18 @@ int dcal_process_cli_command_file(laird_session_handle session, char * src_file)
 
 	ret = dcal_file_push_to_wb(session, src_file, src_file);
 
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	flatcc_builder_t *B;
 	B=&s->builder;
 	flatcc_builder_reset(B);
-
-	ns(String_start(B));
-
-	ns(String_value_create_str(B, src_file));
-
-	cmd_pl.String = ns(String_end(B));
-	cmd_pl.type = ns(Cmd_pl_String);
-
 	flatbuffers_buffer_start(B, ns(Command_type_identifier));
+
 	ns(Command_start(B));
-	ns(Command_cmd_pl_add(B, cmd_pl));
 	ns(Command_command_add(B, ns(Commands_CLIFILE)));
+
+	ns(Command_cmd_pl_Filexfer_start(B));
+	ns(String_value_create_str(B, src_file));
+	ns(Command_cmd_pl_Filexfer_end(B));
+
 	ns(Command_end_as_root(B));
 
 	size=flatcc_builder_get_buffer_size(B);
@@ -554,25 +538,21 @@ int dcal_cert_push_to_wb(laird_session_handle session,
 	filesize = stats.st_size;
 	mode = stats.st_mode & ~S_IFMT;//TODO - do we need to check for directory instead of file?
 
-	ns(Cmd_pl_union_ref_t) cmd_pl;
 	flatcc_builder_t *B;
 	B=&s->builder;
 	flatcc_builder_reset(B);
+	flatbuffers_buffer_start(B, ns(Command_type_identifier));
 
-	ns(Filexfer_start(B));
+	ns(Command_start(B));
+	ns(Command_command_add(B, ns(Commands_FILEPUSH)));
 
+	ns(Command_cmd_pl_Filexfer_start(B));
 	ns(Filexfer_file_path_create_str(B, local_cert_name));
 	ns(Filexfer_size_add(B, filesize));
 	ns(Filexfer_mode_add(B, mode));
 	ns(Filexfer_cert_add(B, 1));
+	ns(Command_cmd_pl_Filexfer_end(B));
 
-	cmd_pl.Filexfer = ns(Filexfer_end(B));
-	cmd_pl.type = ns(Cmd_pl_Filexfer);
-
-	flatbuffers_buffer_start(B, ns(Command_type_identifier));
-	ns(Command_start(B));
-	ns(Command_cmd_pl_add(B, cmd_pl));
-	ns(Command_command_add(B, ns(Commands_FILEPUSH)));
 	ns(Command_end_as_root(B));
 
 	size=flatcc_builder_get_buffer_size(B);
