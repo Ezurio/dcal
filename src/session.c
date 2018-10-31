@@ -89,7 +89,7 @@ static int verify_knownhost(ssh_session session)
 
 	state=ssh_is_server_known(session);
 
-	rc = ssh_get_publickey(session, &srv_pubkey);
+	rc = ssh_get_server_publickey(session, &srv_pubkey);
 	if (rc < 0) {
 		return REPORT_RETURN_DBG(-1);
 	}
