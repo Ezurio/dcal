@@ -25,7 +25,6 @@ int dcal_device_status_get_settings( laird_session_handle s,
                                      unsigned char *mac,
                                      size_t mac_buflen)
 {
-	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
 	time_t now;
@@ -72,7 +71,6 @@ int dcal_device_status_get_ccx( laird_session_handle s,
                                        char * clientname,
                                        size_t clientname_buflen)
 {
-	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
 	time_t now;
@@ -114,7 +112,6 @@ int dcal_device_status_get_ccx( laird_session_handle s,
 
 int dcal_device_status_get_ipv4( laird_session_handle s, unsigned char *ipv4, size_t buflen)
 {
-	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
 	time_t now;
@@ -147,10 +144,8 @@ int dcal_device_status_get_ipv4( laird_session_handle s, unsigned char *ipv4, si
 
 int dcal_device_status_get_ipv6_count( laird_session_handle s, size_t *count)
 {
-	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
-	time_t now;
 
 	REPORT_ENTRY_DEBUG;
 
@@ -173,7 +168,6 @@ int dcal_device_status_get_ipv6_count( laird_session_handle s, size_t *count)
 
 int dcal_device_status_get_ipv6_string_at_index( laird_session_handle s, unsigned int index, char *ipv6, size_t buflen)
 {
-	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
 	time_t now;
@@ -215,7 +209,6 @@ int dcal_device_status_get_connection( laird_session_handle s,
                                        unsigned char *ap_mac,
                                        size_t ap_mac_buflen)
 {
-	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
 	time_t now;
@@ -258,7 +251,6 @@ int dcal_device_status_get_connection_extended( laird_session_handle s,
                                        unsigned int *dtim,
                                        unsigned int *beaconperiod)
 {
-	int ret = DCAL_SUCCESS;
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
 	time_t now;

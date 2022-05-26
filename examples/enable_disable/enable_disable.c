@@ -61,10 +61,10 @@ int main (int argc, char *argv[])
 
 	if (ret != DCAL_SUCCESS)
 		printf("unable to set ");
-	else 
+	else
 		printf("device is now ");
-	
-		printf("%s\n", enable?"enable":"disable");
+
+	printf("%s\n", enable ? "enable" : "disable");
 
 	ret = dcal_session_close( session );
 	if (ret!= DCAL_SUCCESS) {

@@ -207,13 +207,14 @@ if (sendfile){
 	else
 		ret =dcal_file_push_to_wb(session, local_file, remote_file);
 }
-else
+else {
 	ret = dcal_file_pull_from_wb(session, remote_file, local_file);
 
 	if (ret)
 		printf("error in %s(): %s\n",sendfile?"push":"pull", dcal_err_to_string(ret));
 	else
 		printf("file %s\n", sendfile?"sent":"received");
+}
 
 cleanup:
 

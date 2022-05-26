@@ -1,16 +1,16 @@
 TARGET = libsessopt.a
-CC := $(CROSS_COMPILE)gcc
-LD := $(CROSS_COMPILE)ld
-AR := $(CROSS_COMPILE)ar
-RANLIB += $(CROSS_COMPILE)ranlib
-IDIR=../../api
-APPDIR=../../apps/examples
-LIBDIR=../../api
-OBJDIR=obj
+CC ?= $(CROSS_COMPILE)gcc
+LD ?= $(CROSS_COMPILE)ld
+AR ?= $(CROSS_COMPILE)ar
+RANLIB ?= $(CROSS_COMPILE)ranlib
+IDIR = ../../api
+APPDIR = ../../apps/examples
+LIBDIR = ../../api
+OBJDIR = obj
 
 LIBS = -ldcal
-LFLAGS = -L$(LIBDIR) $(LIBS)
-CFLAGS = -g -Wall -I$(IDIR) -I$(IDIR)/include
+LDFLAGS += -L$(LIBDIR) $(LIBS)
+CFLAGS += -g -Wall -I$(IDIR) -I$(IDIR)/include
 
 .PHONY: default all clean
 

@@ -53,10 +53,10 @@ int main (int argc, char *argv[])
 
 	if (ret != DCAL_SUCCESS)
 		printf("unable to reset ");
-	else 
+	else
 		printf("device is now reset: ");
-	
-		printf("%s\n", wifireset?"wifi radio":"system");
+
+	printf("%s\n", wifireset?"wifi radio":"system");
 
 	ret = dcal_session_close( session );
 	if (ret!= DCAL_SUCCESS) {

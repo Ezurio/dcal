@@ -1,14 +1,14 @@
 TARGET = system_test
-CC := $(CROSS_COMPILE)gcc
-LD := $(CROSS_COMPILE)ld
-IDIR=../../api
-APPDIR=../../apps/examples
-LIBDIR=../../api
-OBJDIR=obj
+CC ?= $(CROSS_COMPILE)gcc
+LD ?= $(CROSS_COMPILE)ld
+IDIR = ../../api
+APPDIR = ../../apps/examples
+LIBDIR = ../../api
+OBJDIR = obj
 
 LIBS = -ldcal -lflatccrt -lsessopt -lssh
-LFLAGS = -L$(LIBDIR) $(LIBS) -L$(LIBDIR)/lib
-CFLAGS = -g -Wall -I$(IDIR)
+LDFLAGS += -L$(LIBDIR) $(LIBS) -L$(LIBDIR)/lib
+CFLAGS += -g -Wall -I$(IDIR)
 
 .PHONY: default all clean
 
@@ -32,7 +32,7 @@ $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 .PRECIOUS: $(APPDIR)/$(TARGET) $(OBJECTS)
 
 $(APPDIR)/$(TARGET): $(OBJECTS) | $(APPDIR)
-	$(CC) $(OBJECTS) -Wall $(LFLAGS) -o $@
+	$(CC) $(OBJECTS) -Wall $(LDFLAGS) -o $@
 
 clean:
 	-rm -rf $(OBJDIR)

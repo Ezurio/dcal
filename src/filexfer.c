@@ -23,7 +23,7 @@ int dcal_file_push_to_wb(laird_session_handle session,
 {
 	int ret = DCAL_SUCCESS;
 	FILE *file= NULL;
-	int fd, r,w, total, mode;
+	int fd, r, total, mode;
 	size_t size, filesize;
 	struct stat stats;
 	internal_session_handle s = (internal_session_handle)session;
@@ -176,7 +176,7 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 	char *local_file_name = NULL;
 	int ret = DCAL_SUCCESS;
 	FILE *file = NULL;
-	int fd, total, w, remaining;
+	int total, w, remaining;
 	mode_t mode;
 	size_t r, size;
 	internal_session_handle s = (internal_session_handle)session;
@@ -557,7 +557,7 @@ int dcal_cert_push_to_wb(laird_session_handle session,
 {
 	int ret = DCAL_SUCCESS;
 	FILE *file= NULL;
-	int fd, r,w, total, mode;
+	int fd, r, total, mode;
 	size_t size, filesize;
 	struct stat stats;
 	internal_session_handle s = (internal_session_handle)session;

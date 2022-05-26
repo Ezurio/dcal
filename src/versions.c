@@ -168,7 +168,7 @@ int version_pull(internal_session_handle session)
 {
 	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
-	size_t i, size = 0;
+	size_t size = 0;
 	flatcc_builder_t *B;
 	ns(Version_table_t) version = NULL;
 	flatbuffers_thash_t buftype;

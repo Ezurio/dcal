@@ -387,7 +387,6 @@ int dcal_wifi_profile_activate( laird_session_handle session,
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
-	internal_session_handle s = (internal_session_handle)session;
 	REPORT_ENTRY_DEBUG;
 
 	if (!validate_session(session))

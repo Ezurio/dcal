@@ -1071,7 +1071,6 @@ int dcal_wifi_global_get_dfs_channels( laird_global_handle global,
 void dcal_wifi_global_printf( laird_global_handle global)
 {
 	internal_global_handle g = (internal_global_handle)global;
-	char * str=NULL;
 	int i;
 	bool comma = false;
 

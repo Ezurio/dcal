@@ -2,8 +2,9 @@
 # the correct compiler.
 
 # Allow CROSS_COMPILE to specify compiler base
-CC := $(CROSS_COMPILE)gcc
-LD := $(CROSS_COMPILE)ld
+CC ?= $(CROSS_COMPILE)gcc
+CXX ?= $(CROSS_COMPILE)g++
+LD ?= $(CROSS_COMPILE)ld
 
 OBJDIR := obj
 SRCDIR := src
@@ -11,7 +12,7 @@ APIDIR := api
 
 INCLUDES += -Isrc/include -Ilib.local/flatcc/include/ -I$(SRCDIR) -I$(APIDIR) -I$(APIDIR)/include -I$(OBJDIR)
 TARGET  = dcal
-LDFLAGS = -Llib.local/flatcc/lib
+LDFLAGS += -Llib.local/flatcc/lib
 LIBS = -L./api/lib -lssh -lflatccrt
 COMPILEONLY = -c
 
@@ -50,14 +51,14 @@ $(LIB).a:$(_OBJS)
 	$(AR) rcs $(LIB).a $(_OBJS)
 
 src/python_binding.o : src/python_binding.cpp
-	g++ -fPIC -I$(APIDIR) \
-	    -I/usr/include/python2.7 \
+	$(CXX) -fPIC -I$(APIDIR) \
+	    -I/usr/include/python3.10 \
 	    -o src/python_binding.o -c src/python_binding.cpp
 
 python: $(LIB)  src/python_binding.o
-	g++ -shared -Wl,-soname,dcal_py.so \
+	$(CXX) -shared -Wl,-soname,dcal_py.so \
 	    -o api/dcal_py.so src/python_binding.o \
-	    -Lapi -ldcal -lpython2.7 -lboost_python
+	    -Lapi -ldcal -lpython3.10 -lboost_python
 
 clean:
 	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(APILIB).*

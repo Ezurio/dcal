@@ -23,8 +23,6 @@ int build_hello(flatcc_builder_t *B)
 // returns 0 for valid ack
 int is_handshake_ack_valid( ns(Handshake_table_t) handshake)
 {
-	int ret;
-
 	switch(ns(Handshake_magic(handshake))){
 		case ns(Magic_ACK):
 			DBGINFO("ACK received\n");

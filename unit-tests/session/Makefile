@@ -1,16 +1,16 @@
 TARGET = session_test
-CC := $(CROSS_COMPILE)gcc
-LD := $(CROSS_COMPILE)ld
-APIDIR=../../api
-INCDIR=../../src/include
-APPDIR=../../apps/unit-tests
-LIBDIR=../../api
-FLATCCDIR=../../lib.local/flatcc/include
-OBJDIR=obj
+CC ?= $(CROSS_COMPILE)gcc
+LD ?= $(CROSS_COMPILE)ld
+APIDIR = ../../api
+INCDIR = ../../src/include
+APPDIR = ../../apps/unit-tests
+LIBDIR = ../../api
+FLATCCDIR = ../../lib.local/flatcc/include
+OBJDIR = obj
 
 LIBS = -ldcal
-LFLAGS = -L$(LIBDIR) $(LIBS)
-CFLAGS = -g -Wall -I$(APIDIR) -I$(INCDIR) -I$(FLATCCDIR) -I$(APIDIR)/include
+LDFLAGS += -L$(LIBDIR) $(LIBS)
+CFLAGS += -g -Wall -I$(APIDIR) -I$(INCDIR) -I$(FLATCCDIR) -I$(APIDIR)/include
 
 .PHONY: default all clean
 
@@ -34,7 +34,7 @@ $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 .PRECIOUS: $(APPDIR)/$(TARGET) $(OBJECTS)
 
 $(APPDIR)/$(TARGET): $(OBJECTS) | $(APPDIR)
-	$(CC) $(OBJECTS) -Wall $(LFLAGS) -o $@
+	$(CC) $(OBJECTS) -Wall $(LDFLAGS) -o $@
 
 clean:
 	-rm -rf $(OBJDIR)

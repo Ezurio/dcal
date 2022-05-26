@@ -26,7 +26,7 @@ int do_wifiable( laird_session_handle s, bool enable)
 {
 	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
-	size_t i, size = 0;
+	size_t size = 0;
 	flatcc_builder_t *B;
 	internal_session_handle session=NULL;
 	flatbuffers_thash_t buftype;

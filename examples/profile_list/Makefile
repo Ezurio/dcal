@@ -1,14 +1,14 @@
 TARGET = profile_list
-CC := $(CROSS_COMPILE)gcc
-LD := $(CROSS_COMPILE)ld
-IDIR=../../api
-APPDIR=../../apps/examples
-LIBDIR=-L../../api -L../../api/lib
-OBJDIR=obj
+CC ?= $(CROSS_COMPILE)gcc
+LD ?= $(CROSS_COMPILE)ld
+IDIR = ../../api
+APPDIR = ../../apps/examples
+LIBDIR = -L../../api -L../../api/lib
+OBJDIR = obj
 
 LIBS = -ldcal -lsessopt -lssh
-LFLAGS = $(LIBDIR) $(LIBS)
-CFLAGS = -g -Wall -I$(IDIR)
+LDFLAGS += $(LIBDIR) $(LIBS)
+CFLAGS += -g -Wall -I$(IDIR)
 
 .PHONY: default all clean
 
@@ -32,7 +32,7 @@ $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 .PRECIOUS: $(APPDIR)/$(TARGET) $(OBJECTS)
 
 $(APPDIR)/$(TARGET): $(OBJECTS) | $(APPDIR)
-	$(CC) $(OBJECTS) -Wall $(LFLAGS) -o $@
+	$(CC) $(OBJECTS) -Wall $(LDFLAGS) -o $@
 
 clean:
 	-rm -rf $(OBJDIR)

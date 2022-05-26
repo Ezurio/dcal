@@ -1,15 +1,15 @@
 TARGET = dbg_test
-CC := $(CROSS_COMPILE)gcc
-LD := $(CROSS_COMPILE)ld
-APIDIR=../../api
-INCDIR=../../src/include
-APPDIR=../../apps/unit-tests
-LIBDIR=../../api
-OBJDIR=obj
+CC ?= $(CROSS_COMPILE)gcc
+LD ?= $(CROSS_COMPILE)ld
+APIDIR = ../../api
+INCDIR = ../../src/include
+APPDIR = ../../apps/unit-tests
+LIBDIR = ../../api
+OBJDIR = obj
 
 LIBS = -ldcal
-LFLAGS = -L$(LIBDIR) $(LIBS)
-CFLAGS = -g -Wall -I$(APIDIR) -I$(INCDIR)
+LDFLAGS += -L$(LIBDIR) $(LIBS)
+CFLAGS += -g -Wall -I$(APIDIR) -I$(INCDIR)
 
 .PHONY: default all clean
 
@@ -33,7 +33,7 @@ $(OBJDIR)/%.o: %.c $(HEADERS) | $(OBJDIR)
 .PRECIOUS: $(APPDIR)/$(TARGET) $(OBJECTS)
 
 $(APPDIR)/$(TARGET): $(OBJECTS) | $(APPDIR)
-	$(CC) $(OBJECTS) -Wall $(LFLAGS) -o $@
+	$(CC) $(OBJECTS) -Wall $(LDFLAGS) -o $@
 
 clean:
 	-rm -rf $(OBJDIR)

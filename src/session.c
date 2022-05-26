@@ -80,14 +80,14 @@ static int verify_knownhost(ssh_session session)
 	REPORT_ENTRY_DEBUG;
 
 	char *hexa;
-	int state;
+	enum ssh_known_hosts_e state;
 	char buf[10];
 	unsigned char *hash = NULL;
 	size_t hlen;
 	ssh_key srv_pubkey;
 	int rc;
 
-	state=ssh_is_server_known(session);
+	state = ssh_session_is_known_server(session);
 
 	rc = ssh_get_server_publickey(session, &srv_pubkey);
 	if (rc < 0) {
@@ -104,25 +104,25 @@ static int verify_knownhost(ssh_session session)
 	}
 
 	switch(state) {
-	case SSH_SERVER_KNOWN_OK:
+	case SSH_KNOWN_HOSTS_OK:
 		break; /* ok */
-	case SSH_SERVER_KNOWN_CHANGED:
+	case SSH_KNOWN_HOSTS_CHANGED:
 		DBGERROR("Host key for server changed : server's one is now :\n");
-		ssh_print_hexa("Public key hash",hash, hlen);
+		ssh_print_hash(SSH_PUBLICKEY_HASH_SHA256, hash, hlen);
 		ssh_clean_pubkey_hash(&hash);
 		DBGERROR("For security reason, connection will be stopped\n");
 		return REPORT_RETURN_DBG(-1);
-	case SSH_SERVER_FOUND_OTHER:
+	case SSH_KNOWN_HOSTS_OTHER:
 		DBGERROR("The host key for this server was not found but an other type of key exists.\n");
 		DBGERROR("An attacker might change the default server key to confuse your client"
 		        "into thinking the key does not exist\n"
 		        "We advise you to rerun the client with -d or -r for more safety.\n");
 		return REPORT_RETURN_DBG(-1);
-	case SSH_SERVER_FILE_NOT_FOUND:
+	case SSH_KNOWN_HOSTS_NOT_FOUND:
 		DBGERROR("Could not find known host file. If you accept the host key here,\n"
 			"the file will be automatically created.\n");
 		/* fallback to SSH_SERVER_NOT_KNOWN behavior */
-	case SSH_SERVER_NOT_KNOWN:
+	case SSH_KNOWN_HOSTS_UNKNOWN:
 		hexa = ssh_get_hexa(hash, hlen);
 		printf("The server is unknown. \nPublic key hash: %s\n"
 		"Do you trust the host key ?\n", hexa);
@@ -141,7 +141,7 @@ static int verify_knownhost(ssh_session session)
 			return REPORT_RETURN_DBG(-1);
 		}
 		if(strncasecmp(buf,"yes",3)==0) {
-			if (ssh_write_knownhost(session) < 0) {
+			if (ssh_session_update_known_hosts(session) != SSH_OK) {
 				ssh_clean_pubkey_hash(&hash);
 				fprintf(stderr, "error %s\n", strerror(errno));
 				return REPORT_RETURN_DBG(-1);
@@ -149,7 +149,7 @@ static int verify_knownhost(ssh_session session)
 		}
 
 		break;
-	case SSH_SERVER_ERROR:
+	case SSH_KNOWN_HOSTS_ERROR:
 		ssh_clean_pubkey_hash(&hash);
 		fprintf(stderr,"%s",ssh_get_error(session));
 		return REPORT_RETURN_DBG(-1);

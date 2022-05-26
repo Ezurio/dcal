@@ -10,7 +10,7 @@ int do_command( laird_session_handle s, unsigned long cmd)
 {
 	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
-	size_t i, size = 0;
+	size_t size = 0;
 	flatcc_builder_t *B;
 	internal_session_handle session=NULL;
 	flatbuffers_thash_t buftype;
