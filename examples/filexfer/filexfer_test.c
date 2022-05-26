@@ -200,21 +200,20 @@ int main (int argc, char *argv[])
 		goto cleanup;
 	}
 
-// device interaction
-if (sendfile){
-	if (certificate)
-		ret =dcal_cert_push_to_wb(session, local_file);
+	// device interaction
+	if (sendfile) {
+		if (certificate)
+			ret = dcal_cert_push_to_wb(session, local_file);
+		else
+			ret = dcal_file_push_to_wb(session, local_file, remote_file);
+	}
 	else
-		ret =dcal_file_push_to_wb(session, local_file, remote_file);
-}
-else {
-	ret = dcal_file_pull_from_wb(session, remote_file, local_file);
+		ret = dcal_file_pull_from_wb(session, remote_file, local_file);
 
 	if (ret)
-		printf("error in %s(): %s\n",sendfile?"push":"pull", dcal_err_to_string(ret));
+		printf("error in %s(): %s\n",sendfile ? "push" : "pull", dcal_err_to_string(ret));
 	else
-		printf("file %s\n", sendfile?"sent":"received");
-}
+		printf("file %s\n", sendfile ? "sent" : "received");
 
 cleanup:
 
