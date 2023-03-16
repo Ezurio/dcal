@@ -103,7 +103,11 @@ void DbgPrintfLvl(int dbglvl, char *format, ...)
 	if(debug_to_stdout==2){
 		gettimeofday(&tv, NULL);
 		timeval_subtract(&tv, &tv, &basetime);
-		fprintf( fp, "%4ld.%06ld ", tv.tv_sec, tv.tv_usec);
+#ifdef __USE_TIME_BITS64
+		fprintf(fp, "%4lld.%06lld ", tv.tv_sec, tv.tv_usec);
+#else
+		fprintf(fp, "%4ld.%06ld ", tv.tv_sec, tv.tv_usec);
+#endif
 	}
 
 	va_start( args, format );
