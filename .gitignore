@@ -9,3 +9,4 @@ lib/
 api/include/libssh
 api/lib
 *.a
+lib.local

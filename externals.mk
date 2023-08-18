@@ -9,6 +9,9 @@ CFLAGS += -Wall -Werror --std=c99
 
 BASE_DIR := $(CURDIR)
 
+LIBSSH_VERSION := 0.10.5
+FLATCC_VERSION := 0.6.1
+
 #
 # COMPILER/ASSEMBLER INVOCATIONS
 #
@@ -44,42 +47,29 @@ lib.local:
 #
 # libssh
 #
-lib.local/libssh: lib.local
-	cd lib.local && git clone git://git.libssh.org/projects/libssh.git
+# libssh has dependencies on libgcrypt20-dev libssl-dev
+# These can be installed via apt on a Ubuntu machine.
+lib.local/libssh : lib.local
+	cd lib.local && wget -nc https://git.libssh.org/projects/libssh.git/snapshot/libssh-$(LIBSSH_VERSION).tar.gz
+	cd lib.local/ && tar -xzf libssh-$(LIBSSH_VERSION).tar.gz
+	mkdir -p lib.local/libssh-$(LIBSSH_VERSION)/build
+	cd lib.local/libssh-$(LIBSSH_VERSION)/build && cmake -DCMAKE_INSTALL_PREFIX=$(BASE_DIR)/api ..
+	cd lib.local/libssh-$(LIBSSH_VERSION)/build && make && make install
 
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Linux)
-LIBSSH_TARGET := lib.local/libssh/build/src/libssh.so.4.4.2
-LIBSSH_INSTALL := api/lib/libssh.so.4.4.2
-endif
-ifeq ($(UNAME_S),Darwin)
-LIBSSH_TARGET := lib.local/libssh/build/src/libssh.4.4.2.dylib
-LIBSSH_INSTALL := api/lib/libssh.4.4.2.dylib
-endif
-
-
-$(LIBSSH_TARGET): lib.local lib.local/libssh
-	cd lib.local/libssh && git checkout libssh-0.7.5
-	mkdir -p lib.local/libssh/build
-	cd lib.local/libssh/build && cmake -DCMAKE_INSTALL_PREFIX=$(BASE_DIR)/api ..
-	cd lib.local/libssh/build && make
-
-$(LIBSSH_INSTALL): $(LIBSSH_TARGET)
-	cd lib.local/libssh/build && make install
+.PHONY: libssh
+libssh: lib.local/libssh
 
 clean_libssh:
 	-rm -rf api/lib/
 	-rm -rf api/include/libssh
-
-.PHONY: libssh
-libssh: $(LIBSSH_TARGET) $(LIBSSH_INSTALL)
+	-rm -rf lib.local/libssh*
 
 #
 # flatcc
 #
 lib.local/flatcc : lib.local
-	cd lib.local && git clone git@github.com:dvidelabs/flatcc.git
-	cd lib.local/flatcc && git checkout v0.4.3
+	cd lib.local/ && wget -nc https://github.com/dvidelabs/flatcc/archive/refs/tags/v$(FLATCC_VERSION).tar.gz -O flatcc-$(FLATCC_VERSION).tar.gz
+	cd lib.local/ && tar -xzf flatcc-$(FLATCC_VERSION).tar.gz && mv flatcc-$(FLATCC_VERSION) flatcc
 	cd lib.local/flatcc && patch -p1 < ../../patches/flatcc001_add_fPIC.patch
 	cp lib.local/flatcc/scripts/build.cfg.make lib.local/flatcc/scripts/build.cfg
 
@@ -88,14 +78,15 @@ lib.local/flatcc/lib/libflatcc.a : lib.local/flatcc
 
 LIBFLATCC_INSTALL = api/libflatcc.a
 $(LIBFLATCC_INSTALL) : lib.local/flatcc/lib/libflatcc.a
-	cp lib.local/flatcc/lib/*.a api/lib/.
+	mkdir -p api/lib && cp lib.local/flatcc/lib/*.a api/lib/.
 
 .PHONY: flatcc
 flatcc: lib.local/flatcc/lib/libflatcc.a $(LIBFLATCC_INSTALL)
 
 .PHONY: clean_flatcc
 clean_flatcc:
-	-rm -f api/libflatcc*.a
+	-rm -rf lib.local/flatcc*
+	-rm -f api/lib/libflatcc*
 
 export FLATCC := lib.local/flatcc/bin/flatcc
 
