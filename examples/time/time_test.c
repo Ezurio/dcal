@@ -32,7 +32,7 @@ int main (int argc, char *argv[])
 	int ret;
 	struct timeval tv;
 
-	laird_session_handle session;
+	session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {
@@ -50,7 +50,7 @@ int main (int argc, char *argv[])
 	}
 
 // device interaction
-	ret = dcal_time_get(session, &tv.tv_sec, &tv.tv_usec);
+	ret = dcal_time_get(session, &tv);
 	if (ret) printf("error in dcal_time_get(): %s\n",dcal_err_to_string(ret));
 	else {
 		printf("remote time:\n");
@@ -67,17 +67,19 @@ int main (int argc, char *argv[])
 	if (ret) printf("error in dcal_ntpdate("goodfqdn"): %s\n",
 	                          dcal_err_to_string(ret));
 
-	ret = dcal_time_get(session, &tv.tv_sec, &tv.tv_usec);
+	ret = dcal_time_get(session, &tv);
 	if (ret) printf("error in dcal_time_get(): %s\n",dcal_err_to_string(ret));
 	else {
 		printf("remote time:\n");
 		print_time(&tv);
 	}
 
-	ret = dcal_time_set(session, 1000000, 0);
+	tv.tv_sec = 1000000;
+	tv.tv_usec = 0;
+	ret = dcal_time_set(session, &tv);
 	if (ret) printf("error in dcal_time_set(): %s\n",dcal_err_to_string(ret));
 
-	ret = dcal_time_get(session, &tv.tv_sec, &tv.tv_usec);
+	ret = dcal_time_get(session, &tv);
 	if (ret) printf("error in dcal_time_get(): %s\n",dcal_err_to_string(ret));
 	else {
 		printf("remote time:\n");
@@ -87,5 +89,4 @@ int main (int argc, char *argv[])
 cleanup:
 
 	return (ret!=DCAL_SUCCESS);
-
 }

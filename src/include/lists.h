@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016, Laird
+Copyright (c) 2016, Ezurio
 Permission to use, copy, modify, and/or distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
 copyright notice and this permission notice appear in all copies.
@@ -19,7 +19,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifndef STATIC_MEM
 #include "platform.h"
 
-typedef struct _list_element{
+typedef struct _list_element {
 	struct _list_element *next;
 	pvoid handle;
 } list_element;

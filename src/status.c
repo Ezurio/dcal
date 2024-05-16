@@ -18,7 +18,7 @@ int build_query_status( flatcc_builder_t *B)
 	return 0;
 }
 
-int dcal_device_status_get_settings( laird_session_handle s,
+int dcal_device_status_get_settings( session_handle s,
                                      char * profilename,
                                      size_t profilename_buflen,
                                      LRD_WF_SSID *ssid,
@@ -63,7 +63,7 @@ int dcal_device_status_get_settings( laird_session_handle s,
 	return REPORT_RETURN_DBG(0);
 }
 
-int dcal_device_status_get_ccx( laird_session_handle s,
+int dcal_device_status_get_ccx( session_handle s,
                                        unsigned char *ap_ip,
                                        size_t ap_ip_buflen,
                                        char *ap_name,
@@ -110,7 +110,7 @@ int dcal_device_status_get_ccx( laird_session_handle s,
 	return REPORT_RETURN_DBG(0);
 }
 
-int dcal_device_status_get_ipv4( laird_session_handle s, unsigned char *ipv4, size_t buflen)
+int dcal_device_status_get_ipv4( session_handle s, unsigned char *ipv4, size_t buflen)
 {
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
@@ -142,7 +142,7 @@ int dcal_device_status_get_ipv4( laird_session_handle s, unsigned char *ipv4, si
 	return REPORT_RETURN_DBG(0);
 }
 
-int dcal_device_status_get_ipv6_count( laird_session_handle s, size_t *count)
+int dcal_device_status_get_ipv6_count( session_handle s, size_t *count)
 {
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
@@ -166,7 +166,7 @@ int dcal_device_status_get_ipv6_count( laird_session_handle s, size_t *count)
 	return REPORT_RETURN_DBG(DCAL_SUCCESS);
 }
 
-int dcal_device_status_get_ipv6_string_at_index( laird_session_handle s, unsigned int index, char *ipv6, size_t buflen)
+int dcal_device_status_get_ipv6_string_at_index( session_handle s, unsigned int index, char *ipv6, size_t buflen)
 {
 	internal_session_handle session=NULL;
 	DCAL_STATUS_STRUCT * s_struct;
@@ -202,7 +202,7 @@ int dcal_device_status_get_ipv6_string_at_index( laird_session_handle s, unsigne
 	return REPORT_RETURN_DBG(0);
 }
 
-int dcal_device_status_get_connection( laird_session_handle s,
+int dcal_device_status_get_connection( session_handle s,
                                        unsigned int * cardstate,
                                        unsigned int * channel,
                                        int * rssi,
@@ -245,7 +245,7 @@ if ((CACHE_TIME) && (now - s_struct->timestamp > CACHE_TIME))
 	return REPORT_RETURN_DBG(0);
 }
 
-int dcal_device_status_get_connection_extended( laird_session_handle s,
+int dcal_device_status_get_connection_extended( session_handle s,
                                        unsigned int *bitrate,
                                        unsigned int *txpower,
                                        unsigned int *dtim,
@@ -292,7 +292,7 @@ int dcal_device_status_get_cache_timeout( unsigned int *timeout)
 	return 0;
 }
 
-int dcal_device_status_pull( laird_session_handle s)
+int dcal_device_status_pull( session_handle s)
 {
 	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];

@@ -14,7 +14,7 @@ int main (int argc, char *argv[])
 	int method;
 	int rc;
 
-	laird_session_handle session;
+	session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {

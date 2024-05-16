@@ -83,7 +83,7 @@ static void clear_security_by_index(internal_profile_handle p, int i)
 #define copy_usercert(p, dest) memcpy(dest, p->security4, CRYPT_BUFFER_SIZE)
 #define copy_usercertpassword(p, dest) memcpy(dest, p->security5, CRYPT_BUFFER_SIZE)
 
-int dcal_wifi_profile_create( laird_profile_handle * profile)
+int dcal_wifi_profile_create( profile_handle * profile)
 {
 	internal_profile_handle handle=NULL;
 	int ret = DCAL_SUCCESS;
@@ -125,8 +125,8 @@ int dcal_wifi_profile_create( laird_profile_handle * profile)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_pull( laird_session_handle session,
-                                 laird_profile_handle * profile,
+int dcal_wifi_profile_pull( session_handle session,
+                                 profile_handle * profile,
                                  char * profilename)
 {
 	int ret = DCAL_SUCCESS;
@@ -270,7 +270,7 @@ int dcal_wifi_profile_pull( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_close_handle( laird_profile_handle p)
+int dcal_wifi_profile_close_handle( profile_handle p)
 {
 	internal_profile_handle profile = (internal_profile_handle)p;
 	int ret = DCAL_SUCCESS;
@@ -298,8 +298,8 @@ int dcal_wifi_profile_close_handle( laird_profile_handle p)
 //  push and profile_activate both send the local profile to the remote
 //  radio device.  Activate_by_name only activates the named profile on
 //  the remote radio, without sending a profile
-int dcal_wifi_profile_push( laird_session_handle session,
-                                 laird_profile_handle profile)
+int dcal_wifi_profile_push( session_handle session,
+                                 profile_handle profile)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
@@ -382,8 +382,8 @@ int dcal_wifi_profile_push( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_activate( laird_session_handle session,
-                                     laird_profile_handle profile)
+int dcal_wifi_profile_activate( session_handle session,
+                                     profile_handle profile)
 {
 	int ret = DCAL_SUCCESS;
 	internal_profile_handle p = (internal_profile_handle)profile;
@@ -403,7 +403,7 @@ int dcal_wifi_profile_activate( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_activate_by_name( laird_session_handle session,
+int dcal_wifi_profile_activate_by_name( session_handle session,
                                           char * profile_name)
 {
 	int ret = DCAL_SUCCESS;
@@ -469,7 +469,7 @@ int dcal_wifi_profile_activate_by_name( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_delete_from_device( laird_session_handle session,
+int dcal_wifi_profile_delete_from_device( session_handle session,
                                           char * profile_name)
 {
 	int ret = DCAL_SUCCESS;
@@ -534,7 +534,7 @@ int dcal_wifi_profile_delete_from_device( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_set_profilename(laird_profile_handle profile,
+int dcal_wifi_profile_set_profilename(profile_handle profile,
                                            char * profilename )
 {
 	int ret = DCAL_SUCCESS;
@@ -552,7 +552,7 @@ int dcal_wifi_profile_set_profilename(laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_profilename(laird_profile_handle profile,
+int dcal_wifi_profile_get_profilename(profile_handle profile,
                                       char * profilename, size_t buflen )
 {
 	int ret = DCAL_SUCCESS;
@@ -571,7 +571,7 @@ int dcal_wifi_profile_get_profilename(laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_set_SSID( laird_profile_handle profile,
+int dcal_wifi_profile_set_SSID( profile_handle profile,
                                        LRD_WF_SSID *ssid)
 {
 	int ret = DCAL_SUCCESS;
@@ -589,7 +589,7 @@ int dcal_wifi_profile_set_SSID( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_SSID( laird_profile_handle profile,
+int dcal_wifi_profile_get_SSID( profile_handle profile,
                                        LRD_WF_SSID *ssid)
 {
 	int ret = DCAL_SUCCESS;
@@ -620,7 +620,7 @@ int dcal_wifi_profile_get_SSID( laird_profile_handle profile,
 'wpa-psk-aes' or 'WPA_PSK_AES'
 'wpa-aes' or 'WPA_AES'
 */
-int dcal_wifi_profile_set_encrypt_std( laird_profile_handle profile,
+int dcal_wifi_profile_set_encrypt_std( profile_handle profile,
                                             ENCRYPT_STD estd)
 {
 	int ret = DCAL_SUCCESS;
@@ -671,7 +671,7 @@ int dcal_wifi_profile_set_encrypt_std( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_encrypt_std( laird_profile_handle profile,
+int dcal_wifi_profile_get_encrypt_std( profile_handle profile,
                                             ENCRYPT_STD *estd)
 {
 	int ret = DCAL_SUCCESS;
@@ -711,7 +711,7 @@ int dcal_wifi_profile_get_encrypt_std( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_set_encryption( laird_profile_handle profile,
+int dcal_wifi_profile_set_encryption( profile_handle profile,
                                            ENCRYPTION enc)
 {
 	int ret = DCAL_SUCCESS;
@@ -800,7 +800,7 @@ int dcal_wifi_profile_set_encryption( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_encryption( laird_profile_handle profile,
+int dcal_wifi_profile_get_encryption( profile_handle profile,
                                            ENCRYPTION *enc)
 {
 	int ret = DCAL_SUCCESS;
@@ -833,7 +833,7 @@ int dcal_wifi_profile_get_encryption( laird_profile_handle profile,
 }
 
 
-int dcal_wifi_profile_set_auth( laird_profile_handle profile,
+int dcal_wifi_profile_set_auth( profile_handle profile,
                                      AUTH auth)
 {
 	int ret = DCAL_SUCCESS;
@@ -851,7 +851,7 @@ int dcal_wifi_profile_set_auth( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_auth( laird_profile_handle profile,
+int dcal_wifi_profile_get_auth( profile_handle profile,
                                      AUTH *auth)
 {
 	int ret = DCAL_SUCCESS;
@@ -870,7 +870,7 @@ int dcal_wifi_profile_get_auth( laird_profile_handle profile,
 }
 
 
-int dcal_wifi_profile_set_eap( laird_profile_handle profile,
+int dcal_wifi_profile_set_eap( profile_handle profile,
                                     EAPTYPE eap)
 {
 	int ret = DCAL_SUCCESS;
@@ -893,7 +893,7 @@ int dcal_wifi_profile_set_eap( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_eap( laird_profile_handle profile,
+int dcal_wifi_profile_get_eap( profile_handle profile,
                                     EAPTYPE *eap)
 {
 	int ret = DCAL_SUCCESS;
@@ -912,7 +912,7 @@ int dcal_wifi_profile_get_eap( laird_profile_handle profile,
 }
 
 // setting psk==NULL will clear PSK
-int dcal_wifi_profile_set_psk( laird_profile_handle profile,
+int dcal_wifi_profile_set_psk( profile_handle profile,
                                     char * psk)
 {
 	int ret = DCAL_SUCCESS;
@@ -942,7 +942,7 @@ int dcal_wifi_profile_set_psk( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_psk_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_psk_is_set( profile_handle profile,
                                     bool * psk)
 {
 	int ret = DCAL_SUCCESS;
@@ -962,7 +962,7 @@ int dcal_wifi_profile_psk_is_set( laird_profile_handle profile,
 }
 
 // setting user==NULL will cause it to be cleared
-int dcal_wifi_profile_set_user( laird_profile_handle profile,
+int dcal_wifi_profile_set_user( profile_handle profile,
                                      char * user)
 {
 	int ret = DCAL_SUCCESS;
@@ -983,7 +983,7 @@ int dcal_wifi_profile_set_user( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_user_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_user_is_set( profile_handle profile,
                                      bool * user)
 {
 	int ret = DCAL_SUCCESS;
@@ -1003,7 +1003,7 @@ int dcal_wifi_profile_user_is_set( laird_profile_handle profile,
 }
 
 // setting password==NULL will cause it to be cleared
-int dcal_wifi_profile_set_password( laird_profile_handle profile,
+int dcal_wifi_profile_set_password( profile_handle profile,
                                          char * password)
 {
 	int ret = DCAL_SUCCESS;
@@ -1024,7 +1024,7 @@ int dcal_wifi_profile_set_password( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_password_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_password_is_set( profile_handle profile,
                                          bool * password)
 {
 	int ret = DCAL_SUCCESS;
@@ -1044,7 +1044,7 @@ int dcal_wifi_profile_password_is_set( laird_profile_handle profile,
 }
 
 // setting cacert==NULL will cause it to be cleared
-int dcal_wifi_profile_set_cacert( laird_profile_handle profile,
+int dcal_wifi_profile_set_cacert( profile_handle profile,
                                        char * cacert)
 {
 	int ret = DCAL_SUCCESS;
@@ -1065,7 +1065,7 @@ int dcal_wifi_profile_set_cacert( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_cacert_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_cacert_is_set( profile_handle profile,
                                        bool * cacert)
 {
 	int ret = DCAL_SUCCESS;
@@ -1085,7 +1085,7 @@ int dcal_wifi_profile_cacert_is_set( laird_profile_handle profile,
 }
 
 // setting pacfilename==NULL will cause it to be cleared
-int dcal_wifi_profile_set_pacfile( laird_profile_handle profile,
+int dcal_wifi_profile_set_pacfile( profile_handle profile,
                                  char * pacfilename)
 {
 	int ret = DCAL_SUCCESS;
@@ -1106,7 +1106,7 @@ int dcal_wifi_profile_set_pacfile( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_pacfile_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_pacfile_is_set( profile_handle profile,
                                  bool * pacfilename)
 {
 	int ret = DCAL_SUCCESS;
@@ -1126,7 +1126,7 @@ int dcal_wifi_profile_pacfile_is_set( laird_profile_handle profile,
 }
 
 // setting pacpassword==NULL will cause it to be cleared
-int dcal_wifi_profile_set_pacpassword( laird_profile_handle profile,
+int dcal_wifi_profile_set_pacpassword( profile_handle profile,
                                  char * pacpassword)
 {
 	int ret = DCAL_SUCCESS;
@@ -1147,7 +1147,7 @@ int dcal_wifi_profile_set_pacpassword( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_pacpassword_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_pacpassword_is_set( profile_handle profile,
                                  bool * pacpassword)
 {
 	int ret = DCAL_SUCCESS;
@@ -1167,7 +1167,7 @@ int dcal_wifi_profile_pacpassword_is_set( laird_profile_handle profile,
 }
 
 //setting usercert==null will cause it to be cleared
-int dcal_wifi_profile_set_usercert( laird_profile_handle profile,
+int dcal_wifi_profile_set_usercert( profile_handle profile,
                                  char * usercert)
 {
 	int ret = DCAL_SUCCESS;
@@ -1188,7 +1188,7 @@ int dcal_wifi_profile_set_usercert( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_usercert_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_usercert_is_set( profile_handle profile,
                                  bool * usercert)
 {
 	int ret = DCAL_SUCCESS;
@@ -1208,7 +1208,7 @@ int dcal_wifi_profile_usercert_is_set( laird_profile_handle profile,
 }
 
 // setting usercert_password==NULL will cause it to be cleared.
-int dcal_wifi_profile_set_usercert_password( laird_profile_handle profile,
+int dcal_wifi_profile_set_usercert_password( profile_handle profile,
                                  char * usercert_password)
 {
 	int ret = DCAL_SUCCESS;
@@ -1229,7 +1229,7 @@ int dcal_wifi_profile_set_usercert_password( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_usercert_password_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_usercert_password_is_set( profile_handle profile,
                                  bool * usercert_password)
 {
 	int ret = DCAL_SUCCESS;
@@ -1249,7 +1249,7 @@ int dcal_wifi_profile_usercert_password_is_set( laird_profile_handle profile,
 }
 
 // setting wepkey==NULL will cause it to be cleared
-int dcal_wifi_profile_set_wep_key( laird_profile_handle profile,
+int dcal_wifi_profile_set_wep_key( profile_handle profile,
                                  char * wepkey, int index)
 {
 	int ret = DCAL_SUCCESS;
@@ -1283,7 +1283,7 @@ int dcal_wifi_profile_set_wep_key( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_wep_key_is_set( laird_profile_handle profile,
+int dcal_wifi_profile_wep_key_is_set( profile_handle profile,
                                  bool * wepkey, int index)
 {
 	int ret = DCAL_SUCCESS;
@@ -1309,7 +1309,7 @@ int dcal_wifi_profile_wep_key_is_set( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_set_wep_txkey( laird_profile_handle profile,
+int dcal_wifi_profile_set_wep_txkey( profile_handle profile,
                                  unsigned int txkey)
 {
 	int ret = DCAL_SUCCESS;
@@ -1327,7 +1327,7 @@ int dcal_wifi_profile_set_wep_txkey( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_wep_txkey( laird_profile_handle profile,
+int dcal_wifi_profile_get_wep_txkey( profile_handle profile,
                                  unsigned int *txkey)
 {
 	int ret = DCAL_SUCCESS;
@@ -1346,7 +1346,7 @@ int dcal_wifi_profile_get_wep_txkey( laird_profile_handle profile,
 }
 
 // sending clientname==NULL will clear the client name
-int dcal_wifi_profile_set_clientname( laird_profile_handle profile,
+int dcal_wifi_profile_set_clientname( profile_handle profile,
                                 char * clientname)
 {
 	int ret = DCAL_SUCCESS;
@@ -1367,7 +1367,7 @@ int dcal_wifi_profile_set_clientname( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_clientname( laird_profile_handle profile,
+int dcal_wifi_profile_get_clientname( profile_handle profile,
                                 char * clientname_buffer, size_t buflen)
 {
 	int ret = DCAL_SUCCESS;
@@ -1387,7 +1387,7 @@ int dcal_wifi_profile_get_clientname( laird_profile_handle profile,
 }
 
 
-int dcal_wifi_profile_set_radiomode( laird_profile_handle profile,
+int dcal_wifi_profile_set_radiomode( profile_handle profile,
                                 RADIOMODE mode)
 {
 	int ret = DCAL_SUCCESS;
@@ -1405,7 +1405,7 @@ int dcal_wifi_profile_set_radiomode( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_radiomode( laird_profile_handle profile,
+int dcal_wifi_profile_get_radiomode( profile_handle profile,
                                 RADIOMODE * mode)
 {
 	int ret = DCAL_SUCCESS;
@@ -1424,7 +1424,7 @@ int dcal_wifi_profile_get_radiomode( laird_profile_handle profile,
 }
 
 
-int dcal_wifi_profile_set_powersave( laird_profile_handle profile,
+int dcal_wifi_profile_set_powersave( profile_handle profile,
                                POWERSAVE powersave)
 {
 	int ret = DCAL_SUCCESS;
@@ -1442,7 +1442,7 @@ int dcal_wifi_profile_set_powersave( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_powersave( laird_profile_handle profile,
+int dcal_wifi_profile_get_powersave( profile_handle profile,
                                POWERSAVE * powersave)
 {
 	int ret = DCAL_SUCCESS;
@@ -1461,7 +1461,7 @@ int dcal_wifi_profile_get_powersave( laird_profile_handle profile,
 }
 
 
-int dcal_wifi_profile_set_psp_delay( laird_profile_handle profile,
+int dcal_wifi_profile_set_psp_delay( profile_handle profile,
                                unsigned int pspdelay)
 {
 	int ret = DCAL_SUCCESS;
@@ -1479,7 +1479,7 @@ int dcal_wifi_profile_set_psp_delay( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_psp_delay( laird_profile_handle profile,
+int dcal_wifi_profile_get_psp_delay( profile_handle profile,
                                unsigned int * pspdelay)
 {
 	int ret = DCAL_SUCCESS;
@@ -1498,7 +1498,7 @@ int dcal_wifi_profile_get_psp_delay( laird_profile_handle profile,
 }
 
 
-int dcal_wifi_profile_set_txpower( laird_profile_handle profile,
+int dcal_wifi_profile_set_txpower( profile_handle profile,
                                 int txpower)
 {
 	int ret = DCAL_SUCCESS;
@@ -1516,7 +1516,7 @@ int dcal_wifi_profile_set_txpower( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_txpower( laird_profile_handle profile,
+int dcal_wifi_profile_get_txpower( profile_handle profile,
                                 int *txpower)
 {
 	int ret = DCAL_SUCCESS;
@@ -1535,7 +1535,7 @@ int dcal_wifi_profile_get_txpower( laird_profile_handle profile,
 }
 
 
-int dcal_wifi_profile_set_bitrate( laird_profile_handle profile,
+int dcal_wifi_profile_set_bitrate( profile_handle profile,
                                BITRATE bitrate)
 {
 	int ret = DCAL_SUCCESS;
@@ -1553,7 +1553,7 @@ int dcal_wifi_profile_set_bitrate( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_bitrate( laird_profile_handle profile,
+int dcal_wifi_profile_get_bitrate( profile_handle profile,
                                BITRATE *bitrate)
 {
 	int ret = DCAL_SUCCESS;
@@ -1571,7 +1571,7 @@ int dcal_wifi_profile_get_bitrate( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_set_autoprofile( laird_profile_handle profile,
+int dcal_wifi_profile_set_autoprofile( profile_handle profile,
                                bool autoprofile)
 {
 	int ret = DCAL_SUCCESS;
@@ -1589,7 +1589,7 @@ int dcal_wifi_profile_set_autoprofile( laird_profile_handle profile,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_profile_get_autoprofile( laird_profile_handle profile,
+int dcal_wifi_profile_get_autoprofile( profile_handle profile,
                                bool *autoprofile)
 {
 	int ret = DCAL_SUCCESS;
@@ -1608,7 +1608,7 @@ int dcal_wifi_profile_get_autoprofile( laird_profile_handle profile,
 }
 
 // for use when debugging - may remove before publishing
-void dcal_wifi_profile_printf( laird_profile_handle profile)
+void dcal_wifi_profile_printf( profile_handle profile)
 {
 	internal_profile_handle p = (internal_profile_handle)profile;
 	char * str=NULL;
@@ -1712,7 +1712,7 @@ void dcal_wifi_profile_printf( laird_profile_handle profile)
 	printf("\tsecurity5: %s\n", p->security5);
 }
 
-int dcal_wifi_pull_scan_list(laird_session_handle session, size_t *count)
+int dcal_wifi_pull_scan_list(session_handle session, size_t *count)
 {
 	int i, ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
@@ -1810,7 +1810,7 @@ int dcal_wifi_pull_scan_list(laird_session_handle session, size_t *count)
 }
 
 #define SCAN_LIST_TIMEOUT 10
-static int get_scan_list_entry_element(laird_session_handle session,
+static int get_scan_list_entry_element(session_handle session,
                                        int index,
                                        LRD_WF_SSID *ssid,
                                        unsigned char *bssid, int bssidbuflen,
@@ -1862,47 +1862,47 @@ cleanup:
 	return ret;
 }
 
-int dcal_wifi_get_scan_list_entry_ssid(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_ssid(session_handle session,
                                   int index, LRD_WF_SSID *ssid)
 {
 	return get_scan_list_entry_element(session, index, ssid, NULL, 0, NULL, NULL, NULL, NULL);
 }
 
-int dcal_wifi_get_scan_list_entry_bssid(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_bssid(session_handle session,
                                   int index, unsigned char * bssid, int bssidbuflen)
 {
 	return get_scan_list_entry_element(session, index, NULL, bssid, bssidbuflen, NULL, NULL, NULL, NULL);
 }
 
-int dcal_wifi_get_scan_list_entry_channel(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_channel(session_handle session,
                                   int index, int * channel)
 {
 	return get_scan_list_entry_element(session, index, NULL, NULL, 0, channel, NULL, NULL, NULL);
 }
 
-int dcal_wifi_get_scan_list_entry_rssi(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_rssi(session_handle session,
                                   int index, int * rssi)
 {
 	return get_scan_list_entry_element(session, index, NULL, NULL, 0, NULL, rssi, NULL, NULL);
 }
 
-int dcal_wifi_get_scan_list_entry_securityMask(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_securityMask(session_handle session,
                                   int index, int * securityMask)
 {
 	return get_scan_list_entry_element(session, index, NULL, NULL, 0, NULL, NULL, securityMask, NULL);
 }
 
-int dcal_wifi_get_scan_list_entry_type(laird_session_handle session,
+int dcal_wifi_get_scan_list_entry_type(session_handle session,
                                   int index, LRD_WF_BSSTYPE * bssType)
 {
 	return get_scan_list_entry_element(session, index, NULL, NULL, 0, NULL, NULL, NULL, bssType);
 }
 
 // WiFi Profile Management_
-// both the create and pull functions will allocate a laird_profile_handle
+// both the create and pull functions will allocate a profile_handle
 // that require the close_handle function to be called when done with then
 // handle
-int dcal_wifi_pull_profile_list(laird_session_handle session, size_t *count)
+int dcal_wifi_pull_profile_list(session_handle session, size_t *count)
 {
 	int i, ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
@@ -1995,7 +1995,7 @@ int dcal_wifi_pull_profile_list(laird_session_handle session, size_t *count)
 
 #define PROFILE_LIST_TIMEOUT 60
 
-static int dcal_wifi_get_profile_list_entry(laird_session_handle session, int index, char * profilename, size_t buflen, bool *autoprofile, bool * active)
+static int dcal_wifi_get_profile_list_entry(session_handle session, int index, char * profilename, size_t buflen, bool *autoprofile, bool * active)
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle) session;
@@ -2030,17 +2030,17 @@ cleanup:
 	return ret;
 }
 
-int dcal_wifi_get_profile_list_entry_profilename(laird_session_handle session, int index, char * profilename, size_t buflen)
+int dcal_wifi_get_profile_list_entry_profilename(session_handle session, int index, char * profilename, size_t buflen)
 {
 	return dcal_wifi_get_profile_list_entry(session, index, profilename, buflen, NULL, NULL);
 }
 
-int dcal_wifi_get_profile_list_entry_autoprofile(laird_session_handle session, int index, bool *autoprofile)
+int dcal_wifi_get_profile_list_entry_autoprofile(session_handle session, int index, bool *autoprofile)
 {
 	return dcal_wifi_get_profile_list_entry(session, index, NULL, 0, autoprofile, NULL);
 }
 
-int dcal_wifi_get_profile_list_entry_active(laird_session_handle session, int index, bool * active)
+int dcal_wifi_get_profile_list_entry_active(session_handle session, int index, bool * active)
 {
 	return dcal_wifi_get_profile_list_entry(session, index, NULL, 0, NULL, active);
 }

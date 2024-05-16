@@ -36,7 +36,7 @@ void __attribute__ ((destructor)) leases_fini(void)
 		DBGERROR("freelist() failed for leases list with: %d\n", rc);
 }
 
-static int lease_create( laird_lease_handle * lease)
+static int lease_create( lease_handle * lease)
 {
 	internal_lease_handle handle=NULL;
 	int ret = DCAL_SUCCESS;
@@ -75,8 +75,8 @@ static int lease_create( laird_lease_handle * lease)
 }
 
 
-int dcal_wifi_lease_pull( laird_session_handle session,
-                                 laird_lease_handle * lease,
+int dcal_wifi_lease_pull( session_handle session,
+                                 lease_handle * lease,
                                  char * interfaceName)
 {
 	int ret = DCAL_SUCCESS;
@@ -173,7 +173,7 @@ int dcal_wifi_lease_pull( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_close_handle( laird_lease_handle i)
+int dcal_wifi_lease_close_handle( lease_handle i)
 {
 	internal_lease_handle lease = (internal_lease_handle)i;
 	int ret = DCAL_SUCCESS;
@@ -186,7 +186,7 @@ int dcal_wifi_lease_close_handle( laird_lease_handle i)
 		ret = DCAL_INVALID_HANDLE;
 	else {
 		#ifdef STATIC_MEM
-			((laird_lease_handle)lease)->valid = false;
+			((lease_handle)lease)->valid = false;
 		#else
 			ret = remove_from_list(&leases, lease);
 			if (ret==DCAL_SUCCESS)
@@ -198,7 +198,7 @@ int dcal_wifi_lease_close_handle( laird_lease_handle i)
 
 }
 
-int dcal_wifi_lease_get_interface( laird_lease_handle lease,
+int dcal_wifi_lease_get_interface( lease_handle lease,
                                   char *interface, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -216,7 +216,7 @@ int dcal_wifi_lease_get_interface( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_address( laird_lease_handle lease,
+int dcal_wifi_lease_get_address( lease_handle lease,
                                   char *address, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -234,7 +234,7 @@ int dcal_wifi_lease_get_address( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_subnet_mask( laird_lease_handle lease,
+int dcal_wifi_lease_get_subnet_mask( lease_handle lease,
                                   char *subnet_mask, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -252,7 +252,7 @@ int dcal_wifi_lease_get_subnet_mask( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_routers( laird_lease_handle lease,
+int dcal_wifi_lease_get_routers( lease_handle lease,
                                   char *routers, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -270,7 +270,7 @@ int dcal_wifi_lease_get_routers( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_lease_time( laird_lease_handle lease,
+int dcal_wifi_lease_get_lease_time( lease_handle lease,
                                   long *lease_time)
 {
 	int ret = DCAL_SUCCESS;
@@ -288,7 +288,7 @@ int dcal_wifi_lease_get_lease_time( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_message_type( laird_lease_handle lease,
+int dcal_wifi_lease_get_message_type( lease_handle lease,
                                   int *message_type)
 {
 	int ret = DCAL_SUCCESS;
@@ -306,7 +306,7 @@ int dcal_wifi_lease_get_message_type( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_dns_servers( laird_lease_handle lease,
+int dcal_wifi_lease_get_dns_servers( lease_handle lease,
                                   char *dns_servers, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -324,7 +324,7 @@ int dcal_wifi_lease_get_dns_servers( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_dhcp_server( laird_lease_handle lease,
+int dcal_wifi_lease_get_dhcp_server( lease_handle lease,
                                   char *dhcp_server, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -342,7 +342,7 @@ int dcal_wifi_lease_get_dhcp_server( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_domain_name( laird_lease_handle lease,
+int dcal_wifi_lease_get_domain_name( lease_handle lease,
                                   char *domain_name, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -360,7 +360,7 @@ int dcal_wifi_lease_get_domain_name( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_renew( laird_lease_handle lease,
+int dcal_wifi_lease_get_renew( lease_handle lease,
                                   char *renew, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -378,7 +378,7 @@ int dcal_wifi_lease_get_renew( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_rebind( laird_lease_handle lease,
+int dcal_wifi_lease_get_rebind( lease_handle lease,
                                   char *rebind, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -396,7 +396,7 @@ int dcal_wifi_lease_get_rebind( laird_lease_handle lease,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_lease_get_expire( laird_lease_handle lease,
+int dcal_wifi_lease_get_expire( lease_handle lease,
                                   char *expire, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;

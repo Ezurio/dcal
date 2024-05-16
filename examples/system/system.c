@@ -15,7 +15,7 @@ int main (int argc, char *argv[])
 {
 	DCAL_ERR ret;
 
-	laird_session_handle session;
+	session_handle session;
 
 	static struct option longopt[] = {
 		{"system restart", no_argument, NULL, 'S'},

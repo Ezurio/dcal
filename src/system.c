@@ -6,7 +6,7 @@
 
 #define BUF_SZ 2048
 
-int do_command( laird_session_handle s, unsigned long cmd)
+int do_command( session_handle s, unsigned long cmd)
 {
 	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
@@ -73,12 +73,12 @@ int do_command( laird_session_handle s, unsigned long cmd)
 	return REPORT_RETURN_DBG (ret);
 }
 
-int dcal_wifi_restart( laird_session_handle session)
+int dcal_wifi_restart( session_handle session)
 {
 	return do_command(session, ns(Commands_WIFIRESTART));
 }
 
-int dcal_system_restart( laird_session_handle session)
+int dcal_system_restart( session_handle session)
 {
 	int ret = do_command(session, ns(Commands_SYSTEMREBOOT));
 

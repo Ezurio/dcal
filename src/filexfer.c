@@ -17,7 +17,7 @@
 // NULL in which case the basename of local_file will be used. The
 // remote_file will be saved to /tmp/ on WB.  NOTE: /tmp is not persistent
 // ont he WB as /tmp is a ramdisk.
-int dcal_file_push_to_wb(laird_session_handle session,
+int dcal_file_push_to_wb(session_handle session,
                              char * local_file_name,
                              char * remote_file_name)
 {
@@ -168,7 +168,7 @@ int dcal_file_push_to_wb(laird_session_handle session,
 // remote_file_name is full path and filename on WB.  local_file_name is
 // the full path and file name on host. local_file_name can be NULL in
 // which case remote_file_name base name will be used in the local directory
-int dcal_file_pull_from_wb(laird_session_handle session,
+int dcal_file_pull_from_wb(session_handle session,
                              char * remote_file, char * local_file)
 {
 	char *buf = NULL;
@@ -316,7 +316,7 @@ int dcal_file_pull_from_wb(laird_session_handle session,
 // NOTE: The disable reboot flag will be added by dcas so the user must
 // specifically call dcal_system_restart() when desiring restart after
 // fw_update.
-int dcal_fw_update(laird_session_handle session, int flags)
+int dcal_fw_update(session_handle session, int flags)
 {
 	char buf[BUFSIZE];
 	size_t size=BUFSIZE;
@@ -373,7 +373,7 @@ int dcal_fw_update(laird_session_handle session, int flags)
 	return ret;
 }
 
-int dcal_do_swupdate(laird_session_handle session, char * parameters)
+int dcal_do_swupdate(session_handle session, char * parameters)
 {
 	char buf[BUFSIZE];
 	size_t size=BUFSIZE;
@@ -431,7 +431,7 @@ int dcal_do_swupdate(laird_session_handle session, char * parameters)
 }
 
 // dest_file is full location and file name where log should be saved
-int dcal_pull_logs(laird_session_handle session, char * dest_file)
+int dcal_pull_logs(session_handle session, char * dest_file)
 {
 	char buf[BUFSIZE];
 	size_t size=BUFSIZE;
@@ -490,7 +490,7 @@ int dcal_pull_logs(laird_session_handle session, char * dest_file)
 }
 
 // src_file is full location and file name where command file resides.
-int dcal_process_cli_command_file(laird_session_handle session, char * src_file)
+int dcal_process_cli_command_file(session_handle session, char * src_file)
 {
 	char buf[BUFSIZE];
 	size_t size=BUFSIZE;
@@ -552,7 +552,7 @@ int dcal_process_cli_command_file(laird_session_handle session, char * src_file)
 	return ret;
 }
 
-int dcal_cert_push_to_wb(laird_session_handle session,
+int dcal_cert_push_to_wb(session_handle session,
                              char * local_cert_name)
 {
 	int ret = DCAL_SUCCESS;

@@ -1,7 +1,7 @@
 Device Control API Library (DCAL)
 =================================
 
-This repo contains the open-source remote API project for LAIRD WB remote setup. (Released under the ISC License)
+This repo contains the open-source remote API project for WB remote setup. (Released under the ISC License)
 
 To create, run MAKE.  This will create the library librmt_api.so.1.0.  A symlink names lib_rm_api.so will also be created.
 

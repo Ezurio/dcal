@@ -18,7 +18,7 @@ int build_query_version( flatcc_builder_t *B)
 	return 0;
 }
 
-int dcal_get_sdk_version(laird_session_handle session, unsigned int *sdk)
+int dcal_get_sdk_version(session_handle session, unsigned int *sdk)
 {
 	if (!validate_session(session))
 		return(DCAL_INVALID_HANDLE);
@@ -32,7 +32,7 @@ int dcal_get_sdk_version(laird_session_handle session, unsigned int *sdk)
 	return DCAL_SUCCESS;
 }
 
-int dcal_get_chipset_version(laird_session_handle session,
+int dcal_get_chipset_version(session_handle session,
                               RADIOCHIPSET *chipset)
 {
 	if (!validate_session(session))
@@ -47,7 +47,7 @@ int dcal_get_chipset_version(laird_session_handle session,
 	return DCAL_SUCCESS;
 }
 
-int dcal_get_system_version(laird_session_handle session,
+int dcal_get_system_version(session_handle session,
                               LRD_SYSTEM *sys)
 {
 	if (!validate_session(session))
@@ -62,7 +62,7 @@ int dcal_get_system_version(laird_session_handle session,
 	return DCAL_SUCCESS;
 }
 
-int dcal_get_driver_version(laird_session_handle session,
+int dcal_get_driver_version(session_handle session,
                               unsigned int *driver)
 {
 	if (!validate_session(session))
@@ -77,7 +77,7 @@ int dcal_get_driver_version(laird_session_handle session,
 	return DCAL_SUCCESS;
 }
 
-int dcal_get_dcas_version(laird_session_handle session,
+int dcal_get_dcas_version(session_handle session,
                               unsigned int *dcas)
 {
 	if (!validate_session(session))
@@ -92,7 +92,7 @@ int dcal_get_dcas_version(laird_session_handle session,
 	return DCAL_SUCCESS;
 }
 
-int dcal_get_dcal_version(laird_session_handle session,
+int dcal_get_dcal_version(session_handle session,
                               unsigned int *dcal)
 {
 	if (!validate_session(session))
@@ -107,7 +107,7 @@ int dcal_get_dcal_version(laird_session_handle session,
 	return DCAL_SUCCESS;
 }
 
-int dcal_get_firmware_version(laird_session_handle session,
+int dcal_get_firmware_version(session_handle session,
                               char *firmware, size_t buflen)
 {
 	if (!validate_session(session))
@@ -126,7 +126,7 @@ int dcal_get_firmware_version(laird_session_handle session,
 	return DCAL_SUCCESS;
 }
 
-int dcal_get_supplicant_version(laird_session_handle session,
+int dcal_get_supplicant_version(session_handle session,
                               char *supplicant, size_t buflen)
 {
 	if (!validate_session(session))
@@ -145,7 +145,7 @@ int dcal_get_supplicant_version(laird_session_handle session,
 	return DCAL_SUCCESS;
 }
 
-int dcal_get_release_version(laird_session_handle session,
+int dcal_get_release_version(session_handle session,
                               char *release, size_t buflen)
 {
 	if (!validate_session(session))

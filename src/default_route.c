@@ -36,7 +36,7 @@ void __attribute__ ((destructor)) default_routes_fini(void)
 		DBGERROR("freelist() failed for default_routes list with: %d\n", rc);
 }
 
-static int default_route_create( laird_default_route_handle * default_route)
+static int default_route_create( default_route_handle * default_route)
 {
 	internal_default_route_handle handle=NULL;
 	int ret = DCAL_SUCCESS;
@@ -75,8 +75,8 @@ static int default_route_create( laird_default_route_handle * default_route)
 }
 
 
-int dcal_wifi_default_route_pull( laird_session_handle session,
-                                  laird_default_route_handle * default_route,
+int dcal_wifi_default_route_pull( session_handle session,
+                                  default_route_handle * default_route,
                                   char * interface_name)
 {
 	int ret = DCAL_SUCCESS;
@@ -173,7 +173,7 @@ int dcal_wifi_default_route_pull( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_close_handle( laird_default_route_handle i)
+int dcal_wifi_default_route_close_handle( default_route_handle i)
 {
 	internal_default_route_handle default_route = (internal_default_route_handle)i;
 	int ret = DCAL_SUCCESS;
@@ -186,7 +186,7 @@ int dcal_wifi_default_route_close_handle( laird_default_route_handle i)
 		ret = DCAL_INVALID_HANDLE;
 	else {
 		#ifdef STATIC_MEM
-			((laird_default_route_handle)default_route)->valid = false;
+			((default_route_handle)default_route)->valid = false;
 		#else
 			ret = remove_from_list(&default_routes, default_route);
 			if (ret==DCAL_SUCCESS)
@@ -198,7 +198,7 @@ int dcal_wifi_default_route_close_handle( laird_default_route_handle i)
 
 }
 
-int dcal_wifi_default_route_get_interface( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_interface( default_route_handle default_route,
                                   char *interface, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -216,7 +216,7 @@ int dcal_wifi_default_route_get_interface( laird_default_route_handle default_ro
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_get_destination( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_destination( default_route_handle default_route,
                                   char *destination, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -234,7 +234,7 @@ int dcal_wifi_default_route_get_destination( laird_default_route_handle default_
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_get_gateway( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_gateway( default_route_handle default_route,
                                   char *gateway, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -252,7 +252,7 @@ int dcal_wifi_default_route_get_gateway( laird_default_route_handle default_rout
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_get_flags( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_flags( default_route_handle default_route,
                                   int *flags)
 {
 	int ret = DCAL_SUCCESS;
@@ -270,7 +270,7 @@ int dcal_wifi_default_route_get_flags( laird_default_route_handle default_route,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_get_metric( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_metric( default_route_handle default_route,
                                   unsigned int *metric)
 {
 	int ret = DCAL_SUCCESS;
@@ -288,7 +288,7 @@ int dcal_wifi_default_route_get_metric( laird_default_route_handle default_route
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_get_subnet_mask( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_subnet_mask( default_route_handle default_route,
                                   char *subnet_mask, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -306,7 +306,7 @@ int dcal_wifi_default_route_get_subnet_mask( laird_default_route_handle default_
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_get_mtu( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_mtu( default_route_handle default_route,
                                   unsigned int *mtu)
 {
 	int ret = DCAL_SUCCESS;
@@ -324,7 +324,7 @@ int dcal_wifi_default_route_get_mtu( laird_default_route_handle default_route,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_get_window( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_window( default_route_handle default_route,
                                   unsigned int *window)
 {
 	int ret = DCAL_SUCCESS;
@@ -342,7 +342,7 @@ int dcal_wifi_default_route_get_window( laird_default_route_handle default_route
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_default_route_get_irtt( laird_default_route_handle default_route,
+int dcal_wifi_default_route_get_irtt( default_route_handle default_route,
                                   unsigned int *irtt)
 {
 	int ret = DCAL_SUCCESS;

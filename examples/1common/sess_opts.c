@@ -52,7 +52,7 @@ void common_usage(char * app_name)
 #define param_max_sz 127
 #define param_max_sz_with_null (param_max_sz+1)
 
-int session_connect_with_opts( laird_session_handle session, int argc, char *argv[], bool connect)
+int session_connect_with_opts( session_handle session, int argc, char *argv[], bool connect)
 {
 	int verbosity = SSH_LOG_PROTOCOL;
 	DCAL_ERR ret=DCAL_SUCCESS;

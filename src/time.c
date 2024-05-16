@@ -7,13 +7,13 @@
 #include "buffer.h"
 #include "common.h"
 
-int dcal_time_get( laird_session_handle session,
-                      time_t *tv_sec, suseconds_t *tv_usec)
+int dcal_time_get( session_handle session,
+                      struct timeval *tv)
 {
 	int ret = DCAL_SUCCESS;
 	REPORT_ENTRY_DEBUG;
 
-	if ((session==NULL) || (tv_sec==NULL) || (tv_usec==NULL))
+	if ((session == NULL) || (tv == NULL))
 		ret = DCAL_INVALID_PARAMETER;
 	#ifdef DEBUG
 	else if (!validate_session(session))
@@ -65,7 +65,7 @@ int dcal_time_get( laird_session_handle session,
 				return REPORT_RETURN_DBG(DCAL_FLATBUFF_ERROR);
 			}
 
-			ret =handshake_error_code(ns(Handshake_as_root(buffer)));
+			ret = handshake_error_code(ns(Handshake_as_root(buffer)));
 
 			DBGERROR("Failed to retrieve time.  Error received: %d\n",ret);
 			return REPORT_RETURN_DBG(ret);
@@ -73,15 +73,15 @@ int dcal_time_get( laird_session_handle session,
 
 		ns(Time_table_t) tt = ns(Time_as_root(buffer));
 
-		*tv_sec = ns(Time_tv_sec(tt));
-		*tv_usec = ns(Time_tv_usec(tt));
+		tv->tv_sec = ns(Time_tv_sec(tt));
+		tv->tv_usec = ns(Time_tv_usec(tt));
 
 	}
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_time_set( laird_session_handle session,
-                      time_t tv_sec, suseconds_t tv_usec)
+int dcal_time_set( session_handle session,
+                      struct timeval *tv)
 {
 	int ret = DCAL_SUCCESS;
 	internal_session_handle s = (internal_session_handle)session;
@@ -105,8 +105,8 @@ int dcal_time_set( laird_session_handle session,
 		ns(Command_command_add(B, ns(Commands_SETTIME)));
 
 		ns(Command_cmd_pl_Time_start(B));
-		ns(Time_tv_sec_add(B, tv_sec));
-		ns(Time_tv_usec_add(B, tv_usec));
+		ns(Time_tv_sec_add(B, tv->tv_sec));
+		ns(Time_tv_usec_add(B, tv->tv_usec));
 		ns(Command_cmd_pl_Time_end(B));
 
 		ns(Command_end_as_root(B));
@@ -147,7 +147,7 @@ int dcal_time_set( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_ntpdate( laird_session_handle session,
+int dcal_ntpdate( session_handle session,
                       char * server_name )
 {
 	int ret = DCAL_SUCCESS;

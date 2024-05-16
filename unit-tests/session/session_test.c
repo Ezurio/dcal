@@ -13,7 +13,7 @@ extern int dynamic_mem;
 int main ()
 {
 	DCAL_ERR ret;
-	laird_session_handle session;
+	session_handle session;
 
 	REPORT_ENTRY_DEBUG;
 

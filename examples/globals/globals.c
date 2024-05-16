@@ -13,7 +13,7 @@ int main (int argc, char *argv[])
 {
 	int ret;
 
-	laird_session_handle session;
+	session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {
@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
 	}
 
 // device interaction
-	laird_global_handle global;
+	global_handle global;
 	ret = dcal_wifi_global_create(&global);
 	if (ret)
 		printf("error in global_create(): %s\n",dcal_err_to_string(ret));

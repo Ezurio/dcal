@@ -41,7 +41,7 @@ void __attribute__ ((destructor)) sessions_fini(void)
 		DBGERROR("ssh_finalize() failed\n");
 }
 
-static int get_session_handle( laird_session_handle * session )
+static int get_session_handle( session_handle * session )
 {
 	internal_session_handle handle=NULL;
 	int ret = DCAL_SUCCESS;
@@ -158,7 +158,7 @@ static int verify_knownhost(ssh_session session)
 		return REPORT_RETURN_DBG(0);
 }
 
-int dcal_session_create( laird_session_handle * s)
+int dcal_session_create( session_handle * s)
 {
 	internal_session_handle *session = (internal_session_handle*)s;
 	int ret = DCAL_SUCCESS;
@@ -184,7 +184,7 @@ int dcal_session_create( laird_session_handle * s)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_set_host( laird_session_handle s, FQDN address )
+int dcal_set_host( session_handle s, FQDN address )
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int ret = DCAL_SUCCESS;
@@ -200,7 +200,7 @@ int dcal_set_host( laird_session_handle s, FQDN address )
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_set_port( laird_session_handle s, unsigned int port )
+int dcal_set_port( session_handle s, unsigned int port )
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int ret = DCAL_SUCCESS;
@@ -216,7 +216,7 @@ int dcal_set_port( laird_session_handle s, unsigned int port )
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_set_user( laird_session_handle s, char *user )
+int dcal_set_user( session_handle s, char *user )
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int ret = DCAL_SUCCESS;
@@ -232,7 +232,7 @@ int dcal_set_user( laird_session_handle s, char *user )
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_set_pw( laird_session_handle s, char *pw )
+int dcal_set_pw( session_handle s, char *pw )
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int ret = DCAL_SUCCESS;
@@ -248,7 +248,7 @@ int dcal_set_pw( laird_session_handle s, char *pw )
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_set_keyfile( laird_session_handle s, char *fn )
+int dcal_set_keyfile( session_handle s, char *fn )
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int ret = DCAL_SUCCESS;
@@ -308,7 +308,7 @@ static int auth_password(internal_session_handle session)
 	return ssh_userauth_password(session->ssh, NULL, session->pw);
 }
 
-int dcal_session_open ( laird_session_handle s )
+int dcal_session_open ( session_handle s )
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int ret = DCAL_SUCCESS;
@@ -411,7 +411,7 @@ int dcal_session_open ( laird_session_handle s )
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_session_close( laird_session_handle s)
+int dcal_session_close( session_handle s)
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int ret = DCAL_SUCCESS;
@@ -465,7 +465,7 @@ int dcal_session_close( laird_session_handle s)
 }
 
 // internal use only
-int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes)
+int dcal_send_buffer(session_handle s, void * buffer, size_t nbytes)
 {
 	internal_session_handle session = (internal_session_handle)s;
 	size_t nwrite = 0;
@@ -487,7 +487,7 @@ int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes)
 }
 
 // internal use only
-int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes)
+int dcal_read_buffer(session_handle s, void * buffer, size_t *nbytes)
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int nread=0;
@@ -514,12 +514,12 @@ int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int validate_session(laird_session_handle s)
+int validate_session(session_handle s)
 {
 	return validate_handle(sessions, s);
 }
 
-int lock_session_channel(laird_session_handle s)
+int lock_session_channel(session_handle s)
 {
 	if(!validate_session(s))
 		return DCAL_INVALID_HANDLE;
@@ -528,7 +528,7 @@ int lock_session_channel(laird_session_handle s)
 	return DCAL_SUCCESS;
 }
 
-int unlock_session_channel(laird_session_handle s)
+int unlock_session_channel(session_handle s)
 {
 	if(!validate_session(s))
 		return DCAL_INVALID_HANDLE;
@@ -537,10 +537,10 @@ int unlock_session_channel(laird_session_handle s)
 	return DCAL_SUCCESS;
 }
 
-// this API will use a local ssh_session rather than the one in the laird
+// this API will use a local ssh_session rather than the one in the
 // session handle in order to avoid having to determine and deal with the
 // state of the internal ssh_session.
-int dcal_get_auth_methods ( laird_session_handle s, int * method )
+int dcal_get_auth_methods ( session_handle s, int * method )
 {
 	internal_session_handle session = (internal_session_handle)s;
 	int ret = -1;

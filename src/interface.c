@@ -36,7 +36,7 @@ void __attribute__ ((destructor)) interfaces_fini(void)
 		DBGERROR("freelist() failed for interfaces list with: %d\n", rc);
 }
 
-int dcal_wifi_interface_create( laird_interface_handle * interface)
+int dcal_wifi_interface_create( interface_handle * interface)
 {
 	internal_interface_handle handle=NULL;
 	int ret = DCAL_SUCCESS;
@@ -74,8 +74,8 @@ int dcal_wifi_interface_create( laird_interface_handle * interface)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_pull( laird_session_handle session,
-                                 laird_interface_handle * interface,
+int dcal_wifi_interface_pull( session_handle session,
+                                 interface_handle * interface,
                                  char * interfaceName)
 {
 	int ret = DCAL_SUCCESS;
@@ -186,7 +186,7 @@ int dcal_wifi_interface_pull( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_close_handle( laird_interface_handle i)
+int dcal_wifi_interface_close_handle( interface_handle i)
 {
 	internal_interface_handle interface = (internal_interface_handle)i;
 	int ret = DCAL_SUCCESS;
@@ -199,7 +199,7 @@ int dcal_wifi_interface_close_handle( laird_interface_handle i)
 		ret = DCAL_INVALID_HANDLE;
 	else {
 		#ifdef STATIC_MEM
-			((laird_interface_handle)interface)->valid = false;
+			((interface_handle)interface)->valid = false;
 		#else
 			ret = remove_from_list(&interfaces, interface);
 			if (ret==DCAL_SUCCESS)
@@ -213,8 +213,8 @@ int dcal_wifi_interface_close_handle( laird_interface_handle i)
 
 //  push sends the local interface to the remote
 //  radio device.
-int dcal_wifi_interface_push( laird_session_handle session,
-                                 laird_interface_handle interface)
+int dcal_wifi_interface_push( session_handle session,
+                                 interface_handle interface)
 {
 	int ret = DCAL_SUCCESS;
 	internal_interface_handle i = (internal_interface_handle)interface;
@@ -306,7 +306,7 @@ int dcal_wifi_interface_push( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_delete( laird_session_handle session,
+int dcal_wifi_interface_delete( session_handle session,
                                   char * interface_name)
 {
 	int ret = DCAL_SUCCESS;
@@ -372,7 +372,7 @@ int dcal_wifi_interface_delete( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_interface_name( laird_interface_handle interface,
+int dcal_wifi_interface_set_interface_name( interface_handle interface,
                                   char * interface_name)
 {
 	int ret = DCAL_SUCCESS;
@@ -388,7 +388,7 @@ int dcal_wifi_interface_set_interface_name( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_ipv4_state( laird_interface_handle interface,
+int dcal_wifi_interface_get_ipv4_state( interface_handle interface,
                                   bool * state)
 {
 	int ret = DCAL_SUCCESS;
@@ -410,7 +410,7 @@ int dcal_wifi_interface_get_ipv4_state( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_method( laird_interface_handle interface,
+int dcal_wifi_interface_set_method( interface_handle interface,
                                   char * method)
 {
 	int ret = DCAL_SUCCESS;
@@ -430,7 +430,7 @@ int dcal_wifi_interface_set_method( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_method( laird_interface_handle interface,
+int dcal_wifi_interface_get_method( interface_handle interface,
                                     char *method, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -448,7 +448,7 @@ int dcal_wifi_interface_get_method( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_auto_start( laird_interface_handle interface,
+int dcal_wifi_interface_set_auto_start( interface_handle interface,
                                   bool auto_start)
 {
 	int ret = DCAL_SUCCESS;
@@ -467,7 +467,7 @@ int dcal_wifi_interface_set_auto_start( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_auto_start( laird_interface_handle interface,
+int dcal_wifi_interface_get_auto_start( interface_handle interface,
                                   bool * auto_start)
 {
 	int ret = DCAL_SUCCESS;
@@ -490,7 +490,7 @@ int dcal_wifi_interface_get_auto_start( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_address( laird_interface_handle interface,
+int dcal_wifi_interface_set_address( interface_handle interface,
                                   char * address)
 {
 	int ret = DCAL_SUCCESS;
@@ -507,7 +507,7 @@ int dcal_wifi_interface_set_address( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_address( laird_interface_handle interface,
+int dcal_wifi_interface_get_address( interface_handle interface,
                                     char *address, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -525,7 +525,7 @@ int dcal_wifi_interface_get_address( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_netmask( laird_interface_handle interface,
+int dcal_wifi_interface_set_netmask( interface_handle interface,
                                   char * netmask)
 {
 	int ret = DCAL_SUCCESS;
@@ -542,7 +542,7 @@ int dcal_wifi_interface_set_netmask( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_netmask( laird_interface_handle interface,
+int dcal_wifi_interface_get_netmask( interface_handle interface,
                                     char *netmask, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -560,7 +560,7 @@ int dcal_wifi_interface_get_netmask( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_gateway( laird_interface_handle interface,
+int dcal_wifi_interface_set_gateway( interface_handle interface,
                                   char * gateway)
 {
 	int ret = DCAL_SUCCESS;
@@ -577,7 +577,7 @@ int dcal_wifi_interface_set_gateway( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_gateway( laird_interface_handle interface,
+int dcal_wifi_interface_get_gateway( interface_handle interface,
                                     char *gateway, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -595,7 +595,7 @@ int dcal_wifi_interface_get_gateway( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_broadcast_address( laird_interface_handle interface,
+int dcal_wifi_interface_set_broadcast_address( interface_handle interface,
                                   char * broadcast)
 {
 	int ret = DCAL_SUCCESS;
@@ -612,7 +612,7 @@ int dcal_wifi_interface_set_broadcast_address( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_broadcast_address( laird_interface_handle interface,
+int dcal_wifi_interface_get_broadcast_address( interface_handle interface,
                                     char *broadcast, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -631,7 +631,7 @@ int dcal_wifi_interface_get_broadcast_address( laird_interface_handle interface,
 }
 
 
-int dcal_wifi_interface_set_nameserver( laird_interface_handle interface,
+int dcal_wifi_interface_set_nameserver( interface_handle interface,
                                   char * nameserver)
 {
 	int ret = DCAL_SUCCESS;
@@ -648,7 +648,7 @@ int dcal_wifi_interface_set_nameserver( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_nameserver( laird_interface_handle interface,
+int dcal_wifi_interface_get_nameserver( interface_handle interface,
                                     char *nameserver, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -666,7 +666,7 @@ int dcal_wifi_interface_get_nameserver( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_state( laird_interface_handle interface,
+int dcal_wifi_interface_set_state( interface_handle interface,
                                   bool state)
 {
 	int ret = DCAL_SUCCESS;
@@ -685,7 +685,7 @@ int dcal_wifi_interface_set_state( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_bridge( laird_interface_handle interface,
+int dcal_wifi_interface_set_bridge( interface_handle interface,
                                   bool bridge)
 {
 	int ret = DCAL_SUCCESS;
@@ -706,7 +706,7 @@ int dcal_wifi_interface_set_bridge( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_bridge( laird_interface_handle interface,
+int dcal_wifi_interface_get_bridge( interface_handle interface,
                                   bool * bridge)
 {
 	int ret = DCAL_SUCCESS;
@@ -729,7 +729,7 @@ int dcal_wifi_interface_get_bridge( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_ap_mode( laird_interface_handle interface,
+int dcal_wifi_interface_set_ap_mode( interface_handle interface,
                                   bool ap_mode)
 {
 	int ret = DCAL_SUCCESS;
@@ -750,7 +750,7 @@ int dcal_wifi_interface_set_ap_mode( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_ap_mode( laird_interface_handle interface,
+int dcal_wifi_interface_get_ap_mode( interface_handle interface,
                                   bool * ap_mode)
 {
 	int ret = DCAL_SUCCESS;
@@ -773,7 +773,7 @@ int dcal_wifi_interface_get_ap_mode( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_nat( laird_interface_handle interface,
+int dcal_wifi_interface_set_nat( interface_handle interface,
                                   bool nat)
 {
 	int ret = DCAL_SUCCESS;
@@ -794,7 +794,7 @@ int dcal_wifi_interface_set_nat( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_nat( laird_interface_handle interface,
+int dcal_wifi_interface_get_nat( interface_handle interface,
                                   bool * nat)
 {
 	int ret = DCAL_SUCCESS;
@@ -817,7 +817,7 @@ int dcal_wifi_interface_get_nat( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_clear_property( laird_interface_handle interface,
+int dcal_wifi_interface_clear_property( interface_handle interface,
                                   INTERFACE_PROPERTY prop)
 {
 	int ret = DCAL_SUCCESS;
@@ -833,7 +833,7 @@ int dcal_wifi_interface_clear_property( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_ipv6_state( laird_interface_handle interface,
+int dcal_wifi_interface_get_ipv6_state( interface_handle interface,
                                   bool * state6)
 {
 	int ret = DCAL_SUCCESS;
@@ -855,7 +855,7 @@ int dcal_wifi_interface_get_ipv6_state( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_method6( laird_interface_handle interface,
+int dcal_wifi_interface_set_method6( interface_handle interface,
                                   char * method6)
 {
 	int ret = DCAL_SUCCESS;
@@ -872,7 +872,7 @@ int dcal_wifi_interface_set_method6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_method6( laird_interface_handle interface,
+int dcal_wifi_interface_get_method6( interface_handle interface,
                                     char *method6, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -890,7 +890,7 @@ int dcal_wifi_interface_get_method6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_dhcp6( laird_interface_handle interface,
+int dcal_wifi_interface_set_dhcp6( interface_handle interface,
                                   char * dhcp6)
 {
 	int ret = DCAL_SUCCESS;
@@ -910,7 +910,7 @@ int dcal_wifi_interface_set_dhcp6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_dhcp6( laird_interface_handle interface,
+int dcal_wifi_interface_get_dhcp6( interface_handle interface,
                                     char *dhcp6, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -928,7 +928,7 @@ int dcal_wifi_interface_get_dhcp6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_address6( laird_interface_handle interface,
+int dcal_wifi_interface_set_address6( interface_handle interface,
                                   char * address6)
 {
 	int ret = DCAL_SUCCESS;
@@ -945,7 +945,7 @@ int dcal_wifi_interface_set_address6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_address6( laird_interface_handle interface,
+int dcal_wifi_interface_get_address6( interface_handle interface,
                                     char *address6, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -963,7 +963,7 @@ int dcal_wifi_interface_get_address6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_netmask6( laird_interface_handle interface,
+int dcal_wifi_interface_set_netmask6( interface_handle interface,
                                   char * netmask6)
 {
 	int ret = DCAL_SUCCESS;
@@ -980,7 +980,7 @@ int dcal_wifi_interface_set_netmask6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_netmask6( laird_interface_handle interface,
+int dcal_wifi_interface_get_netmask6( interface_handle interface,
                                     char *netmask6, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -998,7 +998,7 @@ int dcal_wifi_interface_get_netmask6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_gateway6( laird_interface_handle interface,
+int dcal_wifi_interface_set_gateway6( interface_handle interface,
                                   char * gateway6)
 {
 	int ret = DCAL_SUCCESS;
@@ -1015,7 +1015,7 @@ int dcal_wifi_interface_set_gateway6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_gateway6( laird_interface_handle interface,
+int dcal_wifi_interface_get_gateway6( interface_handle interface,
                                     char *gateway6, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -1033,7 +1033,7 @@ int dcal_wifi_interface_get_gateway6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_nameserver6( laird_interface_handle interface,
+int dcal_wifi_interface_set_nameserver6( interface_handle interface,
                                   char * nameserver6)
 {
 	int ret = DCAL_SUCCESS;
@@ -1050,7 +1050,7 @@ int dcal_wifi_interface_set_nameserver6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_nameserver6( laird_interface_handle interface,
+int dcal_wifi_interface_get_nameserver6( interface_handle interface,
                                     char *nameserver6, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -1068,7 +1068,7 @@ int dcal_wifi_interface_get_nameserver6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_state6( laird_interface_handle interface,
+int dcal_wifi_interface_set_state6( interface_handle interface,
                                   bool state6)
 {
 	int ret = DCAL_SUCCESS;
@@ -1087,7 +1087,7 @@ int dcal_wifi_interface_set_state6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_set_nat6( laird_interface_handle interface,
+int dcal_wifi_interface_set_nat6( interface_handle interface,
                                   bool nat6)
 {
 	int ret = DCAL_SUCCESS;
@@ -1108,7 +1108,7 @@ int dcal_wifi_interface_set_nat6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_get_nat6( laird_interface_handle interface,
+int dcal_wifi_interface_get_nat6( interface_handle interface,
                                   bool * nat6)
 {
 	int ret = DCAL_SUCCESS;
@@ -1130,7 +1130,7 @@ int dcal_wifi_interface_get_nat6( laird_interface_handle interface,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_interface_clear_property6( laird_interface_handle interface,
+int dcal_wifi_interface_clear_property6( interface_handle interface,
                                   INTERFACE_PROPERTY prop6)
 {
 	int ret = DCAL_SUCCESS;

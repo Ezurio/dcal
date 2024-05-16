@@ -35,7 +35,7 @@ int main (int argc, char *argv[])
 {
 	int ret;
 
-	laird_session_handle session;
+	session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {
@@ -53,7 +53,7 @@ int main (int argc, char *argv[])
 	}
 
 // device interaction
-	laird_profile_handle profile;
+	profile_handle profile;
 	ret = dcal_wifi_profile_create(&profile);
 
 	ret = dcal_wifi_profile_set_profilename(profile, "wifi");

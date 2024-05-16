@@ -1090,12 +1090,17 @@ class dcal
 	int wifi_restart() { return dcal_wifi_restart(session); }
 	int system_restart() { return dcal_system_restart(session); }
 
-	int time_set( time_t tv_sec, suseconds_t tv_usec ){ return dcal_time_set(session, tv_sec, tv_usec); }
+	int time_set( time_t tv_sec, suseconds_t tv_usec )
+	{ 
+		struct timeval tv = { tv_sec, tv_usec };
+		return dcal_time_set(session, &tv);
+	}
+
 	int time_get( class dcal_time & t ){
 		int ret;
 		struct timeval tv;
 
-		ret =  dcal_time_get(session, &tv.tv_sec, &tv.tv_usec);
+		ret =  dcal_time_get(session, &tv);
 		if (ret == DCAL_SUCCESS)
 		{
 			t.tv_sec = tv.tv_sec;
@@ -1624,12 +1629,12 @@ class dcal
 	}
 
   private:
-	laird_session_handle session;
-	laird_profile_handle profile;
-	laird_global_handle global;
-	laird_interface_handle interface;
-	laird_lease_handle lease;
-	laird_default_route_handle default_route;
+	session_handle session;
+	profile_handle profile;
+	global_handle global;
+	interface_handle interface;
+	lease_handle lease;
+	default_route_handle default_route;
 };
 
 using namespace boost::python;

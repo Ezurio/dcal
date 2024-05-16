@@ -13,7 +13,7 @@ int main (int argc, char *argv[])
 {
 	DCAL_ERR ret;
 
-	laird_session_handle session;
+	session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {
@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
 	}
 
 	// device interaction
-	laird_default_route_handle default_route;
+	default_route_handle default_route;
 	char interface_name[] = "wlan0";
 
 	// Get default_route settings

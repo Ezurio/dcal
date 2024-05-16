@@ -11,7 +11,7 @@ int main (int argc, char *argv[])
 {
 	DCAL_ERR ret;
 
-	laird_session_handle session;
+	session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {
@@ -29,7 +29,7 @@ int main (int argc, char *argv[])
 	}
 
 // device interaction
-	laird_interface_handle interface;
+	interface_handle interface;
 	char interface_name[] = "test0";
 
 	ret = dcal_wifi_interface_create(&interface);

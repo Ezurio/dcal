@@ -16,7 +16,7 @@ int main (int argc, char *argv[])
 {
 	DCAL_ERR ret;
 
-	laird_session_handle session;
+	session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {
@@ -34,7 +34,7 @@ int main (int argc, char *argv[])
 	}
 
 	// device interaction
-	laird_lease_handle lease;
+	lease_handle lease;
 	char interface_name[] = "wlan0";
 
 	// Get lease settings

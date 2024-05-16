@@ -17,8 +17,8 @@ int debug_level=0;
 // enabled and will be output to stdout.  If the value it is set is 'time'
 // time stamps will be included
 
-#define LAIRD_ENV "DCAL_DEBUG"
-#define LAIRD_ENV_LVL "DCAL_DEBUG_LEVEL"
+#define DCAL_ENV "DCAL_DEBUG"
+#define DCAL_ENV_LVL "DCAL_DEBUG_LEVEL"
 
 static struct timeval basetime = {0,0};
 
@@ -64,8 +64,8 @@ const char *dcal_dbg_lvl_to_string( int code)
 void __attribute__ ((constructor)) debuginit(void)
 {
 	struct timeval tv;
-	char *env = getenv(LAIRD_ENV);
-	char *envl = getenv(LAIRD_ENV_LVL);
+	char *env = getenv(DCAL_ENV);
+	char *envl = getenv(DCAL_ENV_LVL);
 	int lvl = 0;
 
 	gettimeofday(&tv, NULL);

@@ -48,7 +48,7 @@ void usage(char * app_name)
 	printf("(note sending a file to remote will always be placed in remote's /tmp directory\n");
 }
 
-int session_connect( laird_session_handle session, int argc, char *argv[])
+int session_connect( session_handle session, int argc, char *argv[])
 {
 	int verbosity = SSH_LOG_PROTOCOL;
 	DCAL_ERR ret;
@@ -183,7 +183,7 @@ int main (int argc, char *argv[])
 {
 	int ret;
 
-	laird_session_handle session;
+	session_handle session;
 
 	ret = dcal_session_create( &session );
 	if (ret!= DCAL_SUCCESS) {

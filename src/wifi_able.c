@@ -22,7 +22,7 @@ int build_issue_able( flatcc_builder_t *B, bool enable)
 	return 0;
 }
 
-int do_wifiable( laird_session_handle s, bool enable)
+int do_wifiable( session_handle s, bool enable)
 {
 	int ret = DCAL_SUCCESS;
 	char buffer[BUF_SZ];
@@ -83,12 +83,12 @@ int do_wifiable( laird_session_handle s, bool enable)
 	return REPORT_RETURN_DBG (ret);
 }
 
-int dcal_wifi_enable( laird_session_handle session)
+int dcal_wifi_enable( session_handle session)
 {
 	return do_wifiable(session, true);
 }
 
-int dcal_wifi_disable( laird_session_handle session)
+int dcal_wifi_disable( session_handle session)
 {
 	return do_wifiable(session, false);
 }

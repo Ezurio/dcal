@@ -27,7 +27,7 @@
 
 typedef char ipv6_str_type[IP6_STR_SZ];
 
-typedef struct _laird_status_struct {
+typedef struct _status_struct {
 	unsigned int cardState;
 	char ProfileName[NAME_SZ];
 	char ssid[SSID_SZ]; //32 characters.  Can contain non-ascii characters.  Not necessarily NULL terminated. Use ssid_len to access data.
@@ -115,14 +115,14 @@ typedef internal_session_struct * internal_session_handle;
 #define SESSION_ACTIVE 3
 
 #define DEF_PORT 2222
-#define LAIRD_HELLO "HELLO DCAS"
+#define DCAL_HELLO "HELLO DCAS"
 
 // internal use only
-int dcal_send_buffer(laird_session_handle s, void * buffer, size_t nbytes);
+int dcal_send_buffer(session_handle s, void * buffer, size_t nbytes);
 // internal use only
-int dcal_read_buffer(laird_session_handle s, void * buffer, size_t *nbytes);
+int dcal_read_buffer(session_handle s, void * buffer, size_t *nbytes);
 
-int validate_session(laird_session_handle s);
-int lock_session_channel(laird_session_handle s);
-int unlock_session_channel(laird_session_handle s);
+int validate_session(session_handle s);
+int lock_session_channel(session_handle s);
+int unlock_session_channel(session_handle s);
 #endif //__session_h__

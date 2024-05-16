@@ -36,7 +36,7 @@ void __attribute__ ((destructor)) globals_fini(void)
 		DBGERROR("freelist() failed for globals list with: %d\n", rc);
 }
 
-int dcal_wifi_global_create( laird_global_handle * global)
+int dcal_wifi_global_create( global_handle * global)
 {
 	internal_global_handle handle=NULL;
 	int ret = DCAL_SUCCESS;
@@ -75,8 +75,8 @@ int dcal_wifi_global_create( laird_global_handle * global)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_pull( laird_session_handle session,
-                                 laird_global_handle * global)
+int dcal_wifi_global_pull( session_handle session,
+                                 global_handle * global)
 {
 	int ret = DCAL_SUCCESS;
 	REPORT_ENTRY_DEBUG;
@@ -182,7 +182,7 @@ int dcal_wifi_global_pull( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_close_handle( laird_global_handle g)
+int dcal_wifi_global_close_handle( global_handle g)
 {
 	internal_global_handle global = (internal_global_handle)g;
 	int ret = DCAL_SUCCESS;
@@ -205,8 +205,8 @@ int dcal_wifi_global_close_handle( laird_global_handle g)
 
 }
 
-int dcal_wifi_global_push( laird_session_handle session,
-                                 laird_global_handle global)
+int dcal_wifi_global_push( session_handle session,
+                                 global_handle global)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -297,7 +297,7 @@ int dcal_wifi_global_push( laird_session_handle session,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_auth_server( laird_global_handle global,
+int dcal_wifi_global_set_auth_server( global_handle global,
                                       SERVER_AUTH auth)
 {
 	int ret = DCAL_SUCCESS;
@@ -315,7 +315,7 @@ int dcal_wifi_global_set_auth_server( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_auth_server( laird_global_handle global,
+int dcal_wifi_global_get_auth_server( global_handle global,
                                       SERVER_AUTH *auth)
 {
 	int ret = DCAL_SUCCESS;
@@ -333,7 +333,7 @@ int dcal_wifi_global_get_auth_server( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_achannel_mask( laird_global_handle global,
+int dcal_wifi_global_set_achannel_mask( global_handle global,
                                         unsigned int channel_set_a)
 {
 	int ret = DCAL_SUCCESS;
@@ -349,7 +349,7 @@ int dcal_wifi_global_set_achannel_mask( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_achannel_mask( laird_global_handle global,
+int dcal_wifi_global_get_achannel_mask( global_handle global,
                                         unsigned int *channel_set_a)
 {
 	int ret = DCAL_SUCCESS;
@@ -367,7 +367,7 @@ int dcal_wifi_global_get_achannel_mask( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_bchannel_mask( laird_global_handle global,
+int dcal_wifi_global_set_bchannel_mask( global_handle global,
                                         unsigned int channel_set_b)
 {
 	int ret = DCAL_SUCCESS;
@@ -383,7 +383,7 @@ int dcal_wifi_global_set_bchannel_mask( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_bchannel_mask( laird_global_handle global,
+int dcal_wifi_global_get_bchannel_mask( global_handle global,
                                         unsigned int *channel_set_b)
 {
 	int ret = DCAL_SUCCESS;
@@ -401,7 +401,7 @@ int dcal_wifi_global_get_bchannel_mask( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_auto_profile( laird_global_handle global,
+int dcal_wifi_global_set_auto_profile( global_handle global,
                                        bool auto_profile)
 {
 	int ret = DCAL_SUCCESS;
@@ -416,7 +416,7 @@ int dcal_wifi_global_set_auto_profile( laird_global_handle global,
 
 	return REPORT_RETURN_DBG(ret);
 }
-int dcal_wifi_global_get_auto_profile( laird_global_handle global,
+int dcal_wifi_global_get_auto_profile( global_handle global,
                                        bool *auto_profile)
 {
 	int ret = DCAL_SUCCESS;
@@ -434,7 +434,7 @@ int dcal_wifi_global_get_auto_profile( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_beacon_miss( laird_global_handle global,
+int dcal_wifi_global_set_beacon_miss( global_handle global,
                                       unsigned int beacon_miss)
 {
 	int ret = DCAL_SUCCESS;
@@ -450,7 +450,7 @@ int dcal_wifi_global_set_beacon_miss( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_beacon_miss( laird_global_handle global,
+int dcal_wifi_global_get_beacon_miss( global_handle global,
                                       unsigned int *beacon_miss)
 {
 	int ret = DCAL_SUCCESS;
@@ -468,7 +468,7 @@ int dcal_wifi_global_get_beacon_miss( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_ccx( laird_global_handle global, bool ccx)
+int dcal_wifi_global_set_ccx( global_handle global, bool ccx)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -483,7 +483,7 @@ int dcal_wifi_global_set_ccx( laird_global_handle global, bool ccx)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_ccx( laird_global_handle global, bool *ccx)
+int dcal_wifi_global_get_ccx( global_handle global, bool *ccx)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -500,7 +500,7 @@ int dcal_wifi_global_get_ccx( laird_global_handle global, bool *ccx)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_cert_path( laird_global_handle global,
+int dcal_wifi_global_set_cert_path( global_handle global,
                                     char *cert_path)
 {
 	int ret = DCAL_SUCCESS;
@@ -516,7 +516,7 @@ int dcal_wifi_global_set_cert_path( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_cert_path( laird_global_handle global,
+int dcal_wifi_global_get_cert_path( global_handle global,
                                     char *cert_path, size_t buf_len)
 {
 	int ret = DCAL_SUCCESS;
@@ -534,7 +534,7 @@ int dcal_wifi_global_get_cert_path( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_date_check( laird_global_handle global,
+int dcal_wifi_global_set_date_check( global_handle global,
                                      bool date_check)
 {
 	int ret = DCAL_SUCCESS;
@@ -550,7 +550,7 @@ int dcal_wifi_global_set_date_check( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_date_check( laird_global_handle global,
+int dcal_wifi_global_get_date_check( global_handle global,
                                      bool *date_check)
 {
 	int ret = DCAL_SUCCESS;
@@ -568,7 +568,7 @@ int dcal_wifi_global_get_date_check( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_def_adhoc_channel( laird_global_handle global,
+int dcal_wifi_global_set_def_adhoc_channel( global_handle global,
                                             unsigned int def_adhoc_channel)
 {
 	int ret = DCAL_SUCCESS;
@@ -586,7 +586,7 @@ int dcal_wifi_global_set_def_adhoc_channel( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_def_adhoc_channel( laird_global_handle global,
+int dcal_wifi_global_get_def_adhoc_channel( global_handle global,
                                             unsigned int *def_adhoc_channel)
 {
 	int ret = DCAL_SUCCESS;
@@ -604,7 +604,7 @@ int dcal_wifi_global_get_def_adhoc_channel( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_fips( laird_global_handle global, bool fips)
+int dcal_wifi_global_set_fips( global_handle global, bool fips)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -619,7 +619,7 @@ int dcal_wifi_global_set_fips( laird_global_handle global, bool fips)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_fips( laird_global_handle global, bool *fips)
+int dcal_wifi_global_get_fips( global_handle global, bool *fips)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -636,7 +636,7 @@ int dcal_wifi_global_get_fips( laird_global_handle global, bool *fips)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_pmk( laird_global_handle global, DCAL_PMK_CACHING pmk)
+int dcal_wifi_global_set_pmk( global_handle global, DCAL_PMK_CACHING pmk)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -653,7 +653,7 @@ int dcal_wifi_global_set_pmk( laird_global_handle global, DCAL_PMK_CACHING pmk)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_pmk( laird_global_handle global, DCAL_PMK_CACHING *pmk)
+int dcal_wifi_global_get_pmk( global_handle global, DCAL_PMK_CACHING *pmk)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -670,7 +670,7 @@ int dcal_wifi_global_get_pmk( laird_global_handle global, DCAL_PMK_CACHING *pmk)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_probe_delay( laird_global_handle global,
+int dcal_wifi_global_set_probe_delay( global_handle global,
                                       unsigned int probe_delay)
 {
 	int ret = DCAL_SUCCESS;
@@ -686,7 +686,7 @@ int dcal_wifi_global_set_probe_delay( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_probe_delay( laird_global_handle global,
+int dcal_wifi_global_get_probe_delay( global_handle global,
                                       unsigned int *probe_delay)
 {
 	int ret = DCAL_SUCCESS;
@@ -704,7 +704,7 @@ int dcal_wifi_global_get_probe_delay( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_regdomain( laird_global_handle global,
+int dcal_wifi_global_get_regdomain( global_handle global,
                                     REG_DOMAIN *regdomain)
 {
 	int ret = DCAL_SUCCESS;
@@ -722,7 +722,7 @@ int dcal_wifi_global_get_regdomain( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_roam_periodms( laird_global_handle global,
+int dcal_wifi_global_set_roam_periodms( global_handle global,
                                       unsigned int roam_periodms)
 {
 	int ret = DCAL_SUCCESS;
@@ -738,7 +738,7 @@ int dcal_wifi_global_set_roam_periodms( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_roam_periodms( laird_global_handle global,
+int dcal_wifi_global_get_roam_periodms( global_handle global,
                                       unsigned int *roam_periodms)
 {
 	int ret = DCAL_SUCCESS;
@@ -756,7 +756,7 @@ int dcal_wifi_global_get_roam_periodms( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_roam_trigger( laird_global_handle global,
+int dcal_wifi_global_set_roam_trigger( global_handle global,
                                        unsigned int roam_trigger)
 {
 	int ret = DCAL_SUCCESS;
@@ -772,7 +772,7 @@ int dcal_wifi_global_set_roam_trigger( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_roam_trigger( laird_global_handle global,
+int dcal_wifi_global_get_roam_trigger( global_handle global,
                                        unsigned int *roam_trigger)
 {
 	int ret = DCAL_SUCCESS;
@@ -790,7 +790,7 @@ int dcal_wifi_global_get_roam_trigger( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_rts( laird_global_handle global,
+int dcal_wifi_global_set_rts( global_handle global,
                               unsigned int rts)
 {
 	int ret = DCAL_SUCCESS;
@@ -806,7 +806,7 @@ int dcal_wifi_global_set_rts( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_rts( laird_global_handle global,
+int dcal_wifi_global_get_rts( global_handle global,
                               unsigned int *rts)
 {
 	int ret = DCAL_SUCCESS;
@@ -824,7 +824,7 @@ int dcal_wifi_global_get_rts( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_scan_dfs_time( laird_global_handle global,
+int dcal_wifi_global_set_scan_dfs_time( global_handle global,
                                         unsigned int scan_dfs)
 {
 	int ret = DCAL_SUCCESS;
@@ -840,7 +840,7 @@ int dcal_wifi_global_set_scan_dfs_time( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_scan_dfs_time( laird_global_handle global,
+int dcal_wifi_global_get_scan_dfs_time( global_handle global,
                                         unsigned int *scan_dfs)
 {
 	int ret = DCAL_SUCCESS;
@@ -858,7 +858,7 @@ int dcal_wifi_global_get_scan_dfs_time( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_ttls_inner_method( laird_global_handle global,
+int dcal_wifi_global_set_ttls_inner_method( global_handle global,
                                 TTLS_INNER_METHOD ttls_inner_method)
 {
 	int ret = DCAL_SUCCESS;
@@ -876,7 +876,7 @@ int dcal_wifi_global_set_ttls_inner_method( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_ttls_inner_method( laird_global_handle global,
+int dcal_wifi_global_get_ttls_inner_method( global_handle global,
                                 TTLS_INNER_METHOD *ttls_inner_method)
 {
 	int ret = DCAL_SUCCESS;
@@ -894,7 +894,7 @@ int dcal_wifi_global_get_ttls_inner_method( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_uapsd( laird_global_handle global, bool uapsd)
+int dcal_wifi_global_set_uapsd( global_handle global, bool uapsd)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -912,7 +912,7 @@ int dcal_wifi_global_set_uapsd( laird_global_handle global, bool uapsd)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_uapsd( laird_global_handle global, bool *uapsd)
+int dcal_wifi_global_get_uapsd( global_handle global, bool *uapsd)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -933,7 +933,7 @@ int dcal_wifi_global_get_uapsd( laird_global_handle global, bool *uapsd)
 }
 
 
-int dcal_wifi_global_set_uapsd_mask( laird_global_handle global, unsigned int uapsd)
+int dcal_wifi_global_set_uapsd_mask( global_handle global, unsigned int uapsd)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -948,7 +948,7 @@ int dcal_wifi_global_set_uapsd_mask( laird_global_handle global, unsigned int ua
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_uapsd_mask( laird_global_handle global, unsigned int *uapsd)
+int dcal_wifi_global_get_uapsd_mask( global_handle global, unsigned int *uapsd)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -965,7 +965,7 @@ int dcal_wifi_global_get_uapsd_mask( laird_global_handle global, unsigned int *u
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_wmm( laird_global_handle global, bool wmm)
+int dcal_wifi_global_set_wmm( global_handle global, bool wmm)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -980,7 +980,7 @@ int dcal_wifi_global_set_wmm( laird_global_handle global, bool wmm)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_wmm( laird_global_handle global, bool *wmm)
+int dcal_wifi_global_get_wmm( global_handle global, bool *wmm)
 {
 	int ret = DCAL_SUCCESS;
 	internal_global_handle g = (internal_global_handle)global;
@@ -997,7 +997,7 @@ int dcal_wifi_global_get_wmm( laird_global_handle global, bool *wmm)
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_ignore_null_ssid( laird_global_handle global,
+int dcal_wifi_global_set_ignore_null_ssid( global_handle global,
                                            bool ignore_null_ssid)
 {
 	int ret = DCAL_SUCCESS;
@@ -1013,7 +1013,7 @@ int dcal_wifi_global_set_ignore_null_ssid( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_ignore_null_ssid( laird_global_handle global,
+int dcal_wifi_global_get_ignore_null_ssid( global_handle global,
                                            bool *ignore_null_ssid)
 {
 	int ret = DCAL_SUCCESS;
@@ -1031,7 +1031,7 @@ int dcal_wifi_global_get_ignore_null_ssid( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_set_dfs_channels( laird_global_handle global,
+int dcal_wifi_global_set_dfs_channels( global_handle global,
                                        DFS_CHANNELS dfs_channels)
 {
 	int ret = DCAL_SUCCESS;
@@ -1047,7 +1047,7 @@ int dcal_wifi_global_set_dfs_channels( laird_global_handle global,
 	return REPORT_RETURN_DBG(ret);
 }
 
-int dcal_wifi_global_get_dfs_channels( laird_global_handle global,
+int dcal_wifi_global_get_dfs_channels( global_handle global,
                                        DFS_CHANNELS *dfs_channels)
 {
 	int ret = DCAL_SUCCESS;
@@ -1068,7 +1068,7 @@ int dcal_wifi_global_get_dfs_channels( laird_global_handle global,
 // for use when debugging - may remove before publishing
 #define BCHANS 14
 #define ACHANS 24
-void dcal_wifi_global_printf( laird_global_handle global)
+void dcal_wifi_global_printf( global_handle global)
 {
 	internal_global_handle g = (internal_global_handle)global;
 	int i;
