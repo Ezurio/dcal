@@ -24,7 +24,7 @@ Then you can run the examples.
 Quick Start
 -----------
 
-    clone git@github.com:LairdCP/dcal.git
+    git clone git@github.com:Ezurio/dcal.git
     cd dcal
     make -f externals.mk
     make DEBUG=1
