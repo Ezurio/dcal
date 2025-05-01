@@ -45,7 +45,7 @@ lib.local:
 # libssh
 #
 lib.local/libssh: lib.local
-	cd lib.local && git clone git://git.libssh.org/projects/libssh.git
+	cd lib.local && git clone https://git.libssh.org/projects/libssh.git
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
@@ -59,7 +59,7 @@ endif
 
 
 $(LIBSSH_TARGET): lib.local lib.local/libssh
-	cd lib.local/libssh && git checkout libssh-0.7.5
+	cd lib.local/libssh && git checkout libssh-0.11.0
 	mkdir -p lib.local/libssh/build
 	cd lib.local/libssh/build && cmake -DCMAKE_INSTALL_PREFIX=$(BASE_DIR)/api ..
 	cd lib.local/libssh/build && make
@@ -79,7 +79,7 @@ libssh: $(LIBSSH_TARGET) $(LIBSSH_INSTALL)
 #
 lib.local/flatcc : lib.local
 	cd lib.local && git clone git@github.com:dvidelabs/flatcc.git
-	cd lib.local/flatcc && git checkout v0.4.3
+	cd lib.local/flatcc && git checkout v0.6.1
 	cd lib.local/flatcc && patch -p1 < ../../patches/flatcc001_add_fPIC.patch
 	cp lib.local/flatcc/scripts/build.cfg.make lib.local/flatcc/scripts/build.cfg
 

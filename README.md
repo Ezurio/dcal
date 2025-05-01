@@ -44,10 +44,10 @@ intended mainly for the test framework. It is an optional component.
 
 1. dcal_py requires that libssh and libflatccrt be included directly in libdcal.
 This is already accomplished by a few build fixes.
-2. The python binding utilizes boost::python to make it easy to create. I utilized boost version 1.57. Newer versions probably will work, later might not.
-3. The version of python on my machine is 2.7. The Makefile is plumbed for
-python2.7 on Ubuntu 14.04 LTS. If you use a different version,  you may need
-to make minor adjustments to the makefile, or install python2.7 on your host.
+2. The python binding utilizes boost::python to make it easy to create. I utilized boost version 1.74. Newer versions probably will work, later might not.
+3. The version of python on my machine is 3.10. The Makefile is plumbed for
+python3.10 on Ubuntu 22.04 LTS. If you use a different version,  you may need
+to make minor adjustments to the makefile, or install python3.10 on your host.
 
 ### Building dcal_py ###
 
@@ -64,25 +64,24 @@ directory:
 
 Then you can use. For example, after the above, start python and use it:
 
-    derosier@elmer:~/projects/wtf/tests$ python
-    Python 2.7.6 (default, Jun 22 2015, 17:58:13)
-    [GCC 4.8.2] on linux2
+    user@Ubuntu:~/Projects/dcal$ python
+    Python 3.10.12 (main, Feb  4 2025, 14:57:36) [GCC 11.4.0] on linux
     Type "help", "copyright", "credits" or "license" for more information.
     >>> import dcal_py
     >>> d = dcal_py.dcal()
-    >>> print d.session_create()
+    >>> print(d.session_create())
     0
-    >>> print d.host('192.168.0.66')
+    >>> print(d.host('192.168.0.66'))
     0
-    >>> print d.port(2222)
+    >>> print(d.port(2222))
     0
-    >>> print d.user('libssh')
+    >>> print(d.user('libssh'))
     0
-    >>> print d.pw('libssh')
+    >>> print(d.pw('libssh'))
     0
-    >>> print d.session_open()
+    >>> print(d.session_open())
     0
-    >>> print d.session_close()
+    >>> print(d.session_close())
     0
     >>>
 
