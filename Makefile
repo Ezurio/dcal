@@ -58,7 +58,7 @@ src/python_binding.o : src/python_binding.cpp
 python: $(LIB)  src/python_binding.o
 	$(CXX) -shared -Wl,-soname,dcal_py.so \
 	    -o api/dcal_py.so src/python_binding.o \
-	    -Lapi -ldcal -lpython3.10 -lboost_python
+	    -Lapi -ldcal -lpython3.10 -l:libboost_python310.so
 
 clean:
 	rm -f $(SRCDIR)/*.o  $(APIDIR)/$(APILIB).*
